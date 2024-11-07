@@ -1,4 +1,5 @@
 # standard library imports
+from datetime import date
 import sqlite3
 
 # 3rd party library imports
@@ -31,5 +32,7 @@ class LogLogs(AccessLog):
 
     def run(self):
         super().run()
+
+        self.top20['date'] = date.today()
 
         self.top20.to_sql('logs', self.conn, if_exists='append')
