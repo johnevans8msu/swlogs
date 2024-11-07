@@ -4,6 +4,7 @@ import argparse
 # local imports
 from swlogs.loglogs import LogLogs
 
+
 def loglogs():
 
     parser = argparse.ArgumentParser()

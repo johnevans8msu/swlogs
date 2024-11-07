@@ -2,11 +2,7 @@
 
 # standard library imports
 import argparse
-import pathlib
-import re
-import socket
 import sys
-import warnings
 
 
 # 3rd party library imports
@@ -14,7 +10,6 @@ import pandas as pd
 
 # local imports
 from .access_logs import AccessLog
-from .ua_regex import UA_REGEX_REPLACE
 
 pd.options.display.float_format = '{:,.1f}'.format
 

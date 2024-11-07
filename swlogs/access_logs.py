@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 # standard library imports
+import gzip
 import pathlib
 import re
 import socket
@@ -289,9 +290,13 @@ class AccessLog(object):
 
     def parse_input_file(self):
 
-        data = []
+        if str(self.infile).endswith('gz'):
+            fp = gzip.open(self.infile, mode='rt')
+        else:
+            fp = self.infile.open()
 
-        for idx, line in enumerate(self.infile.open()):
+        data = []
+        for idx, line in enumerate(fp):
 
             if (m := self.regex.match(line)) is None:
                 msg = f"Did not match line {idx} {line}"
