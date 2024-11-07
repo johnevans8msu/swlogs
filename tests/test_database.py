@@ -30,7 +30,7 @@ class TestSuite(unittest.TestCase):
 
             with sqlite3.connect(
                 dbfile,
-                detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
+                detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
             ) as conn:
                 actual = pd.read_sql(
                     'select * from logs', conn, index_col='ua'
@@ -72,7 +72,7 @@ class TestSuite(unittest.TestCase):
 
             with sqlite3.connect(
                 dbfile,
-                detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
+                detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
             ) as conn:
                 actual = pd.read_sql(
                     'select * from logs', conn, index_col='ua'
@@ -90,6 +90,52 @@ class TestSuite(unittest.TestCase):
             'xmlui': [0, 0, 0],
             'sitemaps': [0, 0, 0],
             'date': [dt.date.today(), dt.date.today(), dt.date.today()],
+        }
+        expected = pd.DataFrame(index=index, data=data)
+
+        pd.testing.assert_frame_equal(
+            actual, expected, check_exact=False, rtol=0.1
+        )
+
+    def test_yesterdays_log(self, mock_dt):
+        """
+        Scenario:  read gzipped log file and specify the date
+
+        Expected result:  hits are verified
+        """
+        mock_dt.today.return_value = dt.date.today()
+        mock_dt.side_effect = lambda *args, **kw:  dt.date(*args, **kw)
+
+        logfile = ir.files('tests.data').joinpath('gzipped.log.gz')
+        with tempfile.TemporaryDirectory() as tdir:
+            dbfile = f"{tdir}/test.db"
+            with LogLogs(logfile, dbfile=dbfile, thedate='2017-01-01') as o:
+                o.run()
+
+            with sqlite3.connect(
+                dbfile,
+                detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
+            ) as conn:
+                actual = pd.read_sql(
+                    'select * from logs', conn, index_col='ua'
+                )
+
+        data = [
+            'dspace-internal', 'bingbot/2.0', "Safari/iOS/WebKit on iPhone"
+        ]
+        index = pd.Index(data, name='ua')
+        data = {
+            'hits': [86, 12, 2],
+            'error_pct': [7.0, 0, 0],
+            '429': [0, 0, 0],
+            'robots': [0, 0, 0],
+            'xmlui': [0, 0, 0],
+            'sitemaps': [0, 0, 0],
+            'date': [
+                dt.date(2017, 1, 1),
+                dt.date(2017, 1, 1),
+                dt.date(2017, 1, 1),
+            ]
         }
         expected = pd.DataFrame(index=index, data=data)
 

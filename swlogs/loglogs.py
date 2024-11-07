@@ -1,5 +1,5 @@
 # standard library imports
-from datetime import date
+from datetime import date, datetime
 import sqlite3
 
 # 3rd party library imports
@@ -24,15 +24,20 @@ class LogLogs(AccessLog):
         If True, compute views instead of hits.
     """
 
-    def __init__(self, infile, dbfile, views=False):
+    def __init__(self, infile, dbfile, views=False, thedate=None):
         super().__init__(infile)
 
         self.dbfile = dbfile
         self.conn = sqlite3.connect(dbfile)
 
+        if thedate is None:
+            self.date = date.today()
+        else:
+            self.date = datetime.strptime(thedate, '%Y-%m-%d').date()
+
     def run(self):
         super().run()
 
-        self.top20['date'] = date.today()
+        self.top20['date'] = self.date
 
         self.top20.to_sql('logs', self.conn, if_exists='append')
