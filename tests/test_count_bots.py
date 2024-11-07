@@ -27,4 +27,3 @@ class TestSuite(unittest.TestCase):
         data = [86, 12, 2]
         expected = pd.Series(index=index, data=data, name='hits')
         pd.testing.assert_series_equal(actual, expected)
-
