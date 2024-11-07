@@ -47,7 +47,7 @@ UA_REGEX_STRS = [
     ),
     (
         # Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)
-        r"""Mozilla/5.0 \(iPhone; CPU iPhone OS 7_0 like Mac OS X\) AppleWebKit/537.51.1 \(KHTML, like Gecko\) Version/7.0 Mobile/11A465 Safari/9537.53 \(compatible; bingbot/2.0; \+http://www.bing.com/bingbot.htm\)""",
+        r"""Mozilla/5.0 \(iPhone; CPU iPhone OS \d{1,2}_0 like Mac OS X\) AppleWebKit/537.51.1 \(KHTML, like Gecko\) Version/7.0 Mobile/11A465 Safari/9537.53 \(compatible; bingbot/2.0; \+http://www.bing.com/bingbot.htm\)""",
         'bingbot-2.0/iOS/WebKit on iPhone', 
     ),
     (
@@ -120,6 +120,11 @@ UA_REGEX_STRS = [
         # Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36
         r"""Mozilla/5.0 \(X11; Linux x86_64\) AppleWebKit/537.36 \(KHTML, like Gecko\) Chrome/\d+.\d+.\d+.\d+ Safari/537.36""",
         "Chrome/Linux/Blink",
+    ),
+    (
+        # Mozilla/5.0 (Linux x64) node.js/20.16.0 v8/11.3.244.8-node.23
+        r"""Mozilla\/5.0 \(Linux x64\) node.js\/20.16.0 v8\/11.3.244.8-node.23""",
+        "dspace-internal",
     ),
     (
         # Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/123.0.6312.86 Safari/537.36
@@ -314,7 +319,8 @@ UA_REGEX_STRS = [
     (
         # Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1
         # Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Mobile/15E148 Safari/604.1
-        r"""Mozilla/5.0 \(iPhone; CPU iPhone OS \d+(_\d+)+ like Mac OS X\) AppleWebKit/\d+(.\d+)+ \(KHTML, like Gecko\) Version/\d+(.\d)+ Mobile/15E148 Safari/\d+.\d+""",
+        # Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2534.1416 Mobile Safari/537.36
+        r"""Mozilla/5.0 \(iPhone; CPU iPhone OS \d+(_\d+)+ like Mac OS X\) AppleWebKit/\d+(.\d+)+ \(KHTML, like Gecko\) (Chrome\/\d+.\d.\d+.\d+|Version/\d+(.\d)+) Mobile(\/15E148)? Safari/\d+.\d+""",
         "Safari/iOS/WebKit on iPhone",
     ),
     (
@@ -394,7 +400,7 @@ def apply_regexes(s):
     return UA_REGEX_REPLACE.get(first_match, s)
 
 
-class BotLog(object):
+class CountBots(object):
 
     """
     Attributes
@@ -424,7 +430,7 @@ class BotLog(object):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        self.infile.close()
+        pass
 
     def setup_ua_regex(self):
         """
@@ -611,7 +617,7 @@ class BotLog(object):
         df20.loc[df20['sitemaps'].isnull(), 'sitemaps'] = False
 
         df20 = df20.sort_values(by='hits', ascending=False)
-        print(df20)
+        self.top20 = df20
 
     def process_top_20_network_addresses_netmask_32(self):
 
@@ -757,7 +763,7 @@ class BotLog(object):
 
         data = []
 
-        for idx, line in enumerate(self.infile):
+        for idx, line in enumerate(self.infile.open()):
 
             if (m := self.regex.match(line)) is None:
                 msg = f"Did not match line {idx} {line}"
