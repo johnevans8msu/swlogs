@@ -321,6 +321,7 @@ class AccessLog(object):
             df['timestamp'], format='%d/%b/%Y:%H:%M:%S %z'
         )
         df['status'] = df['status'].astype(int)
+        df['bytes'] = df['bytes'].astype(int)
 
         def fcn(x):
             if re.search(r'\d{1,3}[.]\d{1,3}[.]\d{1,3}[.]\d{1,3}', x):

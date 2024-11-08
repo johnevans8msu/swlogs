@@ -35,9 +35,18 @@ class LogLogs(AccessLog):
         else:
             self.date = datetime.strptime(thedate, '%Y-%m-%d').date()
 
-    def run(self):
-        super().run()
+    def log_bots(self):
 
         self.top20['date'] = self.date
+        self.top20.to_sql('bots', self.conn, if_exists='append')
 
-        self.top20.to_sql('logs', self.conn, if_exists='append')
+    def log_overall(self):
+        df = self.df.groupby(self.df.timestamp.dt.date)['bytes'].sum().to_frame()
+        df['hits'] = len(self.df)
+        df.index.name = 'date'
+        df.to_sql('overall', self.conn, if_exists='append')
+
+    def run(self):
+        super().run()
+        self.log_overall()
+        self.log_bots()

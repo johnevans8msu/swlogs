@@ -13,11 +13,11 @@ from swlogs.loglogs import LogLogs
 @mock.patch('swlogs.loglogs.date')
 class TestSuite(unittest.TestCase):
 
-    def test_smoke(self, mock_dt):
+    def test_bot_smoke(self, mock_dt):
         """
         Scenario:  read log file
 
-        Expected result:  hits are verified
+        Expected result:  bot hits are verified
         """
         mock_dt.today.return_value = dt.date.today()
         mock_dt.side_effect = lambda *args, **kw:  dt.date(*args, **kw)
@@ -33,7 +33,7 @@ class TestSuite(unittest.TestCase):
                 detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
             ) as conn:
                 actual = pd.read_sql(
-                    'select * from logs', conn, index_col='ua'
+                    'select * from bots', conn, index_col='ua'
                 )
 
         data = [
@@ -55,6 +55,39 @@ class TestSuite(unittest.TestCase):
             actual, expected, check_exact=False, rtol=0.1
         )
 
+    def test_overall_smoke(self, mock_dt):
+        """
+        Scenario:  read log file
+
+        Expected result:  overall hits are verified
+        """
+        mock_dt.today.return_value = dt.date.today()
+        mock_dt.side_effect = lambda *args, **kw:  dt.date(*args, **kw)
+
+        logfile = ir.files('tests.data').joinpath('smoke.log')
+        with tempfile.TemporaryDirectory() as tdir:
+            dbfile = f"{tdir}/test.db"
+            with LogLogs(logfile, dbfile=dbfile) as o:
+                o.run()
+
+            with sqlite3.connect(
+                dbfile,
+                detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
+            ) as conn:
+                actual = pd.read_sql(
+                    'select * from overall', conn, index_col='date'
+                )
+
+        data = [dt.date(2024, 11, 7)]
+        index = pd.Index(data, name='date')
+        data = {
+            'bytes': [1233768],
+            'hits': [100],
+        }
+        expected = pd.DataFrame(index=index, data=data)
+
+        pd.testing.assert_frame_equal(actual, expected)
+
     def test_gzipped(self, mock_dt):
         """
         Scenario:  read gzipped log file
@@ -75,7 +108,7 @@ class TestSuite(unittest.TestCase):
                 detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
             ) as conn:
                 actual = pd.read_sql(
-                    'select * from logs', conn, index_col='ua'
+                    'select * from bots', conn, index_col='ua'
                 )
 
         data = [
@@ -117,7 +150,7 @@ class TestSuite(unittest.TestCase):
                 detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
             ) as conn:
                 actual = pd.read_sql(
-                    'select * from logs', conn, index_col='ua'
+                    'select * from bots', conn, index_col='ua'
                 )
 
         data = [
