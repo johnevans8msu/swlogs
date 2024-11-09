@@ -1,7 +1,7 @@
 import re
 
 
-UA_REGEX_STRS = [
+_ua_pairs1 = [
     (
         # AcademicBotRTU (https://academicbot.rtu.lv; mailto:caps@rtu.lv)
         r"""AcademicBotRTU \(https://academicbot.rtu.lv; mailto:caps@rtu.lv\)""",
@@ -102,11 +102,6 @@ UA_REGEX_STRS = [
         # Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36
         r"""Mozilla/5.0 \(X11; Linux x86_64\) AppleWebKit/537.36 \(KHTML, like Gecko\) Chrome/\d+.\d+.\d+.\d+ Safari/537.36""",
         "Chrome/Linux/Blink",
-    ),
-    (
-        # Mozilla/5.0 (Linux x64) node.js/20.16.0 v8/11.3.244.8-node.23
-        r"""Mozilla\/5.0 \(Linux x64\) node.js\/20.16.0 v8\/11.3.244.8-node.23""",
-        "dspace-internal",
     ),
     (
         # Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/123.0.6312.86 Safari/537.36
@@ -310,64 +305,179 @@ UA_REGEX_STRS = [
         r"""Mozilla/5.0 \(Macintosh; Intel Mac OS X 10_12_6\)""",
         "Safari/Mactel/Sierra/Webkit (bad)",
     ),
+]
+
+UA_REGEX1 = {
+    re.compile(pair[0]): pair[1] for pair in _ua_pairs1
+}
+
+_ua_pairs2 = [
     (
-        # Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15
-        # Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.2 Safari/605.1.15
-        r"""Mozilla/5.0 \(Macintosh; Intel Mac OS X 10(_\d+)+\) AppleWebKit/605.1.15 \(KHTML, like Gecko\) Version/\d+(.\d+)+ Safari/\d+(.\d+)+""",
+        # Mozilla/5.0 (Linux x64) node.js/20.16.0 v8/11.3.244.8-node.23
+        r"""
+            Mozilla\/5.0
+            \s
+            \(Linux\sx64\)
+            \s
+            node.js\/20.16.0
+            \s
+            v8\/11.3.244.8-node.23
+        """,
+        "dspace-internal",
+    ),
+    (
+        r"""Mozilla/5.0
+            \s
+            \(Macintosh;\sIntel\sMac\sOS\sX\s10(_\d+)+\)
+            \s
+            AppleWebKit/605.1.15
+            \s
+            \(KHTML,\slike\sGecko\)
+            \s
+            Version/\d+(.\d+)+ Safari/\d+(.\d+)+""",
         "Safari/Mactel/Webkit",
     ),
     (
-        r"""serpstatbot/2.1 \(advanced backlink tracking bot; https://serpstatbot.com/; abuse@serpstatbot.com\)""",
+        r"""serpstatbot/2.1
+            \s
+            \(advanced\sbacklink\stracking\sbot;
+            \s
+            https://serpstatbot.com/;
+            \s
+            abuse@serpstatbot.com\)""",
         "Serpstatbot",
     ),
     (
-        r"""Mozilla/5.0 \(iPhone; CPU iPhone OS 17_3_1 like Mac OS X\) AppleWebKit/605.1.15 \(KHTML, like Gecko\) Version/17.3.1 Mobile/15E148 Snapchat/12.92.0.46 \(like Safari/8617.2.4.10.8, panda\)""",
+        r"""Mozilla/5.0
+            \s
+            \(iPhone;\sCPU\siPhone\sOS\s17_3_1\slike\sMac\sOS\sX\)
+            \s
+            AppleWebKit/605.1.15
+            \s
+            \(KHTML,\slike\sGecko\)
+            \s
+            Version/17.3.1\sMobile/15E148\sSnapchat/12.92.0.46
+            \s
+            \(like\sSafari/8617.2.4.10.8,\spanda\)""",
         "Snapchat/iOS/Webkit on iPhone",
     ),
     (
-        # Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/25.0 Chrome/121.0.0.0 Mobile Safari/537.36
-        r"""Mozilla/5.0 \(Linux; Android 10; K\) AppleWebKit/537.36 \(KHTML, like Gecko\) SamsungBrowser""",
+        # Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36
+        # (KHTML, like Gecko) SamsungBrowser/25.0 Chrome/121.0.0.0
+        # Mobile Safari/537.36
+        r"""
+            Mozilla/5.0
+            \s
+            \(Linux;\sAndroid\s10;\sK\)
+            \s
+            AppleWebKit/537.36
+            \s
+            \(KHTML,\slike\sGecko\)
+            \s
+            SamsungBrowser""",
         "Samsung/Android/WebKit",
     ),
     (
-        # Mozilla/5.0 (compatible) SemanticScholarBot (+https://www.semanticscholar.org/crawler)
-        r"""Mozilla/5.0 \(compatible\) SemanticScholarBot \(\+https://www.semanticscholar.org/crawler\)""",
+        # Mozilla/5.0 (compatible)
+        # SemanticScholarBot (+https://www.semanticscholar.org/crawler)
+        r"""
+            Mozilla/5.0
+            \s
+            \(compatible\)
+            \s
+            SemanticScholarBot
+            \s
+            \(\+https://www.semanticscholar.org/crawler\)
+        """,
         "SemanticScholarBot",
     ),
     (
-        # Mozilla/5.0 (compatible; SemrushBot/7~bl; +http://www.semrush.com/bot.html)
-        r"""Mozilla/5.0 \(compatible; SemrushBot/7~bl; \+http://www.semrush.com/bot.html\)""",
+        # Mozilla/5.0
+        # (compatible; SemrushBot/7~bl; +http://www.semrush.com/bot.html)
+        r"""
+            Mozilla/5.0
+            \s
+            \(compatible;
+            \s
+            SemrushBot/7~bl;
+            \s
+            \+http://www.semrush.com/bot.html\)
+        """,
         "SemrushBot",
     ),
     (
-        # Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0) LinkCheck by Siteimprove.com
-        r"""Mozilla/5.0 \(compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0\) LinkCheck by Siteimprove.com""",
+        # Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)
+        # LinkCheck by Siteimprove.com
+        r"""
+            Mozilla/5.0
+            \s
+            \(compatible;\sMSIE\s10.0;\sWindows\sNT\s6.1;\sTrident/6.0\)
+            \s
+            LinkCheck\sby\sSiteimprove.com
+        """,
         "Siteimprove",
     ),
     (
         # trafilatura/1.10.0 (+https://github.com/adbar/trafilatura)
-        r"""trafilatura/1.1\d.\d \(\+https://github.com/adbar/trafilatura\)""",
+        r"""
+            trafilatura/1.1\d.\d
+            \s
+            \(\+https://github.com/adbar/trafilatura\)
+        """,
         "trafilatura/1.x.y",
     ),
     (
         # Unpaywall (http://unpaywall.org/; mailto:team@impactstory.org)
-        r"""Unpaywall \(http://unpaywall.org/; mailto:team@impactstory.org\)""",
+        r"""
+            Unpaywall
+            \s
+            \(http://unpaywall.org/;\smailto:team@impactstory.org\)
+        """,
         "Unpaywall",
     ),
     (
-        # Mozilla/5.0 (Linux; Android 10; LIO-AN00 Build/HUAWEILIO-AN00; wv) MicroMessenger Weixin QQ AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/78.0.3904.62 XWEB/2692 MMWEBSDK/200901 Mobile Safari/537.36
-        r"""Mozilla/5.0 \(Linux; Android 10; LIO-AN00 Build/HUAWEILIO-AN00; wv\) MicroMessenger Weixin QQ AppleWebKit/537.36 \(KHTML, like Gecko\) Version/4.0 Chrome/78.0.3904.62 XWEB/2692 MMWEBSDK/200901 Mobile Safari/537.36""",
+        # Mozilla/5.0 (Linux; Android 10; LIO-AN00 Build/HUAWEILIO-AN00; wv)
+        # MicroMessenger Weixin QQ AppleWebKit/537.36 (KHTML, like Gecko)
+        # Version/4.0 Chrome/78.0.3904.62 XWEB/2692 MMWEBSDK/200901
+        # Mobile Safari/537.36
+        r"""
+            Mozilla/5.0
+            \s
+            \(Linux;\sAndroid\s10;\sLIO-AN00\sBuild/HUAWEILIO-AN00;\swv\)
+            \s
+            MicroMessenger\sWeixin\sQQ\sAppleWebKit/537.36
+            \s
+            \(KHTML,\slike\sGecko\)
+            \s
+            Version/4.0\sChrome/78.0.3904.62\sXWEB/2692\sMMWEBSDK/200901
+            \s
+            Mobile\sSafari/537.36""",
         "Webview/Android/WebKit",
     ),
     (
-        # Mozilla/5.0 (compatible; wpbot/1.1; +https://forms.gle/ajBaxygz9jSR8p8G9)
-        r"""Mozilla/5.0 \(compatible; wpbot/1.1; \+https://forms.gle/ajBaxygz9jSR8p8G9\)""",
+        # Mozilla/5.0
+        # (compatible; wpbot/1.1; +https://forms.gle/ajBaxygz9jSR8p8G9)
+        r"""
+            Mozilla/5.0
+            \s
+            \(compatible;\swpbot/1.1;\s\+https://forms.gle/ajBaxygz9jSR8p8G9\)
+        """,
         "WPBOT",
     ),
     (
         # Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)
-        r"""Mozilla/5.0 \(compatible; YandexBot/3.0; \+http://yandex.com/bots\)""",
+        r"""
+            Mozilla/5.0
+            \s
+            \(compatible;\sYandexBot/3.0;\s\+http://yandex.com/bots\)
+        """,
         "YandexBox",
     ),
 ]
-UA_REGEX_REPLACE = {re.compile(pair[0]): pair[1] for pair in UA_REGEX_STRS}
+
+
+UA_REGEX_REPLACE = {
+    re.compile(pair[0], re.VERBOSE): pair[1] for pair in _ua_pairs2
+}
+
+UA_REGEX_REPLACE.update(UA_REGEX1)

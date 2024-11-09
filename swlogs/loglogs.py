@@ -3,6 +3,7 @@ from datetime import date, datetime
 import sqlite3
 
 # 3rd party library imports
+import numpy as np
 import pandas as pd
 
 # local imports
@@ -41,9 +42,15 @@ class LogLogs(AccessLog):
         self.top20.to_sql('bots', self.conn, if_exists='append')
 
     def log_overall(self):
-        df = self.df.groupby(self.df.timestamp.dt.date)['bytes'].sum().to_frame()
-        df['hits'] = len(self.df)
-        df.index.name = 'date'
+        """
+        Record the total bytes and number of hits for the day
+        """
+        self.df['date'] = self.df['timestamp'].apply(pd.Timestamp.date)
+
+        df = (
+            self.df.groupby('date')
+                   .agg(bytes=('bytes', 'sum'), hits=('date', 'size'))
+        )
         df.to_sql('overall', self.conn, if_exists='append')
 
     def run(self):
