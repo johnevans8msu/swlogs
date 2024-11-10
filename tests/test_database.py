@@ -47,7 +47,11 @@ class TestSuite(unittest.TestCase):
             'robots': [0, 0, 0],
             'xmlui': [0, 0, 0],
             'sitemaps': [0, 0, 0],
-            'date': [dt.date.today(), dt.date.today(), dt.date.today()],
+            'date': [
+                dt.date(2024, 11, 7),
+                dt.date(2024, 11, 7),
+                dt.date(2024, 11, 7),
+            ]
         }
         expected = pd.DataFrame(index=index, data=data)
 
@@ -156,7 +160,11 @@ class TestSuite(unittest.TestCase):
             'robots': [0, 0, 0],
             'xmlui': [0, 0, 0],
             'sitemaps': [0, 0, 0],
-            'date': [dt.date.today(), dt.date.today(), dt.date.today()],
+            'date': [
+                dt.date(2024, 11, 7),
+                dt.date(2024, 11, 7),
+                dt.date(2024, 11, 7),
+            ]
         }
         expected = pd.DataFrame(index=index, data=data)
 
@@ -176,7 +184,7 @@ class TestSuite(unittest.TestCase):
         logfile = ir.files('tests.data').joinpath('gzipped.log.gz')
         with tempfile.TemporaryDirectory() as tdir:
             dbfile = f"{tdir}/test.db"
-            with LogLogs(logfile, dbfile=dbfile, thedate='2017-01-01') as o:
+            with LogLogs(logfile, dbfile=dbfile) as o:
                 o.run()
 
             with sqlite3.connect(
@@ -199,9 +207,9 @@ class TestSuite(unittest.TestCase):
             'xmlui': [0, 0, 0],
             'sitemaps': [0, 0, 0],
             'date': [
-                dt.date(2017, 1, 1),
-                dt.date(2017, 1, 1),
-                dt.date(2017, 1, 1),
+                dt.date(2024, 11, 7),
+                dt.date(2024, 11, 7),
+                dt.date(2024, 11, 7),
             ]
         }
         expected = pd.DataFrame(index=index, data=data)

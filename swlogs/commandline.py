@@ -12,13 +12,8 @@ def loglogs():
 
     parser.add_argument('logfile', help='Access log')
     parser.add_argument('dbfile', help='database file')
-    parser.add_argument(
-        '--date',
-        help='Date of log file',
-        default=f"{dt.date.today()}",
-    )
 
     args = parser.parse_args()
 
-    with LogLogs(args.logfile, args.dbfile, thedate=args.date) as o:
+    with LogLogs(args.logfile, args.dbfile) as o:
         o.run()
