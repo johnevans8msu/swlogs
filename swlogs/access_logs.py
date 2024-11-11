@@ -238,6 +238,14 @@ class AccessLog(object):
         df20 = df20.merge(df_sitemaps, how='left', left_index=True, right_index=True)  # noqa : E501
         df20.loc[df20['sitemaps'].isnull(), 'sitemaps'] = False
 
+        # what percentage of hits were for item pages?
+        regex = re.compile(r'^/items/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$')
+        self.df['item_pct'] = self.df['url'].str.match(regex)
+
+        for ua in df20.index:
+            b = self.df.query('ua == @ua')
+            df20.loc[ua, 'item_pct'] = len(b.query('item_pct == True')) / len(b) * 100
+
         df20 = df20.sort_values(by='hits', ascending=False)
         self.top20 = df20
 
