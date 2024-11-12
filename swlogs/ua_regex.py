@@ -9,7 +9,7 @@ _ua_pairs1 = [
     ),
     (
         # Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15 (Applebot/0.1; +http://www.apple.com/go/applebot)
-        r"""Mozilla/5.0 \(Macintosh; Intel Mac OS X 10_15_7\) AppleWebKit/605.1.15 \(KHTML, like Gecko\) Version/17.4 Safari/605.1.15 \(Applebot/0.1; \+http://www.apple.com/go/applebot\)""",
+        r"""Mozilla/5.0 \(Macintosh; Intel Mac OS X 10_15_7\) AppleWebKit/605.1.15 \(KHTML, like Gecko\) Version/\d{2}.\d Safari/605.1.15 \(Applebot/0.1; \+http://www.apple.com/go/applebot\)""",
         'Applebot/0.1',
     ),
     (
@@ -293,18 +293,6 @@ _ua_pairs1 = [
         r"""Mozilla/5.0 \(iPhone; CPU iPhone OS 17_5_1 like Mac OS X\) AppleWebKit/605.1.15 \(KHTML, like Gecko\) Mobile/15E148 \[Pinterest/iOS\]""",
         "Pinterest/iOS/WebKit on iPhone",
     ),
-    (
-        # Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1
-        # Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Mobile/15E148 Safari/604.1
-        # Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2534.1416 Mobile Safari/537.36
-        r"""Mozilla/5.0 \(iPhone; CPU iPhone OS \d+(_\d+)+ like Mac OS X\) AppleWebKit/\d+(.\d+)+ \(KHTML, like Gecko\) (Chrome\/\d+.\d.\d+.\d+|Version/\d+(.\d)+) Mobile(\/15E148)? Safari/\d+.\d+""",
-        "Safari/iOS/WebKit on iPhone",
-    ),
-    (
-        # Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6)
-        r"""Mozilla/5.0 \(Macintosh; Intel Mac OS X 10_12_6\)""",
-        "Safari/Mactel/Sierra/Webkit (bad)",
-    ),
 ]
 
 UA_REGEX1 = {
@@ -312,6 +300,31 @@ UA_REGEX1 = {
 }
 
 _ua_pairs2 = [
+    (
+        # Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X)
+        # AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5
+        # Mobile/15E148 Safari/604.1
+        r"""
+            Mozilla/5.0
+            \s
+            \(iPhone;\sCPU\siPhone\sOS\s\d+(_\d+)+\slike\sMac\sOS\sX\)
+            \s
+            AppleWebKit/\d+(.\d+)+
+            \s
+            \(KHTML,\slike\sGecko\)
+            \s
+            (Chrome\/\d+.\d.\d+.\d+|Version/\d+(.\d)+)
+            \s
+            Mobile(\/15E148)?
+            \s
+            Safari/\d+.\d+""",
+        "Safari/iOS/WebKit on iPhone",
+    ),
+    (
+        # Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6)
+        r"""Mozilla/5.0\s\(Macintosh;\sIntel\sMac\sOS\sX\s10_12_6\)""",
+        "Safari/Mactel/Sierra/Webkit (bad)",
+    ),
     (
         # Mozilla/5.0 (Linux x64) node.js/20.16.0 v8/11.3.244.8-node.23
         r"""
@@ -334,7 +347,9 @@ _ua_pairs2 = [
             \s
             \(KHTML,\slike\sGecko\)
             \s
-            Version/\d+(.\d+)+ Safari/\d+(.\d+)+""",
+            Version/\d+(.\d+)+
+            \s
+            Safari/\d+(.\d+)+""",
         "Safari/Mactel/Webkit",
     ),
     (
