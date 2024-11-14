@@ -8,24 +8,26 @@ import pandas as pd
 # local imports
 from .access_logs import AccessLog
 
-pd.options.display.float_format = '{:,.1f}'.format
-
 
 class LogLogs(AccessLog):
-
     """
     Attributes
     ----------
-    infile: path
-        Process this apache logfile.
+    logfile : path
+        Process this apache/nginx logfile.
     dbfile: path
         Location of sqlite database file.
     views : bool
         If True, compute views instead of hits.
+    conn : sqlite3.Connection
     """
-
-    def __init__(self, infile, dbfile, views=False):
-        super().__init__(infile)
+    def __init__(
+        self,
+        logfile='/var/log/nginx/access.log.1',
+        dbfile='/home/jevans/Documents/swlogs/access.db',
+        views=False
+    ):
+        super().__init__(logfile)
 
         self.dbfile = dbfile
         self.conn = sqlite3.connect(dbfile)

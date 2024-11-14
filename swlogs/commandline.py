@@ -15,5 +15,5 @@ def loglogs():
 
     args = parser.parse_args()
 
-    with LogLogs(args.logfile, args.dbfile) as o:
+    with LogLogs(logfile=args.logfile, dbfile=args.dbfile) as o:
         o.run()
