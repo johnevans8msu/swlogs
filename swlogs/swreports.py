@@ -38,7 +38,7 @@ class SWReport(CommonObj):
             from overall
             group by date
         """
-        df = pd.read_sql(sql, self.conn)
+        df = pd.read_sql(sql, self.conn, index_col='date')
 
         print(df)
 
@@ -48,6 +48,6 @@ class SWReport(CommonObj):
             select * from bots
             where date='2024-11-13'
         """
-        df = pd.read_sql(sql, self.conn)
+        df = pd.read_sql(sql, self.conn, index_col='date')
 
         print(df)
