@@ -8,6 +8,18 @@ from swlogs import commandline
 
 class TestSuite(unittest.TestCase):
 
+    def test_swreport(self):
+        """
+        Scenario:  run command line program
+
+        Expected result:  no errors
+        """
+        with (
+            mock.patch('sys.argv', new=['']),
+            mock.patch('swlogs.swreports.SWReport.run', new=lambda x: None),
+        ):
+            commandline.swreport()
+
     def test_loglogs(self):
         """
         Scenario:  run command line program
