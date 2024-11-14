@@ -11,7 +11,7 @@ class CommonObj(object):
     """
 
     def __init__(self, dbfile='/home/jevans/Documents/swlogs/access.db'):
-        self.dbfile=dbfile
+        self.dbfile = dbfile
 
     def __enter__(self):
         return self

@@ -59,3 +59,29 @@ class TestSuite(unittest.TestCase):
         )
 
         self.assertEqual(actual, expected)
+
+    def test_overall_smoke(self):
+        """
+        Scenario:  report overall
+
+        Expected result:  report is verified
+        """
+
+        newconn = sqlite3.connect(self.dbfile)
+
+        with SWReport(overall=True) as o:
+            with patch(
+                'swlogs.swreports.sys.stdout', new=io.StringIO()
+            ) as fake_stdout:
+                with patch.object(o, 'conn', new=newconn):
+                    o.run()
+
+                actual = fake_stdout.getvalue()
+
+        expected = (
+            ir.files('tests.data.swreport')
+              .joinpath('daily-overall.txt')
+              .read_text()
+        )
+
+        self.assertEqual(actual, expected)

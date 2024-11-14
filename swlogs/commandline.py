@@ -1,6 +1,5 @@
 # standard library imports
 import argparse
-import datetime as dt
 
 # local imports
 from swlogs.loglogs import LogLogs
@@ -19,11 +18,13 @@ def loglogs():
     with LogLogs(logfile=args.logfile, dbfile=args.dbfile) as o:
         o.run()
 
+
 def swreport():
 
     parser = argparse.ArgumentParser()
+    parser.add_argument('--overall', action='store_true')
 
     args = parser.parse_args()
 
-    with SWReport() as o:
+    with SWReport(overall=args.overall) as o:
         o.run()

@@ -20,6 +20,18 @@ class TestSuite(unittest.TestCase):
         ):
             commandline.swreport()
 
+    def test_swreport_overall(self):
+        """
+        Scenario:  run command line program for overall hits and bytes
+
+        Expected result:  no errors
+        """
+        with (
+            mock.patch('sys.argv', new=['--overall']),
+            mock.patch('swlogs.swreports.SWReport.run', new=lambda x: None),
+        ):
+            commandline.swreport()
+
     def test_loglogs(self):
         """
         Scenario:  run command line program
