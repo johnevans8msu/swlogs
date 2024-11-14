@@ -1,0 +1,21 @@
+                                                   ua     hits  error_pct    429  robots  xmlui  sitemaps  item_pct        date
+0                                     dspace-internal  4814336        7.3      0       0      0         0       0.0  2024-11-13
+1                                         bingbot/2.0    76268       41.9  31585       1      0         1       0.6  2024-11-13
+2                     Facebook/meta-externalagent/1.1    44834        7.0   1704       0      1         0       1.6  2024-11-13
+3                             Googlebot/Android/Blink    37777        7.5   1388       0      0         0       1.5  2024-11-13
+4                                          ByteSpider    26119        0.2      0       1      0         1       0.1  2024-11-13
+5                                  Chrome/Win10/Blink    13888        9.3      0       1      1         0       2.8  2024-11-13
+6                   GoogleOther/Chrome/Android/WebKit    13883       14.9   1575       0      0         0       0.4  2024-11-13
+7                               Chrome/Mactel32/Blink     4358        9.4     88       0      1         0       8.6  2024-11-13
+8                                      Cabin-Size/0.1     4035        1.2      0       0      1         0       3.5  2024-11-13
+9                         Safari/iOS/WebKit on iPhone     3177        2.3      0       0      1         0       0.5  2024-11-13
+10                                Firefox/Win10/Gecko     2357        9.5     43       0      1         0       1.3  2024-11-13
+11                                      Googlebot/2.1     2002       12.5    166       1      0         1       1.8  2024-11-13
+12                   bingbot-2.0/iOS/WebKit on iPhone     1880       10.2      0       0      0         0       5.3  2024-11-13
+13                               Safari/Mactel/Webkit     1629        8.2      0       1      1         0       5.1  2024-11-13
+14                                          CCBot/2.0      901        0.0      0       1      0         0      37.1  2024-11-13
+15                              Chrome/ChromeOS/Blink      846       13.2      0       0      1         0       3.0  2024-11-13
+16                                         node-fetch      563        5.3      0       0      1         0      49.7  2024-11-13
+17                              Chrome/Android/WebKit      540        8.5      0       0      1         0       2.4  2024-11-13
+18                        Chrome/iOS/WebKit on iPhone      304        5.6      0       0      1         0       7.9  2024-11-13
+19  Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Ge...      277        0.0      0       1      0         0      17.0  2024-11-13
