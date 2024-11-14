@@ -278,21 +278,6 @@ _ua_pairs1 = [
         r"""Mozilla/\d.0 \(compatible; MSIE 9.0; Windows NT 6.1(; Trident/5.0)?\)""",
         "IE/Win7/Trident",
     ),
-    (
-        # david frank
-        # node-fetch/1.0
-        r"""node-fetch/1.0 \(\+https://github.com/bitinn/node-fetch\)""",
-        "node-fetch",
-    ),
-    (
-        r"""Mozilla/5.0 AppleWebKit/537.36 \(KHTML, like Gecko\); compatible; OAI-SearchBot/1.0; \+https://openai.com/searchbot""",
-        "OAI-SearchBot/1.0",
-    ),
-    (
-        # Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 [Pinterest/iOS]
-        r"""Mozilla/5.0 \(iPhone; CPU iPhone OS 17_5_1 like Mac OS X\) AppleWebKit/605.1.15 \(KHTML, like Gecko\) Mobile/15E148 \[Pinterest/iOS\]""",
-        "Pinterest/iOS/WebKit on iPhone",
-    ),
 ]
 
 UA_REGEX1 = {
@@ -300,6 +285,43 @@ UA_REGEX1 = {
 }
 
 _ua_pairs2 = [
+    (
+        # david frank
+        # node-fetch/1.0
+        r"""node-fetch/1.0\s\(\+https://github.com/bitinn/node-fetch\)""",
+        "node-fetch",
+    ),
+    (
+        r"""
+            Mozilla/5.0
+            \s
+            AppleWebKit/537.36
+            \s
+            \(KHTML,\slike\sGecko\);
+            \s
+            compatible;
+            \s
+            OAI-SearchBot/1.0;
+            \s
+            \+https://openai.com/searchbot""",
+        "OAI-SearchBot/1.0",
+    ),
+    (
+        # Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X)
+        # AppleWebKit/605.1.15
+        # (KHTML, like Gecko) Mobile/15E148 [Pinterest/iOS]
+        r"""
+            Mozilla/5.0
+            \s
+            \(iPhone;\sCPU\siPhone\sOS\s17_5_1\slike\sMac\sOS\sX\)
+            \s
+            AppleWebKit/605.1.15\s\(KHTML,\slike\sGecko\)
+            \s
+            Mobile/15E148
+            \s
+            \[Pinterest/iOS\]""",
+        "Pinterest/iOS/WebKit on iPhone",
+    ),
     (
         # Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X)
         # AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5
