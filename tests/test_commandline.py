@@ -42,7 +42,10 @@ class TestSuite(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as tdir:
             dbfile = f"{tdir}/test.db"
-            with mock.patch('sys.argv', new=['', str(logfile), str(dbfile)]):
+            with mock.patch(
+                'sys.argv',
+                new=['', '--logfile', str(logfile), '--dbfile', str(dbfile)]
+            ):
                 commandline.loglogs()
 
         self.assertTrue(True)
