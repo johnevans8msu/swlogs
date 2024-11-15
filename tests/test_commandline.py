@@ -8,6 +8,17 @@ from swlogs import commandline
 
 class TestSuite(unittest.TestCase):
 
+    def test_plot_overall(self):
+        """
+        Scenario:  run command line program
+
+        Expected result:  no errors
+        """
+        with (
+            mock.patch('swlogs.plots.PlotOverall.run', new=lambda x: None),
+        ):
+            commandline.plot_overall()
+
     def test_swreport(self):
         """
         Scenario:  run command line program

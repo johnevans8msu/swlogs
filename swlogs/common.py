@@ -1,4 +1,5 @@
 # standard library imports
+import sqlite3
 
 # 3rd party library imports
 
@@ -12,6 +13,7 @@ class CommonObj(object):
 
     def __init__(self, dbfile='/home/jevans/Documents/swlogs/access.db'):
         self.dbfile = dbfile
+        self.conn = sqlite3.connect(self.dbfile)
 
     def __enter__(self):
         return self

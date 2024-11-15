@@ -4,7 +4,6 @@ Report something about scholarworks.
 
 # standard library imports
 from datetime import date, timedelta
-import sqlite3
 import sys  # noqa : F401
 
 # 3rd party library imports
@@ -33,7 +32,6 @@ class SWReport(CommonObj):
         super().__init__()
 
         self.overall = overall
-        self.conn = sqlite3.connect(self.dbfile)
         if thedate is None:
             self.date = date.today() - timedelta(days=1)
         else:

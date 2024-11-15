@@ -1,0 +1,22 @@
+                                                           ua     hits  error_pct    429  robots  xmlui  sitemaps  item_pct
+date                                                                                                                       
+2024-11-12                                    dspace-internal  4417879        7.8      0       0      0         0       0.0
+2024-11-12                                        bingbot/2.0    60749       27.9  16392       1      0         1       0.9
+2024-11-12                    Facebook/meta-externalagent/1.1    45039        6.8   1626       0      0         1       4.4
+2024-11-12                            Googlebot/Android/Blink    37369        7.7   1905       0      0         0       2.2
+2024-11-12                                         ByteSpider    22904        0.2      0       0      0         1       0.1
+2024-11-12                  GoogleOther/Chrome/Android/WebKit    17442       18.3   2298       0      0         0       0.1
+2024-11-12                                 Chrome/Win10/Blink    13771        9.0     86       1      1         0       2.7
+2024-11-12                                          YandexBox     6020        0.0      0       1      0         1      13.9
+2024-11-12                                     Cabin-Size/0.1     5105        0.6      0       0      1         0       3.5
+2024-11-12                              Chrome/Mactel32/Blink     4748        8.8     55       1      1         0       5.8
+2024-11-12                        Safari/iOS/WebKit on iPhone     3045        2.5      0       0      1         0       0.3
+2024-11-12                                Firefox/Win10/Gecko     2974        5.6      0       0      1         0       0.7
+2024-11-12                               Safari/Mactel/Webkit     2955        7.6      0       1      1         0       2.7
+2024-11-12                                      Googlebot/2.1     2399       16.0    315       1      0         1       1.9
+2024-11-12                   bingbot-2.0/iOS/WebKit on iPhone     2032       10.1      0       0      0         0       4.6
+2024-11-12                                         GPTBot/1.x     1278        9.2      0       1      0         0       2.1
+2024-11-12                              Chrome/Android/WebKit     1014       17.0      0       0      1         0       2.9
+2024-11-12                                          CCBot/2.0      746        0.0      0       1      0         0      50.8
+2024-11-12                                         node-fetch      741        6.2      0       0      1         0      47.8
+2024-11-12  Mozilla/5.0 (compatible; YandexImages/3.0; +ht...      709        0.0      0       0      0         0       0.0
