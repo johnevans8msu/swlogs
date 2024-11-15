@@ -257,27 +257,6 @@ _ua_pairs1 = [
         r"""Mozilla/5.0 \(Linux; Android 6.0.1; Nexus 5X Build/MMB29P\) AppleWebKit/537.36 \(KHTML, like Gecko\) Chrome/125.0.6422.175 Mobile Safari/537.36 \(compatible; GoogleOther\)""",
         "GoogleOther/Android/Blink on Nexus5X",
     ),
-    (
-        # Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.6422.175 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
-        r"""Mozilla/5.0 \(Linux; Android 6.0.1; Nexus 5X Build/MMB29P\) AppleWebKit/537.36 \(KHTML, like Gecko\) Chrome/\d+(.\d+){3} Mobile Safari/537.36 \(compatible; Googlebot/2.1; \+http://www.google.com/bot.html\)""",
-        "Googlebot/2.1/Android/Blink on Nexus5X",
-    ),
-    (
-        # Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; GPTBot/1.2; +https://openai.com/gptbot)
-        r"""Mozilla/5.0 AppleWebKit/537.36 \(KHTML, like Gecko; compatible; GPTBot/1.[02]; \+https://openai.com/gptbot\)""",
-        'GPTBot/1.x',
-    ),
-    (
-        # Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
-        r"""Mozilla/5.0 \(Windows NT 10.0; WOW64; Trident/7.0; rv:11.0\) like Gecko""",
-        "IE/Win10/Trident",
-    ),
-    (
-        # Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)
-        # Mozilla/4.0 (compatible; MSIE 9.0; Windows NT 6.1)
-        r"""Mozilla/\d.0 \(compatible; MSIE 9.0; Windows NT 6.1(; Trident/5.0)?\)""",
-        "IE/Win7/Trident",
-    ),
 ]
 
 UA_REGEX1 = {
@@ -285,6 +264,67 @@ UA_REGEX1 = {
 }
 
 _ua_pairs2 = [
+    (
+        # Mozilla/5.0 (Linux; # Android 6.0.1; Nexus 5X Build/MMB29P)
+        # AppleWebKit/537.36 (KHTML, like Gecko)
+        # Chrome/125.0.6422.175 Mobile Safari/537.36
+        # (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+        r"""
+        Mozilla/5.0
+        \s
+        \(Linux;\sAndroid\s6.0.1;\sNexus\s5X\sBuild/MMB29P\)
+        \s
+        AppleWebKit/537.36
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Chrome/\d+(.\d+){3}
+        \s
+        Mobile\sSafari/537.36
+        \s
+        \(compatible;\sGooglebot/2.1;\s\+http://www.google.com/bot.html\)
+        """,
+        "Googlebot/2.1/Android/Blink on Nexus5X",
+    ),
+    (
+        # Mozilla/5.0
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko; compatible; GPTBot/1.2;
+        #  +https://openai.com/gptbot)
+        r"""
+        Mozilla/5.0
+        \s
+        AppleWebKit/537.36
+        \s
+        \(KHTML,\slike\sGecko;
+        \s
+        compatible;
+        \s
+        GPTBot/1.[02];
+        \s
+        \+https://openai.com/gptbot\)
+        """,
+        'GPTBot/1.x',
+    ),
+    (
+        # Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
+        r"""
+        Mozilla/5.0
+        \s
+        \(Windows\sNT\s10.0;\sWOW64;\sTrident/7.0;\srv:11.0\)\slike\sGecko
+        """,
+        "IE/Win10/Trident",
+    ),
+    (
+        # Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)
+        # Mozilla/4.0 (compatible; MSIE 9.0; Windows NT 6.1)
+        r"""
+        Mozilla/\d.0
+        \s
+        \(compatible;\sMSIE\s9.0;\sWindows\sNT\s6.1(;\sTrident/5.0)?\)
+        """,
+        "IE/Win7/Trident",
+    ),
     (
         # david frank
         # node-fetch/1.0
