@@ -20,6 +20,18 @@ class TestSuite(unittest.TestCase):
         ):
             commandline.swreport()
 
+    def test_swreport_with_specific_date(self):
+        """
+        Scenario:  run command line program for bot report and a specific date
+
+        Expected result:  no errors
+        """
+        with (
+            mock.patch('sys.argv', new=['', '--date', '2024-11-13']),
+            mock.patch('swlogs.swreports.SWReport.run', new=lambda x: None),
+        ):
+            commandline.swreport()
+
     def test_swreport_overall(self):
         """
         Scenario:  run command line program for overall hits and bytes

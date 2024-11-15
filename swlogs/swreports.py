@@ -1,4 +1,9 @@
+"""
+Report something about scholarworks.
+"""
+
 # standard library imports
+from datetime import date, timedelta
 import sqlite3
 import sys  # noqa : F401
 
@@ -14,12 +19,25 @@ pd.options.display.width = 200
 
 
 class SWReport(CommonObj):
+    """
+    Attributes
+    ----------
+    overall :bool
+        If true, print the daily amounts of total bytes and hits.  Otherwise
+        report the daily bot traffic.
+    date : datetime.date
+        The report may be restricted to this date.
+    """
 
-    def __init__(self, overall=False):
+    def __init__(self, overall=False, thedate=None):
         super().__init__()
 
         self.overall = overall
         self.conn = sqlite3.connect(self.dbfile)
+        if thedate is None:
+            self.date = date.today() - timedelta(days=1)
+        else:
+            self.date = thedate
 
     def run(self):
 
@@ -46,8 +64,9 @@ class SWReport(CommonObj):
 
         sql = """
             select * from bots
-            where date='2024-11-13'
+            where date=?
         """
-        df = pd.read_sql(sql, self.conn, index_col='date')
+        params = (self.date.isoformat(),)
+        df = pd.read_sql(sql, self.conn, params=params, index_col='date')
 
         print(df)

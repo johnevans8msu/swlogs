@@ -1,4 +1,5 @@
 # standard library imports
+import datetime as dt
 import importlib.resources as ir
 import io
 import pathlib
@@ -17,6 +18,9 @@ from swlogs.swreports import SWReport
 class TestSuite(unittest.TestCase):
 
     def setUp(self):
+        """
+        Before each test, setup a test SQLITE database.
+        """
 
         self.tdir = tempfile.TemporaryDirectory()
 
@@ -43,7 +47,37 @@ class TestSuite(unittest.TestCase):
 
         newconn = sqlite3.connect(self.dbfile)
 
-        with SWReport() as o:
+        with patch('swlogs.swreports.date') as mock_date:
+            mock_date.today.return_value = dt.date(2024, 11, 14)
+            mock_date.side_effect = lambda *args, **kw: dt.date(*args, **kw)
+
+            with SWReport() as o:
+                with patch(
+                    'swlogs.swreports.sys.stdout', new=io.StringIO()
+                ) as fake_stdout:
+                    with patch.object(o, 'conn', new=newconn):
+                        o.run()
+
+                    actual = fake_stdout.getvalue()
+
+        expected = (
+            ir.files('tests.data.swreport')
+              .joinpath('daily-bots.txt')
+              .read_text()
+        )
+
+        self.assertEqual(actual, expected)
+
+    def test_bots_specific_date(self):
+        """
+        Scenario:  report daily bots for a specific date
+
+        Expected result:  report is verified
+        """
+
+        newconn = sqlite3.connect(self.dbfile)
+
+        with SWReport(thedate=dt.date(2024, 11, 12)) as o:
             with patch(
                 'swlogs.swreports.sys.stdout', new=io.StringIO()
             ) as fake_stdout:
@@ -54,7 +88,7 @@ class TestSuite(unittest.TestCase):
 
         expected = (
             ir.files('tests.data.swreport')
-              .joinpath('daily-bots.txt')
+              .joinpath('yesterday-bots.txt')
               .read_text()
         )
 
