@@ -10,8 +10,8 @@ def loglogs():
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--logfile', help='Access log')
-    parser.add_argument('--dbfile', help='database file')
+    parser.add_argument('--logfile', help='Access log', default='/var/log/nginx/access.log.1')
+    parser.add_argument('--dbfile', help='database file', default='/home/jevans/Documents/swlogs/access.db')
 
     args = parser.parse_args()
 
