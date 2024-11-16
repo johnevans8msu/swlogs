@@ -1,6 +1,5 @@
 # standard library imports
 from datetime import date, timedelta
-import sqlite3
 import sys  # noqa : F401
 
 # 3rd party library imports
@@ -9,10 +8,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
-sns.set()
-
 # local imports
 from .common import CommonObj
+
+sns.set()
 
 
 class PlotBots(CommonObj):
@@ -54,6 +53,7 @@ class PlotBots(CommonObj):
         ax.xaxis.set_major_locator(mpl.ticker.MaxNLocator())
         fig.autofmt_xdate()
         plt.show()
+
 
 class PlotOverall(CommonObj):
     """

@@ -79,14 +79,10 @@ class TestSuite(unittest.TestCase):
 
         Expected result:  no errors
         """
-        logfile = ir.files('tests.data').joinpath('smoke.log')
-
-        with tempfile.TemporaryDirectory() as tdir:
-            dbfile = f"{tdir}/test.db"
-            with (
-                mock.patch('sys.argv', new=['']),
-                mock.patch('swlogs.commandline.LogLogs.run', new=lambda x: None),
-            ):
-                commandline.loglogs()
+        with (
+            mock.patch('sys.argv', new=['']),
+            mock.patch('swlogs.commandline.LogLogs.run', new=lambda x: None),
+        ):
+            commandline.loglogs()
 
         self.assertTrue(True)

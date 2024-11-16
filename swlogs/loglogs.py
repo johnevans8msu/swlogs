@@ -1,5 +1,4 @@
 # standard library imports
-from datetime import date, datetime
 import sqlite3
 
 # 3rd party library imports
