@@ -215,10 +215,10 @@ class AccessLog(object):
         # which of those user agents accessed /xmlui?
         df_xmlui = (
             self.df.loc[(~self.df['url'].isnull()) & (self.df['url'].str.startswith("/xmlui")), :]  # noqa : E501
-                   .query('ua == @df20.index.to_list()')
-                   .groupby('ua')
-                   .size()
-                   .to_frame()
+                .query('ua == @df20.index.to_list()')
+                .groupby('ua')
+                .size()
+                .to_frame()
         )
         df_xmlui.columns = ['xmlui']
         df_xmlui['xmlui'] = True
@@ -244,7 +244,7 @@ class AccessLog(object):
 
         for ua in df20.index:
             b = self.df.query('ua == @ua')
-            df20.loc[ua, 'item_pct'] = len(b.query('item_pct == True')) / len(b) * 100
+            df20.loc[ua, 'item_pct'] = len(b.query('item_pct == True')) / len(b) * 100  # noqa : E501
 
         df20 = df20.sort_values(by='hits', ascending=False)
         self.top20 = df20

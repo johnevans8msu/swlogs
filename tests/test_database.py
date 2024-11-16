@@ -3,24 +3,20 @@ import importlib.resources as ir
 import sqlite3
 import tempfile
 import unittest
-from unittest import mock
 
 import pandas as pd
 
 from swlogs.loglogs import LogLogs
 
 
-@mock.patch('swlogs.loglogs.date')
 class TestSuite(unittest.TestCase):
 
-    def test_bot_smoke(self, mock_dt):
+    def test_bot_smoke(self):
         """
         Scenario:  read log file
 
         Expected result:  bot hits are verified
         """
-        mock_dt.today.return_value = dt.date.today()
-        mock_dt.side_effect = lambda *args, **kw:  dt.date(*args, **kw)
 
         logfile = ir.files('tests.data').joinpath('smoke.log')
         with tempfile.TemporaryDirectory() as tdir:
@@ -60,15 +56,12 @@ class TestSuite(unittest.TestCase):
             actual, expected, check_exact=False, rtol=0.1
         )
 
-    def test_overall_smoke(self, mock_dt):
+    def test_overall_smoke(self):
         """
         Scenario:  read log file
 
         Expected result:  overall hits are verified
         """
-        mock_dt.today.return_value = dt.date.today()
-        mock_dt.side_effect = lambda *args, **kw:  dt.date(*args, **kw)
-
         logfile = ir.files('tests.data').joinpath('smoke.log')
         with tempfile.TemporaryDirectory() as tdir:
             dbfile = f"{tdir}/test.db"
@@ -93,16 +86,13 @@ class TestSuite(unittest.TestCase):
 
         pd.testing.assert_frame_equal(actual, expected)
 
-    def test_split_over_two_days(self, mock_dt):
+    def test_split_over_two_days(self):
         """
         Scenario:  read log file that is split over two days.  99 hits are
         from today, 1 hit from previous day
 
         Expected result:  overall hits are verified
         """
-        mock_dt.today.return_value = dt.date.today()
-        mock_dt.side_effect = lambda *args, **kw:  dt.date(*args, **kw)
-
         logfile = ir.files('tests.data').joinpath('two-days.log')
         with tempfile.TemporaryDirectory() as tdir:
             dbfile = f"{tdir}/test.db"
@@ -127,15 +117,12 @@ class TestSuite(unittest.TestCase):
 
         pd.testing.assert_frame_equal(actual, expected)
 
-    def test_gzipped(self, mock_dt):
+    def test_gzipped(self):
         """
         Scenario:  read gzipped log file
 
         Expected result:  hits are verified
         """
-        mock_dt.today.return_value = dt.date.today()
-        mock_dt.side_effect = lambda *args, **kw:  dt.date(*args, **kw)
-
         logfile = ir.files('tests.data').joinpath('gzipped.log.gz')
         with tempfile.TemporaryDirectory() as tdir:
             dbfile = f"{tdir}/test.db"
@@ -174,15 +161,12 @@ class TestSuite(unittest.TestCase):
             actual, expected, check_exact=False, rtol=0.1
         )
 
-    def test_yesterdays_log(self, mock_dt):
+    def test_yesterdays_log(self):
         """
         Scenario:  read gzipped log file and specify the date
 
         Expected result:  hits are verified
         """
-        mock_dt.today.return_value = dt.date.today()
-        mock_dt.side_effect = lambda *args, **kw:  dt.date(*args, **kw)
-
         logfile = ir.files('tests.data').joinpath('gzipped.log.gz')
         with tempfile.TemporaryDirectory() as tdir:
             dbfile = f"{tdir}/test.db"
@@ -221,15 +205,12 @@ class TestSuite(unittest.TestCase):
             actual, expected, check_exact=False, rtol=0.1
         )
 
-    def test_item_percentage(self, mock_dt):
+    def test_item_percentage(self):
         """
         Scenario:  compute the item views percentage
 
         Expected result:  percentages are verified
         """
-        mock_dt.today.return_value = dt.date.today()
-        mock_dt.side_effect = lambda *args, **kw:  dt.date(*args, **kw)
-
         logfile = ir.files('tests.data').joinpath('10-items.log')
         with tempfile.TemporaryDirectory() as tdir:
             dbfile = f"{tdir}/test.db"
