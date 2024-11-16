@@ -176,39 +176,6 @@ _ua_pairs1 = [
         r"""meta-externalagent/1.1 \(\+https://developers.facebook.com/docs/sharing/webmasters/crawler\)""",
         "Facebook/meta-externalagent/1.1",
     ),
-    (
-        # Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/21E236 [FBAN/FBIOS;FBAV/441.0.0.23.105;FBBV/537255468;FBDV/iPhone12,1;FBMD/iPhone;FBSN/iOS;FBSV/17.4.1;FBSS/2;FBID/phone;FBLC/en_US;FBOP/5;FBRV/539748107]
-        r"""ozilla/5.0 \(iPhone; CPU iPhone OS 17_4_1 like Mac OS X\) AppleWebKit/605.1.15 \(KHTML, like Gecko\) Mobile/21E236 \[FBAN/FBIOS;FBAV/441.0.0.23.105;FBBV/537255468;FBDV/iPhone12,1;FBMD/iPhone;FBSN/iOS;FBSV/17.4.1;FBSS/2;FBID/phone;FBLC/en_US;FBOP/5;FBRV/539748107\]""",
-        "Facebook/iOS/WebKit on iPhone",
-    ),
-    (
-        # Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/127.1  Mobile/15E148 Safari/605.1.15
-        # Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) GSA/320.0.639621854 Mobile/15E148 Safari/604.1
-        r"""Mozilla/5.0 \(iPhone; CPU iPhone OS \d+(_\d+)+ like Mac OS X\) AppleWebKit/\d+(.\d+)+ \(KHTML, like Gecko\) (FxiOS|GSA)/\d+(.\d)+\s+Mobile/15E148 Safari/\d+(.\d+)+""",
-        "Firefox/iOS/WebKit on iPhone",
-    ),
-    (
-        # Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:127.0) Gecko/20100101 Firefox/127.0
-        # Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:128.0) Gecko/20100101 Firefox/128.0
-        r"""Mozilla/5.0 \(Macintosh; Intel Mac OS X 10.15; rv:\d{3}.\d\) Gecko/20100101 Firefox/\d{2,3}""",
-        "Firefox/Mactel15/Gecko",
-    ),
-    (
-        # Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:72.0) Gecko/20100101 Firefox/72.0 (compatible; img2dataset; +https://github.com/rom1504/img2dataset)
-        r"""Mozilla/5.0 \(X11; Ubuntu; Linux x86_64; rv:72.0\) Gecko/20100101 Firefox/72.0( \(compatible; img2dataset; \+https://github.com/rom1504/img2dataset\))?""",
-        "img2dataset",
-    ),
-    (
-        # Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:72.0) Gecko/20100101 Firefox/72.0
-        r"""Mozilla/5.0 \(X11; Ubuntu; Linux x86_64; rv:72.0\) Gecko/20100101 Firefox/72.0""",
-        "Firefox/Ubuntu/Gecko",
-    ),
-    (
-        # Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0
-        # Mozilla/5.0 (Windows NT 6.1; rv:57.0) Gecko/20100101 Firefox/57.0
-        r"""Mozilla/5.0 \(Windows NT \d.\d; (Win64; x64; )?rv:\d+.\d\) Gecko/\d+ Firefox/\d+.\d""",
-        "Firefox/Win7/Gecko",
-    ),
 ]
 
 UA_REGEX1 = {
@@ -216,6 +183,137 @@ UA_REGEX1 = {
 }
 
 _ua_pairs2 = [
+    (
+        # Mozilla/5.0
+        # (iPhone; CPU iPhone OS 17_4_1 like Mac OS X)
+        # AppleWebKit/605.1.15
+        # (KHTML, like Gecko)
+        # Mobile/21E236
+        # [
+        #   FBAN/FBIOS;
+        #   FBAV/441.0.0.23.105;
+        #   FBBV/537255468;
+        #   FBDV/iPhone12,1;
+        #   FBMD/iPhone;
+        #   FBSN/iOS;
+        #   FBSV/17.4.1;
+        #   FBSS/2;
+        #   FBID/phone;
+        #   FBLC/en_US;
+        #   FBOP/5;
+        #   FBRV/539748107
+        # ]
+        r"""
+        Mozilla/5.0
+        \s
+        \(iPhone; CPU iPhone OS 17_4_1 like Mac OS X\)
+        \s
+        AppleWebKit/605.1.15
+        \s
+        \(KHTML, like Gecko\)
+        \s
+        Mobile/21E236
+        \s
+        \[
+            FBAN/FBIOS;
+            FBAV/441.0.0.23.105;
+            FBBV/537255468;
+            FBDV/iPhone12,1;
+            FBMD/iPhone;
+            FBSN/iOS;
+            FBSV/17.4.1;
+            FBSS/2;
+            FBID/phone;
+            FBLC/en_US;
+            FBOP/5;
+            FBRV/539748107
+        \]
+        """,
+        "Facebook/iOS/WebKit on iPhone",
+    ),
+    (
+        # Mozilla/5.0
+        # (iPhone; CPU iPhone OS 17_5_1 like Mac OS X)
+        # AppleWebKit/605.1.15
+        # (KHTML, like Gecko)
+        # FxiOS/127.1  Mobile/15E148 Safari/605.1.15
+        r"""
+        Mozilla/5.0
+        \s
+        \(iPhone;\sCPU\siPhone\sOS\s\d+(_\d+)+\slike\sMac\sOS\sX\)
+        \s
+        AppleWebKit/\d+(.\d+)+
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        (FxiOS|GSA)/\d+(.\d)+
+        \s+
+        Mobile/15E148
+        \s
+        Safari/\d+(.\d+)+
+        """,
+        "Firefox/iOS/WebKit on iPhone",
+    ),
+    (
+        # Mozilla/5.0
+        # (Macintosh; Intel Mac OS X 10.15; rv:128.0)
+        # Gecko/20100101
+        # Firefox/128.0
+        r"""
+        Mozilla/5.0
+        \s
+        \(
+            Macintosh;
+            \s
+            Intel
+            \s
+            Mac
+            \s
+            OS
+            \s
+            X
+            \s
+            10.15;
+            \s
+            rv:\d{3}.\d
+        \)
+        \s
+        Gecko/20100101
+        \s
+        Firefox/\d{2,3}
+        """,
+        "Firefox/Mactel15/Gecko",
+    ),
+    (
+        # Mozilla/5.0
+        # (X11; Ubuntu; Linux x86_64; rv:72.0)
+        # Gecko/20100101 Firefox/72.0
+        r"""
+        Mozilla/5.0
+        \s
+        \(X11;\sUbuntu;\sLinux\sx86_64;\srv:72.0\)
+        \s
+        Gecko/20100101\sFirefox/72.0
+        """,
+        "Firefox/Ubuntu/Gecko",
+    ),
+    (
+        # Mozilla/5.0
+        # (Windows NT 6.1; Win64; x64; rv:102.0)
+        # Gecko/20100101 Firefox/102.0
+        #
+        # Mozilla/5.0
+        # (Windows NT 6.1; rv:57.0)
+        # Gecko/20100101 Firefox/57.0
+        r"""
+        Mozilla/5.0
+        \s
+        \(Windows\sNT\s\d.\d;\s(Win64;\sx64;\s)?rv:\d+.\d\)
+        \s
+        Gecko/\d+\sFirefox/\d+.\d
+        """,
+        "Firefox/Win7/Gecko",
+    ),
     (
         # Mozilla/5.0
         # (Windows NT 10.0; Win64; x64; rv:127.0)
