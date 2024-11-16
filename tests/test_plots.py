@@ -12,7 +12,7 @@ from unittest.mock import patch
 import pandas as pd
 
 # local imports
-from swlogs.plots import PlotOverall
+from swlogs.plots import PlotOverall, PlotBots
 
 
 class TestSuite(unittest.TestCase):
@@ -42,7 +42,7 @@ class TestSuite(unittest.TestCase):
         """
         Scenario:  overall plot
 
-        Expected result:  no errors
+        Expected result:  no errors, there were two matplotlib plot calls
         """
 
         newconn = sqlite3.connect(self.dbfile)
@@ -55,3 +55,29 @@ class TestSuite(unittest.TestCase):
                         o.run()
 
             self.assertEqual(len(mock_plot.mock_calls), 2)
+
+    def test_smoke_bots(self):
+        """
+        Scenario:  bots plot
+
+        Expected result:  no errors, there was one seaborn plot call
+        """
+
+        newconn = sqlite3.connect(self.dbfile)
+
+        with (
+            patch('swlogs.plots.date') as mock_date,
+            patch('swlogs.plots.plt.subplots') as mock_subplots,
+        ):
+            mock_date.today.return_value = dt.date(2024, 11, 14)
+            mock_subplots.return_value = (Mock(), Mock())
+
+            with (
+                patch('swlogs.plots.mpl.ticker'),
+                patch('swlogs.plots.sns.lineplot') as mock_sns_plots,
+                PlotBots() as o,
+                patch.object(o, 'conn', new=newconn),
+            ):
+                o.run()
+
+            self.assertEqual(len(mock_sns_plots.mock_calls), 1)
