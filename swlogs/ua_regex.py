@@ -176,45 +176,166 @@ _ua_pairs1 = [
         r"""meta-externalagent/1.1 \(\+https://developers.facebook.com/docs/sharing/webmasters/crawler\)""",
         "Facebook/meta-externalagent/1.1",
     ),
+]
+
+UA_REGEX1 = {
+    re.compile(pair[0]): pair[1] for pair in _ua_pairs1
+}
+
+_ua_pairs2 = [
     (
-        # Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/21E236 [FBAN/FBIOS;FBAV/441.0.0.23.105;FBBV/537255468;FBDV/iPhone12,1;FBMD/iPhone;FBSN/iOS;FBSV/17.4.1;FBSS/2;FBID/phone;FBLC/en_US;FBOP/5;FBRV/539748107]
-        r"""ozilla/5.0 \(iPhone; CPU iPhone OS 17_4_1 like Mac OS X\) AppleWebKit/605.1.15 \(KHTML, like Gecko\) Mobile/21E236 \[FBAN/FBIOS;FBAV/441.0.0.23.105;FBBV/537255468;FBDV/iPhone12,1;FBMD/iPhone;FBSN/iOS;FBSV/17.4.1;FBSS/2;FBID/phone;FBLC/en_US;FBOP/5;FBRV/539748107\]""",
+        # Mozilla/5.0
+        # (iPhone; CPU iPhone OS 17_4_1 like Mac OS X)
+        # AppleWebKit/605.1.15
+        # (KHTML, like Gecko)
+        # Mobile/21E236
+        # [
+        #   FBAN/FBIOS;
+        #   FBAV/441.0.0.23.105;
+        #   FBBV/537255468;
+        #   FBDV/iPhone12,1;
+        #   FBMD/iPhone;
+        #   FBSN/iOS;
+        #   FBSV/17.4.1;
+        #   FBSS/2;
+        #   FBID/phone;
+        #   FBLC/en_US;
+        #   FBOP/5;
+        #   FBRV/539748107
+        # ]
+        r"""
+        Mozilla/5.0
+        \s
+        \(iPhone; CPU iPhone OS 17_4_1 like Mac OS X\)
+        \s
+        AppleWebKit/605.1.15
+        \s
+        \(KHTML, like Gecko\)
+        \s
+        Mobile/21E236
+        \s
+        \[
+            FBAN/FBIOS;
+            FBAV/441.0.0.23.105;
+            FBBV/537255468;
+            FBDV/iPhone12,1;
+            FBMD/iPhone;
+            FBSN/iOS;
+            FBSV/17.4.1;
+            FBSS/2;
+            FBID/phone;
+            FBLC/en_US;
+            FBOP/5;
+            FBRV/539748107
+        \]
+        """,
         "Facebook/iOS/WebKit on iPhone",
     ),
     (
-        # Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/127.1  Mobile/15E148 Safari/605.1.15
-        # Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) GSA/320.0.639621854 Mobile/15E148 Safari/604.1
-        r"""Mozilla/5.0 \(iPhone; CPU iPhone OS \d+(_\d+)+ like Mac OS X\) AppleWebKit/\d+(.\d+)+ \(KHTML, like Gecko\) (FxiOS|GSA)/\d+(.\d)+\s+Mobile/15E148 Safari/\d+(.\d+)+""",
+        # Mozilla/5.0
+        # (iPhone; CPU iPhone OS 17_5_1 like Mac OS X)
+        # AppleWebKit/605.1.15
+        # (KHTML, like Gecko)
+        # FxiOS/127.1  Mobile/15E148 Safari/605.1.15
+        r"""
+        Mozilla/5.0
+        \s
+        \(iPhone;\sCPU\siPhone\sOS\s\d+(_\d+)+\slike\sMac\sOS\sX\)
+        \s
+        AppleWebKit/\d+(.\d+)+
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        (FxiOS|GSA)/\d+(.\d)+
+        \s+
+        Mobile/15E148
+        \s
+        Safari/\d+(.\d+)+
+        """,
         "Firefox/iOS/WebKit on iPhone",
     ),
     (
-        # Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:127.0) Gecko/20100101 Firefox/127.0
-        # Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:128.0) Gecko/20100101 Firefox/128.0
-        r"""Mozilla/5.0 \(Macintosh; Intel Mac OS X 10.15; rv:\d{3}.\d\) Gecko/20100101 Firefox/\d{2,3}""",
+        # Mozilla/5.0
+        # (Macintosh; Intel Mac OS X 10.15; rv:128.0)
+        # Gecko/20100101
+        # Firefox/128.0
+        r"""
+        Mozilla/5.0
+        \s
+        \(
+            Macintosh;
+            \s
+            Intel
+            \s
+            Mac
+            \s
+            OS
+            \s
+            X
+            \s
+            10.15;
+            \s
+            rv:\d{3}.\d
+        \)
+        \s
+        Gecko/20100101
+        \s
+        Firefox/\d{2,3}
+        """,
         "Firefox/Mactel15/Gecko",
     ),
     (
-        # Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:72.0) Gecko/20100101 Firefox/72.0 (compatible; img2dataset; +https://github.com/rom1504/img2dataset)
-        r"""Mozilla/5.0 \(X11; Ubuntu; Linux x86_64; rv:72.0\) Gecko/20100101 Firefox/72.0( \(compatible; img2dataset; \+https://github.com/rom1504/img2dataset\))?""",
-        "img2dataset",
-    ),
-    (
-        # Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:72.0) Gecko/20100101 Firefox/72.0
-        r"""Mozilla/5.0 \(X11; Ubuntu; Linux x86_64; rv:72.0\) Gecko/20100101 Firefox/72.0""",
+        # Mozilla/5.0
+        # (X11; Ubuntu; Linux x86_64; rv:72.0)
+        # Gecko/20100101 Firefox/72.0
+        r"""
+        Mozilla/5.0
+        \s
+        \(X11;\sUbuntu;\sLinux\sx86_64;\srv:72.0\)
+        \s
+        Gecko/20100101\sFirefox/72.0
+        """,
         "Firefox/Ubuntu/Gecko",
     ),
     (
-        # Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0
-        # Mozilla/5.0 (Windows NT 6.1; rv:57.0) Gecko/20100101 Firefox/57.0
-        r"""Mozilla/5.0 \(Windows NT \d.\d; (Win64; x64; )?rv:\d+.\d\) Gecko/\d+ Firefox/\d+.\d""",
+        # Mozilla/5.0
+        # (Windows NT 6.1; Win64; x64; rv:102.0)
+        # Gecko/20100101 Firefox/102.0
+        #
+        # Mozilla/5.0
+        # (Windows NT 6.1; rv:57.0)
+        # Gecko/20100101 Firefox/57.0
+        r"""
+        Mozilla/5.0
+        \s
+        \(Windows\sNT\s\d.\d;\s(Win64;\sx64;\s)?rv:\d+.\d\)
+        \s
+        Gecko/\d+\sFirefox/\d+.\d
+        """,
         "Firefox/Win7/Gecko",
     ),
     (
-        # Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:127.0) Gecko/20100101 Firefox/127.0
-        # Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0
-        # Mozilla/5.0 (Windows NT 10.0; rv:128.0) Gecko/20100101 Firefox/128.0
-        # Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101 Firefox/60.0
-        r"""Mozilla/5.0 \(Windows NT 10.0; ((Win64; x64; )|(WOW64; ))?rv:\d+.\d\) Gecko/20100101 Firefox/\d+.\d""",
+        # Mozilla/5.0
+        # (Windows NT 10.0; Win64; x64; rv:127.0)
+        # Gecko/20100101 Firefox/127.0
+        #
+        # Mozilla/5.0
+        # (Windows NT 10.0; rv:128.0)
+        # Gecko/20100101 Firefox/128.0
+        #
+        # Mozilla/5.0
+        # (Windows NT 10.0; WOW64; rv:60.0)
+        # Gecko/20100101 Firefox/60.0
+        r"""
+        Mozilla/5.0
+        \s
+        \(Windows\sNT\s10.0;
+        \s
+        ((Win64;\sx64;\s)|(WOW64;\s))?rv:\d+.\d\)
+        \s
+        Gecko/20100101
+        \s
+        Firefox/\d+.\d""",
         "Firefox/Win10/Gecko",
     ),
     (
@@ -223,23 +344,69 @@ _ua_pairs1 = [
         "Go-http-client",
     ),
     (
-        # Mozilla/5.0 (iPad; CPU OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) GSA/323.0.647062479 Mobile/15E148 Safari/604.1
-        r"""Mozilla/5.0 \(iPad; CPU OS 17_5 like Mac OS X\) AppleWebKit/\d+(.\d+)+ \(KHTML, like Gecko\) GSA/\d+(.\d+)+ Mobile/15E148 Safari/\d+.\d+""",
+        # Mozilla/5.0
+        # (iPad; CPU OS 17_5 like Mac OS X)
+        # AppleWebKit/605.1.15
+        # (KHTML, like Gecko)
+        # GSA/323.0.647062479 Mobile/15E148 Safari/604.1
+        r"""
+        Mozilla/5.0
+        \s
+        \(iPad;\sCPU\sOS\s17_5\slike\sMac\sOS\sX\)
+        \s
+        AppleWebKit/\d+(.\d+)+
+        \s
+        \(KHTML, like Gecko\)
+        \s
+        GSA/\d+(.\d+)+
+        \s
+        Mobile/15E148
+        \s
+        Safari/\d+.\d+""",
         'Google/iOS/WebKit on iPad',
     ),
     (
-        # Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
-        r"""^Googlebot/2.1 \(\+http://www.google.com/bot.html\)$""",
+        # Mozilla/5.0
+        # (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+        r"""^Googlebot/2.1\s\(\+http://www.google.com/bot.html\)$""",
         "Googlebot/2.1",
     ),
     (
-        # Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.126 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
-        r"""Mozilla/5.0 \(Linux; Android \d.\d.\d; Nexus 5X Build/MMB29P\) AppleWebKit/537.36 \(KHTML, like Gecko\) Chrome/\d+(.\d+)+ Mobile Safari/537.36 \(compatible; Googlebot/2.1; \+http://www.google.com/bot.html\)""",
+        # Mozilla/5.0
+        # (Linux; Android 6.0.1; Nexus 5X Build/MMB29P)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Chrome/126.0.6478.126 Mobile Safari/537.36
+        # (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+        r"""
+        Mozilla/5.0
+        \s
+        \(Linux;\sAndroid\s\d.\d.\d;\sNexus\s5X\sBuild/MMB29P\)
+        \s
+        AppleWebKit/537.36
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Chrome/\d+(.\d+)+\sMobile\sSafari/537.36
+        \s
+        \(compatible;\sGooglebot/2.1;\s\+http://www.google.com/bot.html\)""",
         "Googlebot/Android/Blink",
     ),
     (
-        # Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Chrome/125.0.6422.154 Safari/537.36
-        r"""Mozilla/5.0 AppleWebKit/537.36 \(KHTML, like Gecko; compatible; Googlebot/2.1; \+http://www.google.com/bot.html\) Chrome/125.0.6422.154 Safari/537.36""",
+        # Mozilla/5.0 AppleWebKit/537.36
+        # (KHTML, like Gecko; compatible; Googlebot/2.1;
+        # +http://www.google.com/bot.html)
+        # Chrome/125.0.6422.154 Safari/537.36
+        r"""
+        Mozilla/5.0
+        \s
+        AppleWebKit/537.36
+        \s
+        \(KHTML,\slike\sGecko;\scompatible;\sGooglebot/2.1;
+        \s
+        \+http://www.google.com/bot.html\)
+        \s
+        Chrome/125.0.6422.154\sSafari/537.36""",
         "Googlebot/2.1",
     ),
     (
@@ -253,17 +420,25 @@ _ua_pairs1 = [
         "Googlebot-Video",
     ),
     (
-        # Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.6422.175 Mobile Safari/537.36 (compatible; GoogleOther)
-        r"""Mozilla/5.0 \(Linux; Android 6.0.1; Nexus 5X Build/MMB29P\) AppleWebKit/537.36 \(KHTML, like Gecko\) Chrome/125.0.6422.175 Mobile Safari/537.36 \(compatible; GoogleOther\)""",
+        # Mozilla/5.0
+        # (Linux; Android 6.0.1; Nexus 5X Build/MMB29P)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Chrome/125.0.6422.175 Mobile Safari/537.36 (compatible; GoogleOther)
+        r"""
+        Mozilla/5.0
+        \s
+        \(Linux;\sAndroid\s6.0.1;\sNexus\s5X\sBuild/MMB29P\)
+        \s
+        AppleWebKit/537.36
+        \s
+        \(KHTML,\slike Gecko\)
+        \s
+        Chrome/125.0.6422.175\sMobile\sSafari/537.36
+        \s
+        \(compatible;\sGoogleOther\)""",
         "GoogleOther/Android/Blink on Nexus5X",
     ),
-]
-
-UA_REGEX1 = {
-    re.compile(pair[0]): pair[1] for pair in _ua_pairs1
-}
-
-_ua_pairs2 = [
     (
         # Mozilla/5.0 (Linux; # Android 6.0.1; Nexus 5X Build/MMB29P)
         # AppleWebKit/537.36 (KHTML, like Gecko)
@@ -394,7 +569,7 @@ _ua_pairs2 = [
             \s
             \(Linux\sx64\)
             \s
-            node.js\/20.16.0
+            node.js\/20.\d{2}.0
             \s
             v8\/11.3.244.8-node.23
         """,
