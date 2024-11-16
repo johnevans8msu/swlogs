@@ -4,8 +4,14 @@ import datetime as dt
 
 # local imports
 from swlogs.loglogs import LogLogs
-from swlogs.plots import PlotOverall
+from swlogs.plots import PlotOverall, PlotBots
 from swlogs.swreports import SWReport
+
+
+def plot_bots():
+
+    with PlotBots() as o:
+        o.run()
 
 
 def plot_overall():
