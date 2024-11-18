@@ -37,6 +37,8 @@ class AccessLog(object):
         If not None, restrict log entries to this user agent
     views : bool
         If True, compute views instead of hits.
+    df_ip32 : pandas.DataFrame
+        The top ip addresses in the current log
     """
 
     def __init__(self, infile=None, useragent=None, views=False):
@@ -263,6 +265,8 @@ class AccessLog(object):
                 df20.loc[ip, 'error_pct'] = s_errors[ip] / df20.loc[ip, 'hits'] * 100  # noqa : E501
             except KeyError:
                 continue
+
+        self.df_ip32 = df20
 
     def process_top_20_network_addresses_netmask_16(self):
 

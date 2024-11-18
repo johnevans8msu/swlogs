@@ -205,6 +205,41 @@ class TestSuite(unittest.TestCase):
             actual, expected, check_exact=False, rtol=0.1
         )
 
+    def test_ip32(self):
+        """
+        Scenario:  compute the daily IP32 counts
+
+        Expected result:  counts are verified
+        """
+        logfile = ir.files('tests.data').joinpath('smoke.log')
+        with tempfile.TemporaryDirectory() as tdir:
+            dbfile = f"{tdir}/test.db"
+            with LogLogs(logfile, dbfile=dbfile) as o:
+                o.run()
+
+            with sqlite3.connect(
+                dbfile,
+                detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
+            ) as conn:
+                actual = pd.read_sql(
+                    'select * from ip32', conn, index_col='date'
+                )
+
+        data = [
+            dt.date(2024, 11, 7), dt.date(2024, 11, 7), dt.date(2024, 11, 7)
+        ]
+        index = pd.Index(data, name='date')
+        data = {
+            'ip': ['24.57.50.45', '52.167.144.22', '153.90.6.244'],
+            'hits': [2, 12, 86],
+            'error_pct': [0.0, 0.0, 7.0]
+        }
+        expected = pd.DataFrame(index=index, data=data)
+
+        pd.testing.assert_frame_equal(
+            actual, expected, check_exact=False, rtol=0.1
+        )
+
     def test_item_percentage(self):
         """
         Scenario:  compute the item views percentage
