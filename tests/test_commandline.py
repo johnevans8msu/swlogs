@@ -42,6 +42,18 @@ class TestSuite(unittest.TestCase):
         ):
             commandline.swreport()
 
+    def test_swreport_ip32(self):
+        """
+        Scenario:  run command line program for ip32 addresses
+
+        Expected result:  no errors
+        """
+        with (
+            mock.patch('sys.argv', new=['', '--ip32']),
+            mock.patch('swlogs.swreports.SWReport.run', new=lambda x: None),
+        ):
+            commandline.swreport()
+
     def test_swreport_with_specific_date(self):
         """
         Scenario:  run command line program for bot report and a specific date

@@ -46,6 +46,7 @@ def swreport():
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--overall', action='store_true')
+    parser.add_argument('--ip32', action='store_true')
 
     help = (
         'Restrict to this date (bot report only).  '
@@ -60,5 +61,7 @@ def swreport():
 
     args = parser.parse_args()
 
-    with SWReport(overall=args.overall, thedate=args.date) as o:
+    with SWReport(
+        overall=args.overall, ip32=args.ip32, thedate=args.date
+    ) as o:
         o.run()
