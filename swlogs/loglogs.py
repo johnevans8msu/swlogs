@@ -31,6 +31,11 @@ class LogLogs(AccessLog):
         self.dbfile = dbfile
         self.conn = sqlite3.connect(dbfile)
 
+    def log_ip32(self):
+
+        self.df_ip32['date'] = self.df['date'].mode().iloc[0]
+        self.df_ip32.to_sql('ip32', self.conn, if_exists='append')
+
     def log_bots(self):
 
         self.top20['date'] = self.df['date'].mode().iloc[0]
@@ -52,3 +57,4 @@ class LogLogs(AccessLog):
         super().run()
         self.log_overall()
         self.log_bots()
+        self.log_ip32()
