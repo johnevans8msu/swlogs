@@ -4,5 +4,5 @@ build-backend = "setuptools.build_meta"
 
 [tool.pytest.ini_options]
 filterwarnings = [
-    "ignore::DeprecationWarning:skimage.util.*",
+    "ignore::DeprecationWarning:jupyter_client.*",
 ]
