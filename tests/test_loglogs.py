@@ -41,7 +41,7 @@ class TestSuite(unittest.TestCase):
             actual = o.df_ip32
 
         data = [
-            '24.57.50.45', '52.167.144.22', '153.90.6.244', 
+            '24.57.50.45', '52.167.144.22', '153.90.6.244',
         ]
         index = pd.Index(data, name='ip')
         data = {
