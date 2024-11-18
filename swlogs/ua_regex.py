@@ -569,7 +569,7 @@ _ua_pairs2 = [
             \s
             \(Linux\sx64\)
             \s
-            node.js\/20.16.0
+            node.js\/20.\d{2}.0
             \s
             v8\/11.3.244.8-node.23
         """,
