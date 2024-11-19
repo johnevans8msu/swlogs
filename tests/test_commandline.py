@@ -42,6 +42,18 @@ class TestSuite(unittest.TestCase):
         ):
             commandline.swreport()
 
+    def test_swreport_ip24(self):
+        """
+        Scenario:  run command line program for ip24 addresses
+
+        Expected result:  no errors
+        """
+        with (
+            mock.patch('sys.argv', new=['', '--ip24']),
+            mock.patch('swlogs.swreports.SWReport.run', new=lambda x: None),
+        ):
+            commandline.swreport()
+
     def test_swreport_ip32(self):
         """
         Scenario:  run command line program for ip32 addresses

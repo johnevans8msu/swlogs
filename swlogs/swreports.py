@@ -26,13 +26,16 @@ class SWReport(CommonObj):
         report the daily bot traffic.
     date : datetime.date
         The report may be restricted to this date.
+    ip24 : bool
+        If true, generate the ip24 report
     ip32 : bool
         If true, generate the ip32 report
     """
 
-    def __init__(self, overall=False, ip32=False, thedate=None):
+    def __init__(self, overall=False, ip24=False, ip32=False, thedate=None):
         super().__init__()
 
+        self.ip24 = ip24
         self.ip32 = ip32
         self.overall = overall
         if thedate is None:
@@ -44,10 +47,30 @@ class SWReport(CommonObj):
 
         if self.overall:
             self.run_overall()
+        elif self.ip24:
+            self.run_ip24_report()
         elif self.ip32:
             self.run_ip32_report()
         else:
             self.run_bots()
+
+    def run_ip24_report(self):
+        """
+        Print report for top ip addresses
+        """
+
+        sql = """
+            select
+                date,
+                ip,
+                sum(hits) as hits
+            from ip24
+            group by date, ip
+            order by hits desc
+        """
+        df = pd.read_sql(sql, self.conn, index_col='date')
+
+        print(df)
 
     def run_ip32_report(self):
         """
