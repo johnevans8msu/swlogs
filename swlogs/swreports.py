@@ -32,9 +32,12 @@ class SWReport(CommonObj):
         If true, generate the ip32 report
     """
 
-    def __init__(self, overall=False, ip24=False, ip32=False, thedate=None):
+    def __init__(
+        self, overall=False, ip16=False, ip24=False, ip32=False, thedate=None
+    ):
         super().__init__()
 
+        self.ip16 = ip16
         self.ip24 = ip24
         self.ip32 = ip32
         self.overall = overall
@@ -47,12 +50,33 @@ class SWReport(CommonObj):
 
         if self.overall:
             self.run_overall()
+        elif self.ip16:
+            self.run_ip16_report()
         elif self.ip24:
             self.run_ip24_report()
         elif self.ip32:
             self.run_ip32_report()
         else:
             self.run_bots()
+
+    def run_ip16_report(self):
+        """
+        Print report for top ip addresses
+        """
+
+        sql = """
+            select
+                date,
+                ip,
+                sum(hits) as hits
+            from ip16
+            group by date, ip
+            order by hits desc
+        """
+        df = pd.read_sql(sql, self.conn, index_col='date')
+        df['ip'] = df['ip'].astype(str)
+
+        print(df)
 
     def run_ip24_report(self):
         """

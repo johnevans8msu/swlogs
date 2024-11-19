@@ -31,6 +31,16 @@ class LogLogs(AccessLog):
         self.dbfile = dbfile
         self.conn = sqlite3.connect(dbfile)
 
+    def log_ip16(self):
+
+        self.df_ip16['date'] = self.df['date'].mode().iloc[0]
+        self.df_ip16.to_sql('ip16', self.conn, if_exists='append')
+
+    def log_ip24(self):
+
+        self.df_ip24['date'] = self.df['date'].mode().iloc[0]
+        self.df_ip24.to_sql('ip24', self.conn, if_exists='append')
+
     def log_ip32(self):
 
         self.df_ip32['date'] = self.df['date'].mode().iloc[0]
