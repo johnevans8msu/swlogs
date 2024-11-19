@@ -46,6 +46,7 @@ def swreport():
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--overall', action='store_true')
+    parser.add_argument('--ip24', action='store_true')
     parser.add_argument('--ip32', action='store_true')
 
     help = (
@@ -62,6 +63,6 @@ def swreport():
     args = parser.parse_args()
 
     with SWReport(
-        overall=args.overall, ip32=args.ip32, thedate=args.date
+        overall=args.overall, ip24=args.ip24, ip32=args.ip32, thedate=args.date
     ) as o:
         o.run()

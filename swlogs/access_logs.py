@@ -300,6 +300,8 @@ class AccessLog(object):
             except KeyError:
                 continue
 
+        self.df_ip24 = df20
+
     def parse_input_file(self):
 
         if str(self.infile).endswith('gz'):
