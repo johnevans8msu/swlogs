@@ -109,11 +109,6 @@ _ua_pairs1 = [
         "HeadlessChrome/Linux/Blink",
     ),
     (
-        # Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36
-        r"""Mozilla/5.0 \(Macintosh; Intel Mac OS X 10.15; rv:\d{2,3}.0\) AppleWebKit/537.36 \(KHTML, like Gecko\) Chrome/\d+.\d+.\d+.\d+ Safari/537.36""",
-        "Chrome/Mactel/Blink",
-    ),
-    (
         # Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36
         # Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36
         # Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36
@@ -160,22 +155,6 @@ _ua_pairs1 = [
         r"""Mozilla/5.0 \(Macintosh; Intel Mac OS X 10_15_7\) AppleWebKit/537.36 \(KHTML, like Gecko\) Papers/4.37.2394 Chrome/114.0.5735.289 Electron/25.9.0 Safari/537.36""",
         "Electron/MacOS/Blink",
     ),
-    (
-        # EZID (EZID link checker; https://ezid.cdlib.org/)
-        r"""EZID \(EZID link checker; https://ezid.cdlib.org/\)""",
-        "EZID link checker",
-    ),
-    (
-        # facebookexternalhit/1.1
-        # facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)
-        r"""facebookexternalhit/1.1( \(\+http://www.facebook.com/externalhit_uatext.php\))?""",
-        "Facebook/1.1",
-    ),
-    (
-        # meta-externalagent/1.1 (+https://developers.facebook.com/docs/sharing/webmasters/crawler)
-        r"""meta-externalagent/1.1 \(\+https://developers.facebook.com/docs/sharing/webmasters/crawler\)""",
-        "Facebook/meta-externalagent/1.1",
-    ),
 ]
 
 UA_REGEX1 = {
@@ -183,6 +162,33 @@ UA_REGEX1 = {
 }
 
 _ua_pairs2 = [
+    (
+        # EZID (EZID link checker; https://ezid.cdlib.org/)
+        r"""
+        EZID
+        \s
+        \(EZID\slink\schecker;\shttps://ezid.cdlib.org/\)""",
+        "EZID link checker",
+    ),
+    (
+        # facebookexternalhit/1.1
+        #
+        # facebookexternalhit/1.1
+        # (+http://www.facebook.com/externalhit_uatext.php)
+        r"""
+        facebookexternalhit/1.1
+        (\s\(\+http://www.facebook.com/externalhit_uatext.php\))?""",
+        "Facebook/1.1",
+    ),
+    (
+        # meta-externalagent/1.1
+        # (+https://developers.facebook.com/docs/sharing/webmasters/crawler)
+        r"""
+        meta-externalagent/1.1
+        \s
+        \(\+https://developers.facebook.com/docs/sharing/webmasters/crawler\)""",  # noqa : E501
+        "Facebook/meta-externalagent/1.1",
+    ),
     (
         # Mozilla/5.0
         # (iPhone; CPU iPhone OS 17_4_1 like Mac OS X)
