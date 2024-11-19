@@ -33,7 +33,7 @@ class TestSuite(unittest.TestCase):
                 )
 
         data = [
-            'dspace-internal', 'bingbot/2.0', "Safari/iOS/WebKit on iPhone"
+            'dspace-internal', 'bingbot/2.0', "Safari/iOS/WebKit/iPhone"
         ]
         index = pd.Index(data, name='ua')
         data = {
@@ -138,7 +138,7 @@ class TestSuite(unittest.TestCase):
                 )
 
         data = [
-            'dspace-internal', 'bingbot/2.0', "Safari/iOS/WebKit on iPhone"
+            'dspace-internal', 'bingbot/2.0', "Safari/iOS/WebKit/iPhone"
         ]
         index = pd.Index(data, name='ua')
         data = {
@@ -182,7 +182,7 @@ class TestSuite(unittest.TestCase):
                 )
 
         data = [
-            'dspace-internal', 'bingbot/2.0', "Safari/iOS/WebKit on iPhone"
+            'dspace-internal', 'bingbot/2.0', "Safari/iOS/WebKit/iPhone"
         ]
         index = pd.Index(data, name='ua')
         data = {
@@ -264,7 +264,7 @@ class TestSuite(unittest.TestCase):
         data = [
             'Chrome/Win10/Blink',
             'Chrome/Mactel32/Blink',
-            'Firefox/iOS/WebKit on iPhone'
+            'Firefox/iOS/WebKit/iPhone'
         ]
         index = pd.Index(data, name='ua')
         data = [71.4, 0.0, 100.0]

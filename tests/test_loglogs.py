@@ -21,7 +21,7 @@ class TestSuite(unittest.TestCase):
             actual = o.top20['hits']
 
         data = [
-            'dspace-internal', 'bingbot/2.0', "Safari/iOS/WebKit on iPhone"
+            'dspace-internal', 'bingbot/2.0', "Safari/iOS/WebKit/iPhone"
         ]
         index = pd.Index(data, name='ua')
         data = [86, 12, 2]
