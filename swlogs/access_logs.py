@@ -284,6 +284,8 @@ class AccessLog(object):
             except KeyError:
                 continue
 
+        self.df_ip16 = df20
+
     def process_top_20_network_addresses_netmask_24(self):
 
         # Get the top 20 network addresses / 24

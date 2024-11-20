@@ -68,3 +68,5 @@ class LogLogs(AccessLog):
         self.log_overall()
         self.log_bots()
         self.log_ip32()
+        self.log_ip24()
+        self.log_ip16()

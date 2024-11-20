@@ -28,6 +28,29 @@ class TestSuite(unittest.TestCase):
         expected = pd.Series(index=index, data=data, name='hits')
         pd.testing.assert_series_equal(actual, expected)
 
+    def test_ip24(self):
+        """
+        Scenario:  read log file
+
+        Expected result:  24 bit ip addresses are verified
+        """
+
+        logfile = ir.files('tests.data').joinpath('smoke.log')
+        with CountBots(logfile) as o:
+            o.run()
+            actual = o.df_ip24
+
+        data = [
+            '24.57.50', '52.167.144', '153.90.6',
+        ]
+        index = pd.Index(data, name='ip24')
+        data = {
+            'hits': [2, 12, 86],
+            'error_pct': [0.0, 0.0, 6.976744186046512]
+        }
+        expected = pd.DataFrame(index=index, data=data)
+        pd.testing.assert_frame_equal(actual, expected)
+
     def test_ip32(self):
         """
         Scenario:  read log file

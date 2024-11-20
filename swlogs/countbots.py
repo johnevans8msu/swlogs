@@ -39,25 +39,3 @@ class CountBots(AccessLog):
     def run(self):
 
         super().run()
-
-
-if __name__ == "__main__":
-
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument(
-        'infile', nargs='?', type=argparse.FileType('r'), default=sys.stdin
-    )
-
-    help = "Restrict to this user agent"
-    parser.add_argument('--useragent', help=help)
-
-    help = "Compute views instead of hits."
-    parser.add_argument('--views', help=help, action='store_true')
-
-    args = parser.parse_args()
-
-    with CountBots(
-        args.infile, useragent=args.useragent, views=args.views
-    ) as o:
-        o.run()
