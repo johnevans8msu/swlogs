@@ -1,9 +1,4 @@
-#!/usr/bin/env python
-
 # standard library imports
-import argparse
-import sys
-
 
 # 3rd party library imports
 import pandas as pd

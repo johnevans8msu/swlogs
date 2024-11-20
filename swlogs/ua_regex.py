@@ -47,114 +47,6 @@ _ua_pairs1 = [
         r"""Mozilla/5.0 \(Linux; Android 5.0\) AppleWebKit/537.36 \(KHTML, like Gecko\) Mobile Safari/537.36 \(compatible; Bytespider; spider-feedback@bytedance.com\)""",
         'ByteSpider', 
     ),
-    (
-        # Cabin-Size/0.1 withcabin.com
-        r"""Cabin-Size/0.1\swithcabin.com""",
-        "Cabin-Size/0.1",
-    ),
-    (
-        # CCBot/2.0 (https://commoncrawl.org/faq/)
-        r"""CCBot/2.0 \(https://commoncrawl.org/faq/\)""",
-        "CCBot/2.0",
-    ),
-    (
-        # Mozilla/5.0 (Linux; Android 12; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.58 Mobile Safari/537.36
-        r"""Mozilla/5.0 \(Linux; Android 12; Pixel 6\) AppleWebKit/\d{3}.\d{2} \(KHTML, like Gecko\) Chrome/\d+(.\d+){3} Mobile Safari/\d+.\d+""",
-        "Chrome/Android/Blink on Pixel",
-    ),
-    (
-        # Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36
-        r"""Mozilla/5.0 \(Linux; Android 10; K\) AppleWebKit/\d+.\d+ \(KHTML, like Gecko\) Chrome/\d+(.\d+)+ Safari/\d+.\d+""",
-        "Chrome/Android/Blink on tablet",
-    ),
-    (
-        # Mozilla/5.0 (Linux; Android 10; SM-G965U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Mobile Safari/537.36
-        r"""Mozilla/5.0 \(Linux; Android 10; (K|SM-G965U)\) AppleWebKit/537.36 \(KHTML, like Gecko\) Chrome/\d+(.\d+){3} Mobile Safari/537.36""",
-        "Chrome/Android/WebKit",
-    ),
-    (
-        # Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36
-        r"""Mozilla/5.0 \(Linux; Android 10; K\) AppleWebKit/537.36 \(KHTML, like Gecko\) Chrome/\d{2,3}(.\d+){3} Mobile Safari/537.36""",
-        "Chrome/Android/WebKit",
-    ),
-    (
-        # Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.126 Mobile Safari/537.36 (compatible; GoogleOther)
-        r"""Mozilla/5.0 \(Linux; Android 6.0.1; Nexus 5X Build/MMB29P\) AppleWebKit/537.36 \(KHTML, like Gecko\) Chrome/\d+(.\d+)+ Mobile Safari/537.36 \(compatible; GoogleOther\)""",
-        "GoogleOther/Chrome/Android/WebKit",
-    ),
-    (
-        # Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
-        # Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36
-        r"""Mozilla/5.0 \(X11; CrOS x86_64 14541.0.0\) AppleWebKit/537.36 \(KHTML, like Gecko\) Chrome/\d+(.\d+)+ Safari/537.36""",
-        "Chrome/ChromeOS/Blink",
-    ),
-    (
-        # Mozilla/5.0 (iPad; CPU OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/120.0.6099.119 Mobile/15E148 Safari/604.1
-        r"""Mozilla/5.0 \(iPad; CPU OS 17_\d like Mac OS X\) AppleWebKit/605.1.15 \(KHTML, like Gecko\) CriOS/\d+(.\d+)+ Mobile/15E148 Safari/604.1""",
-        "Chrome/iOS/WebKit on iPad",
-    ),
-    (
-        # Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/126.0.6478.153 Mobile/15E148 Safari/604.1
-        r"""Mozilla/5.0 \(iPhone; CPU iPhone OS \d+(_\d+)+ like Mac OS X\) AppleWebKit/\d+(.\d+)+ \(KHTML, like Gecko\) CriOS/\d+.\d+.\d+.\d+ Mobile/15E148 Safari/\d+.\d+""",
-        "Chrome/iOS/WebKit on iPhone",
-    ),
-    (
-        # Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36
-        r"""Mozilla/5.0 \(X11; Linux x86_64\) AppleWebKit/537.36 \(KHTML, like Gecko\) Chrome/\d+.\d+.\d+.\d+ Safari/537.36""",
-        "Chrome/Linux/Blink",
-    ),
-    (
-        # Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/123.0.6312.86 Safari/537.36
-        r"""Mozilla/5.0 \(X11; Linux x86_64\) AppleWebKit/\d+.\d+ \(KHTML, like Gecko\) HeadlessChrome/\d+.\d+.\d+.\d+ Safari/\d+.\d+""",
-        "HeadlessChrome/Linux/Blink",
-    ),
-    (
-        # Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36
-        # Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36
-        # Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36
-        r"""Mozilla/5.0 \(Macintosh; Intel Mac OS X 1\d(_\d+)+\) AppleWebKit/\d+.\d+ \(KHTML, like Gecko\) Chrome/\d+.\d+.\d+.\d+ Safari/\d+.\d+""",
-        "Chrome/Mactel32/Blink",
-    ),
-    (
-        # Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36
-        r"""Mozilla/5.0 \(Windows NT 6.1; WOW64\) AppleWebKit/537.36 \(KHTML, like Gecko\) Chrome/\d+.\d+.\d+.\d+ Safari/\d+.\d+""",
-        "Chrome/Win7/Blink",
-    ),
-    (
-        # Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36
-        # Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36
-        r"""Mozilla/5.0 \(Windows NT 10.0; Win64; x64\) AppleWebKit/537.36 \(KHTML, like Gecko\) Chrome/\d{2,3}.\d+.\d+.\d+ Safari/537.36""",
-        "Chrome/Win10/Blink",
-    ),
-    (
-        # Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/537.36
-        r"""Mozilla/5.0 \(Windows NT 10.0; WOW64\) AppleWebKit/537.36 \(KHTML, like Gecko\) Chrome/\d+(.\d+)+ Safari/\d+.\d+""",
-        "Chrome/Win10/WebKit",
-    ),
-    (
-        r"""Mozilla/5.0 \(Windows; U; Windows NT 5.1; en-US\) AppleWebKit/525.13\(KHTML, like Gecko\) Chrome/0.2.149.27 Safari/525.13""",
-        "Chrome/WinXP/WebKit",
-    ),
-    (
-        # Mozilla/5.0 (compatible; DataForSeoBot/1.0; +https://dataforseo.com/dataforseo-bot)
-        r"""Mozilla/5.0 \(compatible; DataForSeoBot/1.0; \+https://dataforseo.com/dataforseo-bot\)""",
-        "DataForSEOBot",
-    ),
-    (
-        # DuckDuckBot-Https/1.1; (+https://duckduckgo.com/duckduckbot)
-        r"""DuckDuckBot-Https/1.1; \(\+https://duckduckgo.com/duckduckbot\)""",
-        "DuckDuckBot",
-    ),
-    (
-        # Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0
-        r"""Mozilla/5.0 \(Macintosh; Intel Mac OS X 10_15_7\) AppleWebKit/537.36 \(KHTML, like Gecko\) Chrome/\d+.\d+.\d+.\d+ Safari/537.36 Edg/\d+.\d+.\d+.\d+""",
-        "Edge/Mactel32/Blink",
-    ),
-    (
-        # Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Papers/4.37.2394 Chrome/114.0.5735.289 Electron/25.9.0 Safari/537.36
-        r"""Mozilla/5.0 \(Macintosh; Intel Mac OS X 10_15_7\) AppleWebKit/537.36 \(KHTML, like Gecko\) Papers/4.37.2394 Chrome/114.0.5735.289 Electron/25.9.0 Safari/537.36""",
-        "Electron/MacOS/Blink",
-    ),
 ]
 
 UA_REGEX1 = {
@@ -162,6 +54,411 @@ UA_REGEX1 = {
 }
 
 _ua_pairs2 = [
+    (
+        # Cabin-Size/0.1 withcabin.com
+        r"""Cabin-Size/0.1\swithcabin.com""",
+        "Cabin-Size/0.1",
+    ),
+    (
+        # CCBot/2.0 (https://commoncrawl.org/faq/)
+        r"""CCBot/2.0\s\(https://commoncrawl.org/faq/\)""",
+        "CCBot/2.0",
+    ),
+    (
+        # Mozilla/5.0
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko);
+        # compatible; ChatGPT-User/1.0;
+        # +https://openai.com/bot
+        r"""
+        Mozilla/5.0
+        \s
+        AppleWebKit/537.36
+        \s
+        \(KHTML,\slike\sGecko\);
+        \s
+        compatible;
+        \s
+        ChatGPTBot/1.0;
+        \s
+        \+https://openai.com/gptbot
+        """,
+        'ChatGPT-User/1.0',
+    ),
+    (
+        # Mozilla/5.0
+        # (Linux; Android 12; Pixel 6)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Chrome/99.0.4844.58
+        # Mobile Safari/537.36
+        r"""
+        Mozilla/5.0
+        \s
+        \(Linux;\sAndroid\s12;\sPixel\s6\)
+        \s
+        AppleWebKit/\d{3}.\d{2}
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Chrome/\d+(.\d+){3}
+        \s
+        Mobile\sSafari/\d+.\d+""",
+        "Chrome/Android/Blink on Pixel",
+    ),
+    (
+        # Mozilla/5.0
+        # (Linux; Android 10; K)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Chrome/125.0.0.0
+        # Safari/537.36
+        r"""
+        Mozilla/5.0
+        \s
+        \(Linux;\sAndroid\s10;\sK\)
+        \s
+        AppleWebKit/\d+.\d+
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Chrome/\d+(.\d+)+
+        \s
+        Safari/\d+.\d+""",
+        "Chrome/Android/Blink on tablet",
+    ),
+    (
+        # Mozilla/5.0
+        # (Linux; Android 10; SM-G965U)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Chrome/102.0.0.0
+        # Mobile Safari/537.36
+        r"""
+        Mozilla/5.0
+        \s
+        \(Linux;\sAndroid\s10;\s(K|SM-G965U)\)
+        \s
+        AppleWebKit/537.36
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Chrome/\d+(.\d+){3}
+        \s
+        Mobile\sSafari/537.36""",
+        "Chrome/Android/WebKit",
+    ),
+    (
+        # Mozilla/5.0
+        # (Linux; Android 10; K)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Chrome/126.0.0.0
+        # Mobile Safari/537.36
+        r"""
+        Mozilla/5.0
+        \s
+        \(Linux;\sAndroid\s10;\sK\)
+        \s
+        AppleWebKit/537.36
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Chrome/\d{2,3}(.\d+){3}
+        \s
+        Mobile\sSafari/537.36""",
+        "Chrome/Android/WebKit",
+    ),
+    (
+        # Mozilla/5.0
+        # (X11; CrOS x86_64 14541.0.0)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Chrome/124.0.0.0
+        # Safari/537.36
+        r"""
+        Mozilla/5.0
+        \s
+        \(X11;\sCrOS\sx86_64\s14541.0.0\)
+        \s
+        AppleWebKit/537.36
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Chrome/\d+(.\d+)+
+        \s
+        Safari/537.36""",
+        "Chrome/ChromeOS/Blink",
+    ),
+    (
+        # Mozilla/5.0
+        # (iPad; CPU OS 17_2 like Mac OS X)
+        # AppleWebKit/605.1.15
+        # (KHTML, like Gecko)
+        # CriOS/120.0.6099.119
+        # Mobile/15E148
+        # Safari/604.1
+        r"""
+        Mozilla/5.0
+        \s
+        \(iPad;\sCPU\sOS\s17_\d\slike\sMac\sOS\sX\)
+        \s
+        AppleWebKit/605.1.15
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        CriOS/\d+(.\d+)+
+        \s
+        Mobile/15E148
+        \s
+        Safari/604.1""",
+        "Chrome/iOS/WebKit on iPad",
+    ),
+    (
+        # Mozilla/5.0
+        # (iPhone; CPU iPhone OS 17_5 like Mac OS X)
+        # AppleWebKit/605.1.15
+        # (KHTML, like Gecko)
+        # CriOS/126.0.6478.153
+        # Mobile/15E148
+        # Safari/604.1
+        r"""
+        Mozilla/5.0
+        \s
+        \(iPhone;\sCPU\siPhone\sOS\s\d+(_\d+)+\slike\sMac\sOS\sX\)
+        \s
+        AppleWebKit/\d+(.\d+)+
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        CriOS/\d+.\d+.\d+.\d+
+        \s
+        Mobile/15E148
+        \s
+        Safari/\d+.\d+""",
+        "Chrome/iOS/WebKit on iPhone",
+    ),
+    (
+        # Mozilla/5.0
+        # (X11; Linux x86_64)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Chrome/126.0.0.0
+        # Safari/537.36
+        r"""
+        Mozilla/5.0
+        \s
+        \(X11;\sLinux\sx86_64\)
+        \s
+        AppleWebKit/537.36
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Chrome/\d+.\d+.\d+.\d+
+        \s
+        Safari/537.36""",
+        "Chrome/Linux/Blink",
+    ),
+    (
+        # Mozilla/5.0
+        # (X11; Linux x86_64)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # HeadlessChrome/123.0.6312.86
+        # Safari/537.36
+        r"""
+        Mozilla/5.0
+        \s
+        \(X11;\sLinux\sx86_64\)
+        \s
+        AppleWebKit/\d+.\d+
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        HeadlessChrome/\d+.\d+.\d+.\d+
+        \s
+        Safari/\d+.\d+""",
+        "HeadlessChrome/Linux/Blink",
+    ),
+    (
+        # Mozilla/5.0
+        # (Macintosh; Intel Mac OS X 10_15_4)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Chrome/83.0.4103.97 Safari/537.36
+        #
+        # Mozilla/5.0
+        # (Macintosh; Intel Mac OS X 10.15; rv:109.0)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Chrome/108.0.0.0
+        # Safari/537.36
+        r"""
+        Mozilla/5.0
+        \s
+        \(Macintosh;\sIntel\sMac\sOS\sX\s1\d(_\d+)+\)
+        \s
+        AppleWebKit/\d+.\d+
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Chrome/\d+.\d+.\d+.\d+
+        \s
+        Safari/\d+.\d+""",
+        "Chrome/Mactel32/Blink",
+    ),
+    (
+        # Mozilla/5.0
+        # (Windows NT 6.1; WOW64)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Chrome/50.0.2661.102 Safari/537.36
+        #
+        # Mozilla/5.0
+        # (Windows NT 6.1; Win64; x64)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Chrome/61.0.3163.79 Safari/537.36
+        r"""
+        Mozilla/5.0
+        \s
+        \(Windows\sNT\s6.1;\s(WOW64|Win64;\sx64)\)
+        \s
+        AppleWebKit/537.36
+        \s
+        \(KHTML,\slike Gecko\)
+        \s
+        Chrome/\d+.\d+.\d+.\d+
+        \s
+        Safari/\d+.\d+""",
+        "Chrome/Win7/Blink",
+    ),
+    (
+        # Mozilla/5.0
+        # (Windows NT 10.0; Win64; x64)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Chrome/125.0.0.0 Safari/537.36
+        r"""
+        Mozilla/5.0
+        \s
+        \(Windows\sNT\s10.0;\sWin64;\sx64\)
+        \s
+        AppleWebKit/537.36
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Chrome/\d{2,3}.\d+.\d+.\d+
+        \s
+        Safari/537.36""",
+        "Chrome/Win10/Blink",
+    ),
+    (
+        # Mozilla/5.0 (Windows NT 10.0; WOW64)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/537.36
+        r"""
+        Mozilla/5.0
+        \s
+        \(Windows\sNT\s10.0;\sWOW64\)
+        \s
+        AppleWebKit/537.36
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Chrome/\d+(.\d+)+
+        \s
+        Safari/\d+.\d+""",
+        "Chrome/Win10/WebKit",
+    ),
+    (
+        r"""
+        Mozilla/5.0
+        \s
+        \(Windows;\sU;\sWindows\sNT\s5.1;\sen-US\)
+        \s
+        AppleWebKit/525.13\(KHTML, like Gecko\)
+        \s
+        Chrome/0.2.149.27
+        \s
+        Safari/525.13""",
+        "Chrome/WinXP/WebKit",
+    ),
+    (
+        # Mozilla/5.0
+        # (
+        #   compatible;
+        #   DataForSeoBot/1.0; +https://dataforseo.com/dataforseo-bot
+        # )
+        r"""
+        Mozilla/5.0
+        \s
+        \(compatible;
+        \s
+        DataForSeoBot/1.0;
+        \s
+        \+https://dataforseo.com/dataforseo-bot\)""",
+        "DataForSEOBot",
+    ),
+    (
+        # DuckDuckBot-Https/1.1; (+https://duckduckgo.com/duckduckbot)
+        r"""
+        DuckDuckBot-Https/1.1;
+        \s
+        \(\+https://duckduckgo.com/duckduckbot\)""",
+        "DuckDuckBot",
+    ),
+    (
+        # Mozilla/5.0
+        # (Macintosh; Intel Mac OS X 10_15_7)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Chrome/126.0.0.0
+        # Safari/537.36
+        # Edg/126.0.0.0
+        r"""
+        Mozilla/5.0
+        \s
+        \(Macintosh;
+        \s
+        Intel\sMac\sOS\sX\s10_15_7\)
+        \s
+        AppleWebKit/537.36
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Chrome/\d+.\d+.\d+.\d+
+        \s
+        Safari/537.36 Edg/\d+.\d+.\d+.\d+""",
+        "Edge/Mactel32/Blink",
+    ),
+    (
+        # Mozilla/5.0
+        # (Macintosh; Intel Mac OS X 10_15_7)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Papers/4.37.2394
+        # Chrome/114.0.5735.289
+        # Electron/25.9.0
+        # Safari/537.36
+        r"""
+        Mozilla/5.0
+        \s
+        \(Macintosh;\sIntel\sMac\sOS\sX\s10_15_7\)
+        \s
+        AppleWebKit/537.36
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Papers/4.37.2394
+        \s
+        Chrome/114.0.5735.289
+        \s
+        Electron/25.9.0
+        \s
+        Safari/537.36""",
+        "Electron/MacOS/Blink",
+    ),
     (
         # EZID (EZID link checker; https://ezid.cdlib.org/)
         r"""
@@ -446,6 +743,30 @@ _ua_pairs2 = [
         "GoogleOther/Android/Blink on Nexus5X",
     ),
     (
+        # Mozilla/5.0
+        # (Linux; Android 6.0.1; Nexus 5X Build/MMB29P)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Chrome/126.0.6478.126
+        # Mobile Safari/537.36
+        # (compatible; GoogleOther)
+        r"""
+        Mozilla/5.0
+        \s
+        \(Linux;\sAndroid\s6.0.1;\sNexus\s5X\sBuild/MMB29P\)
+        \s
+        AppleWebKit/537.36
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Chrome/\d+(.\d+)+
+        \s
+        Mobile\sSafari/537.36
+        \s
+        \(compatible;\sGoogleOther\)""",
+        "GoogleOther/Chrome/Android/WebKit",
+    ),
+    (
         # Mozilla/5.0 (Linux; # Android 6.0.1; Nexus 5X Build/MMB29P)
         # AppleWebKit/537.36 (KHTML, like Gecko)
         # Chrome/125.0.6422.175 Mobile Safari/537.36
@@ -472,6 +793,12 @@ _ua_pairs2 = [
         # AppleWebKit/537.36
         # (KHTML, like Gecko; compatible; GPTBot/1.2;
         #  +https://openai.com/gptbot)
+        #
+        # Mozilla/5.0
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko);
+        # compatible; ChatGPT-User/1.0;
+        # +https://openai.com/bot
         r"""
         Mozilla/5.0
         \s
