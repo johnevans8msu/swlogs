@@ -64,17 +64,17 @@ class SWReport(CommonObj):
         Print report for top ip addresses
         """
 
-        sql = """
+        sql = f"""
             select
                 date,
-                ip,
-                sum(hits) as hits
+                ip16,
+                hits
             from ip16
-            group by date, ip
+            where date = '{self.date.isoformat()}'
             order by hits desc
         """
         df = pd.read_sql(sql, self.conn, index_col='date')
-        df['ip'] = df['ip'].astype(str)
+        df['ip16'] = df['ip16'].astype(str)
 
         print(df)
 
@@ -83,13 +83,13 @@ class SWReport(CommonObj):
         Print report for top ip addresses
         """
 
-        sql = """
+        sql = f"""
             select
                 date,
-                ip,
-                sum(hits) as hits
+                ip24,
+                hits
             from ip24
-            group by date, ip
+            where date = '{self.date.isoformat()}'
             order by hits desc
         """
         df = pd.read_sql(sql, self.conn, index_col='date')
@@ -101,13 +101,13 @@ class SWReport(CommonObj):
         Print report for top ip addresses
         """
 
-        sql = """
+        sql = f"""
             select
                 date,
                 ip,
-                sum(hits) as hits
+                hits as hits
             from ip32
-            group by date, ip
+            where date = '{self.date.isoformat()}'
             order by hits desc
         """
         df = pd.read_sql(sql, self.conn, index_col='date')

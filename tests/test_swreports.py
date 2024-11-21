@@ -44,7 +44,7 @@ class TestSuite(unittest.TestCase):
         df.to_sql('ip24', conn, index=False)
 
         path = ir.files('tests.data.swreport').joinpath('ip16.csv')
-        df = pd.read_csv(path, index_col=False, dtype={'ip': str})
+        df = pd.read_csv(path, index_col=False, dtype={'ip16': str})
         df.to_sql('ip16', conn, index=False)
 
     def tearDown(self):
@@ -60,7 +60,7 @@ class TestSuite(unittest.TestCase):
         newconn = sqlite3.connect(self.dbfile)
 
         with patch('swlogs.swreports.date') as mock_date:
-            mock_date.today.return_value = dt.date(2024, 11, 14)
+            mock_date.today.return_value = dt.date(2024, 11, 8)
             mock_date.side_effect = lambda *args, **kw: dt.date(*args, **kw)
 
             with SWReport(ip16=True) as o:
@@ -90,7 +90,7 @@ class TestSuite(unittest.TestCase):
         newconn = sqlite3.connect(self.dbfile)
 
         with patch('swlogs.swreports.date') as mock_date:
-            mock_date.today.return_value = dt.date(2024, 11, 14)
+            mock_date.today.return_value = dt.date(2024, 11, 8)
             mock_date.side_effect = lambda *args, **kw: dt.date(*args, **kw)
 
             with SWReport(ip24=True) as o:
@@ -120,7 +120,7 @@ class TestSuite(unittest.TestCase):
         newconn = sqlite3.connect(self.dbfile)
 
         with patch('swlogs.swreports.date') as mock_date:
-            mock_date.today.return_value = dt.date(2024, 11, 14)
+            mock_date.today.return_value = dt.date(2024, 11, 8)
             mock_date.side_effect = lambda *args, **kw: dt.date(*args, **kw)
 
             with SWReport(ip32=True) as o:
