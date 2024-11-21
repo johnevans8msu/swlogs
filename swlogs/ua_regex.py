@@ -1,59 +1,167 @@
 import re
 
 
-_ua_pairs1 = [
+_ua_pairs = [
     (
         # AcademicBotRTU (https://academicbot.rtu.lv; mailto:caps@rtu.lv)
-        r"""AcademicBotRTU \(https://academicbot.rtu.lv; mailto:caps@rtu.lv\)""",
+        r"""
+        AcademicBotRTU
+        \s
+        \(https://academicbot.rtu.lv;\smailto:caps@rtu.lv\)""",
         'AcademicBotRTU',
     ),
     (
-        # Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15 (Applebot/0.1; +http://www.apple.com/go/applebot)
-        r"""Mozilla/5.0 \(Macintosh; Intel Mac OS X 10_15_7\) AppleWebKit/605.1.15 \(KHTML, like Gecko\) Version/\d{2}.\d Safari/605.1.15 \(Applebot/0.1; \+http://www.apple.com/go/applebot\)""",
-        'Applebot/0.1',
-    ),
-    (
-        # AppleCoreMedia/1.0.0.18J411 (Apple TV; U; CPU OS 14_0_2 like Mac OS X; en_us)
-        r"""AppleCoreMedia/1.0.0.18J411 \(Apple TV; U; CPU OS 14_0_2 like Mac OS X; en_us\)""",
+        # AppleCoreMedia/1.0.0.18J411
+        # (Apple TV; U; CPU OS 14_0_2 like Mac OS X; en_us)
+        r"""
+        AppleCoreMedia/1.0.0.18J411
+        \s
+        \(Apple\sTV;\sU;\sCPU\sOS\s14_0_2\slike\sMac\sOS\sX;\sen_us\)""",
         'Apple/ATV OS X/WebKit on AppleTV',
     ),
     (
-        # Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)
-        r"""^Mozilla/5.0 \(Macintosh; Intel Mac OS X 10_15_7\) AppleWebKit/605.1.15 \(KHTML, like Gecko\)$""",
+        # Mozilla/5.0
+        # (Macintosh; Intel Mac OS X 10_15_7)
+        # AppleWebKit/605.1.15
+        # (KHTML, like Gecko)
+        # Version/17.4
+        # Safari/605.1.15
+        # (Applebot/0.1; +http://www.apple.com/go/applebot)
+        r"""
+        Mozilla/5.0
+        \s
+        \(Macintosh;\sIntel\sMac\sOS\sX\s10_15_7\)
+        \s
+        AppleWebKit/605.1.15
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Version/\d{2}.\d
+        \s
+        Safari/605.1.15
+        \s
+        \(Applebot/0.1;\s\+http://www.apple.com/go/applebot\)""",
+        'Applebot/0.1',
+    ),
+    (
+        # Mozilla/5.0
+        # (Macintosh; Intel Mac OS X 10_15_7)
+        # AppleWebKit/605.1.15
+        # (KHTML, like Gecko)
+        r"""
+        ^Mozilla/5.0
+        \s
+        \(Macintosh;\sIntel\sMac\sOS\sX\s10_15_7\)
+        \s
+        AppleWebKit/605.1.15
+        \s
+        \(KHTML,\slike\sGecko\)$""",
         'AppleMail/MacOS/Webkit',
     ),
     (
-        # Mozilla/5.0 (compatible; Barkrowler/0.9; +https://babbar.tech/crawler)
-        r"""Mozilla/5.0 \(compatible; Barkrowler/0.9; \+https://babbar.tech/crawler\)""",
+        # Mozilla/5.0
+        # (compatible; Barkrowler/0.9; +https://babbar.tech/crawler)
+        r"""
+        Mozilla/5.0
+        \s
+        \(compatible;\sBarkrowler/0.9;\s\+https://babbar.tech/crawler\)""",
         'Barkrowler',
     ),
     (
-        # Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)
-        r"""Mozilla/5.0 \(iPhone; CPU iPhone OS \d{1,2}_0 like Mac OS X\) AppleWebKit/537.51.1 \(KHTML, like Gecko\) Version/7.0 Mobile/11A465 Safari/9537.53 \(compatible; bingbot/2.0; \+http://www.bing.com/bingbot.htm\)""",
-        'bingbot-2.0/iOS/WebKit on iPhone', 
+        # Mozilla/5.0
+        # (iPhone; CPU iPhone OS 7_0 like Mac OS X)
+        # AppleWebKit/537.51.1
+        # (KHTML, like Gecko)
+        # Version/7.0
+        # Mobile/11A465 Safari/9537.53
+        # (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)
+        r"""
+        Mozilla/5.0
+        \s
+        \(iPhone;\sCPU\siPhone\sOS\s\d{1,2}_0\slike\sMac\sOS\sX\)
+        \s
+        AppleWebKit/537.51.1
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Version/7.0\sMobile/11A465
+        \s
+        Safari/9537.53
+        \s
+        \(compatible;\sbingbot/2.0;\s\+http://www.bing.com/bingbot.htm\)""",
+        'bingbot-2.0/iOS/WebKit on iPhone',
     ),
     (
-        # Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm) Chrome/116.0.1938.76 Safari/537.36
-        r"""Mozilla/5.0 AppleWebKit/537.36 \(KHTML, like Gecko; compatible; bingbot/2.0; \+http://www.bing.com/bingbot.htm\) Chrome/\d+.\d+.\d+.\d+ Safari/537.36""",
-        'bingbot/2.0', 
+        # Mozilla/5.0
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko; compatible; bingbot/2.0;
+        #  +http://www.bing.com/bingbot.htm)
+        # Chrome/116.0.1938.76
+        # Safari/537.36
+        r"""
+        Mozilla/5.0
+        \s
+        AppleWebKit/537.36
+        \s
+        \(
+            KHTML,
+            \s
+            like\sGecko;
+            \s
+            compatible;
+            \s
+            bingbot/2.0;
+            \s
+            \+http://www.bing.com/bingbot.htm
+        \)
+        \s
+        Chrome/\d+.\d+.\d+.\d+
+        \s
+        Safari/537.36""",
+        'bingbot/2.0',
     ),
     (
-        # Mozilla/5.0 (compatible; Bytespider; spider-feedback@bytedance.com) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.0.0 Safari/537.36
-        r"""Mozilla/5.0 \(compatible; Bytespider; spider-feedback@bytedance.com\) AppleWebKit/\d+.\d+ \(KHTML, like Gecko\) Chrome/\d+(.\d+)+ Safari/\d+.\d+""",
-        'Bytespider', 
+        # Mozilla/5.0
+        # (compatible; Bytespider; spider-feedback@bytedance.com)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Chrome/70.0.0.0
+        # Safari/537.36
+        r"""
+        Mozilla/5.0
+        \s
+        \(compatible;\sBytespider;\sspider-feedback@bytedance.com\)
+        \s
+        AppleWebKit/\d+.\d+
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Chrome/\d+(.\d+)+
+        \s
+        Safari/\d+.\d+""",
+        'Bytespider',
     ),
     (
-        # Mozilla/5.0 (Linux; Android 5.0) AppleWebKit/537.36 (KHTML, like Gecko) Mobile Safari/537.36 (compatible; Bytespider; spider-feedback@bytedance.com)
-        r"""Mozilla/5.0 \(Linux; Android 5.0\) AppleWebKit/537.36 \(KHTML, like Gecko\) Mobile Safari/537.36 \(compatible; Bytespider; spider-feedback@bytedance.com\)""",
-        'ByteSpider', 
+        # Mozilla/5.0
+        # (Linux; Android 5.0)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Mobile Safari/537.36
+        # (compatible; Bytespider; spider-feedback@bytedance.com)
+        r"""
+        Mozilla/5.0
+        \s
+        \(Linux;\sAndroid\s5.0\)
+        \s
+        AppleWebKit/537.36
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Mobile\sSafari/537.36
+        \s
+        \(compatible;\sBytespider;\sspider-feedback@bytedance.com\)""",
+        'ByteSpider',
     ),
-]
-
-UA_REGEX1 = {
-    re.compile(pair[0]): pair[1] for pair in _ua_pairs1
-}
-
-_ua_pairs2 = [
     (
         # Cabin-Size/0.1 withcabin.com
         r"""Cabin-Size/0.1\swithcabin.com""",
@@ -372,12 +480,33 @@ _ua_pairs2 = [
         "Chrome/Win10/WebKit",
     ),
     (
+        # Mozilla/5.0
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko;
+        #   compatible; ClaudeBot/1.0; +claudebot@anthropic.com)
+        r"""
+        Mozilla/5.0
+        \s
+        AppleWebKit/\d{3}.\d{2}
+        \s
+        \(KHTML,\slike\sGecko;\s
+        compatible;
+        \s
+        ClaudeBot/1.0;
+        \s
+        \+claudebot@anthropic.com\)
+        """,
+        "ClaudeBot",
+    ),
+    (
         r"""
         Mozilla/5.0
         \s
         \(Windows;\sU;\sWindows\sNT\s5.1;\sen-US\)
         \s
-        AppleWebKit/525.13\(KHTML, like Gecko\)
+        AppleWebKit/525.13
+        \s
+        \(KHTML,\slike\sGecko\)
         \s
         Chrome/0.2.149.27
         \s
@@ -709,7 +838,7 @@ _ua_pairs2 = [
         \s
         \+http://www.google.com/bot.html\)
         \s
-        Chrome/125.0.6422.154\sSafari/537.36""",
+        Chrome/\d{3}.\d.\d{4}.\d{2,3}\sSafari/537.36""",
         "Googlebot/2.1",
     ),
     (
@@ -832,6 +961,15 @@ _ua_pairs2 = [
         \(compatible;\sMSIE\s9.0;\sWindows\sNT\s6.1(;\sTrident/5.0)?\)
         """,
         "IE/Win7/Trident",
+    ),
+    (
+        # Mozilla/5.0 (compatible; ImagesiftBot; +imagesift.com)
+        r"""
+        Mozilla/\d.0
+        \s
+        \(compatible;\sImagesiftBot;\s\+imagesift.com\)
+        """,
+        "ImagesiftBot",
     ),
     (
         # david frank
@@ -1062,7 +1200,5 @@ _ua_pairs2 = [
 
 
 UA_REGEX_REPLACE = {
-    re.compile(pair[0], re.VERBOSE): pair[1] for pair in _ua_pairs2
+    re.compile(pair[0], re.VERBOSE): pair[1] for pair in _ua_pairs
 }
-
-UA_REGEX_REPLACE.update(UA_REGEX1)
