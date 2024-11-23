@@ -48,8 +48,8 @@ class LogLogs(AccessLog):
 
     def log_bots(self):
 
-        self.top20['date'] = self.df['date'].mode().iloc[0]
-        self.top20.to_sql('bots', self.conn, if_exists='append')
+        self.top_n['date'] = self.df['date'].mode().iloc[0]
+        self.top_n.to_sql('bots', self.conn, if_exists='append')
 
     def log_overall(self):
         """

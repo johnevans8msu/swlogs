@@ -156,7 +156,7 @@ class AccessLog(object):
 
             # drop all log records that have the host IP address as the source
             # IP.
-            df20 = (
+            topdf = (
                 self.df.query('ip != @host_ip')
                        .groupby('ua')
                        .size()
@@ -166,66 +166,66 @@ class AccessLog(object):
             )
 
             # ok, so that gives us views
-            df20.columns = ['views']
+            topdf.columns = ['views']
 
             # get the ratio of hits to views for those top 20 user agents
-            df20['hits-views-ratio'] = (
+            topdf['hits-views-ratio'] = (
                 self.df.groupby('ua')
                        .size()
                        .sort_values()
                        .to_frame()
-                       .reindex(df20.index)
+                       .reindex(topdf.index)
             )
-            df20['hits-views-ratio'] /= df20['views']
+            topdf['hits-views-ratio'] /= topdf['views']
 
         else:
 
             # just compute hits by user-agent
-            df20 = (
+            topdf = (
                 self.df.groupby('ua')
                        .size()
                        .sort_values()
-                       .tail(n=20)
+                       .tail(n=30)
                        .to_frame()
             )
-            df20.columns = ['hits']
+            topdf.columns = ['hits']
 
         # what is the error percentage for each user agent?
-        for ua in df20.index:
+        for ua in topdf.index:
             b = self.df.query('ua == @ua')
-            df20.loc[ua, 'error_pct'] = len(b.query('status >= 400')) / len(b) * 100  # noqa : E501
+            topdf.loc[ua, 'error_pct'] = len(b.query('status >= 400')) / len(b) * 100  # noqa : E501
 
         # how many 429s for each user agent?
-        df20['429'] = 0
-        for ua in df20.index:
+        topdf['429'] = 0
+        for ua in topdf.index:
             b = self.df.query('ua == @ua and status == 429')
-            df20.loc[ua, '429'] = len(b)
+            topdf.loc[ua, '429'] = len(b)
 
         # which of those user agents actually consulted /robots.txt?
         df_robots = (
             self.df.loc[(~self.df['url'].isnull()) & (self.df['url'].str.startswith("/robots.txt")), :]  # noqa : E501
-                   .query('ua == @df20.index.to_list()')
+                   .query('ua == @topdf.index.to_list()')
                    .groupby('ua')
                    .size()
                    .to_frame()
         )
         df_robots.columns = ['robots']
         df_robots['robots'] = True
-        df20 = df20.merge(df_robots, how='left', left_index=True, right_index=True)  # noqa : E501
-        df20.loc[df20['robots'].isnull(), 'robots'] = False
+        topdf = topdf.merge(df_robots, how='left', left_index=True, right_index=True)  # noqa : E501
+        topdf.loc[topdf['robots'].isnull(), 'robots'] = False
 
         # which of those user agents accessed /xmlui?
         df_xmlui = (
             self.df.loc[(~self.df['url'].isnull()) & (self.df['url'].str.startswith("/xmlui")), :]  # noqa : E501
-                .query('ua == @df20.index.to_list()')
+                .query('ua == @topdf.index.to_list()')
                 .groupby('ua')
                 .size()
                 .to_frame()
         )
         df_xmlui.columns = ['xmlui']
         df_xmlui['xmlui'] = True
-        df20 = df20.merge(df_xmlui, how='left', left_index=True, right_index=True)  # noqa : E501
-        df20.loc[df20['xmlui'].isnull(), 'xmlui'] = False
+        topdf = topdf.merge(df_xmlui, how='left', left_index=True, right_index=True)  # noqa : E501
+        topdf.loc[topdf['xmlui'].isnull(), 'xmlui'] = False
 
         # which of those user agents accessed sitemaps?
         df_sitemaps = (
@@ -237,19 +237,19 @@ class AccessLog(object):
         )
         df_sitemaps.columns = ['sitemaps']
         df_sitemaps['sitemaps'] = True
-        df20 = df20.merge(df_sitemaps, how='left', left_index=True, right_index=True)  # noqa : E501
-        df20.loc[df20['sitemaps'].isnull(), 'sitemaps'] = False
+        topdf = topdf.merge(df_sitemaps, how='left', left_index=True, right_index=True)  # noqa : E501
+        topdf.loc[topdf['sitemaps'].isnull(), 'sitemaps'] = False
 
         # what percentage of hits were for item pages?
         regex = re.compile(r'^/items/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$')
         self.df['item_pct'] = self.df['url'].str.match(regex)
 
-        for ua in df20.index:
+        for ua in topdf.index:
             b = self.df.query('ua == @ua')
-            df20.loc[ua, 'item_pct'] = len(b.query('item_pct == True')) / len(b) * 100  # noqa : E501
+            topdf.loc[ua, 'item_pct'] = len(b.query('item_pct == True')) / len(b) * 100  # noqa : E501
 
-        df20 = df20.sort_values(by='hits', ascending=False)
-        self.top20 = df20
+        topdf = topdf.sort_values(by='hits', ascending=False)
+        self.top_n = topdf
 
     def process_top_20_network_addresses_netmask_32(self):
 

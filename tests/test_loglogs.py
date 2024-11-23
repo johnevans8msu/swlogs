@@ -18,7 +18,7 @@ class TestSuite(unittest.TestCase):
         logfile = ir.files('tests.data').joinpath('smoke.log')
         with CountBots(logfile) as o:
             o.run()
-            actual = o.top20['hits']
+            actual = o.top_n['hits']
 
         data = [
             'dspace-internal', 'bingbot/2.0', "Safari/iOS/WebKit on iPhone"
