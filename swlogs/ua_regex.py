@@ -1188,6 +1188,30 @@ _ua_pairs = [
         "WPBOT",
     ),
     (
+        # Mozilla/5.0
+        # (Windows NT 10.0; Win64; x64)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Chrome/126.0.0.0
+        # YaBrowser/24.7.0.0
+        # Safari/537.36
+        r"""
+        Mozilla/5.0
+        \s
+        \(Windows\sNT\s10.0;\sWin64;\sx64\)
+        \s
+        AppleWebKit/\d{3}(.\d+)+
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Chrome/\d+.\d+.\d+.\d+
+        \s
+        YaBrowser\/\d+.\d+.\d+.\d+
+        \s
+        Safari/\d{3}.(\d+)+""",
+        "Yandex/Win10/Blink",
+    ),
+    (
         # Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)
         r"""
             Mozilla/5.0
