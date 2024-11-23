@@ -49,6 +49,7 @@ def swreport():
     parser.add_argument('--ip16', action='store_true')
     parser.add_argument('--ip24', action='store_true')
     parser.add_argument('--ip32', action='store_true')
+    parser.add_argument('--useragent', help='Restrict to specific user agent')
 
     help = (
         'Restrict to this date (bot report only).  '
@@ -68,6 +69,7 @@ def swreport():
         ip16=args.ip16,
         ip24=args.ip24,
         ip32=args.ip32,
-        thedate=args.date
+        thedate=args.date,
+        useragent=args.useragent
     ) as o:
         o.run()
