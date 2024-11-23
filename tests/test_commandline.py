@@ -78,6 +78,19 @@ class TestSuite(unittest.TestCase):
         ):
             commandline.swreport()
 
+    def test_swreport_with_user_agent(self):
+        """
+        Scenario:  run command line program for bot report and a specific user
+        agent
+
+        Expected result:  no errors
+        """
+        with (
+            mock.patch('sys.argv', new=['', '--useragent', 'something']),
+            mock.patch('swlogs.swreports.SWReport.run', new=lambda x: None),
+        ):
+            commandline.swreport()
+
     def test_swreport_with_specific_date(self):
         """
         Scenario:  run command line program for bot report and a specific date
