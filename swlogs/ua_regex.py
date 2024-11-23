@@ -122,6 +122,30 @@ _ua_pairs = [
     ),
     (
         # Mozilla/5.0
+        # (iPhone; CPU iPhone OS 7_0 like Mac OS X)
+        # AppleWebKit/537.51.1
+        # (KHTML, like Gecko)
+        # Version/7.0
+        # Mobile/11A465 Safari/9537.53
+        # BingPreview/1.0b
+        r"""
+        Mozilla/5.0
+        \s
+        \(iPhone;\sCPU\siPhone\sOS\s\d{1,2}_0\slike\sMac\sOS\sX\)
+        \s
+        AppleWebKit/537.51.1
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Version/\d.\d\sMobile/11A465
+        \s
+        Safari/\d{4}.\d{2}
+        \s
+        BingPreview\/\d.\d\w""",
+        'BingPreview'
+    ),
+    (
+        # Mozilla/5.0
         # (compatible; Bytespider; spider-feedback@bytedance.com)
         # AppleWebKit/537.36
         # (KHTML, like Gecko)
@@ -737,10 +761,22 @@ _ua_pairs = [
         # Mozilla/5.0
         # (Windows NT 6.1; rv:57.0)
         # Gecko/20100101 Firefox/57.0
+        #
+        # Mozilla/5.0
+        # (Windows NT 6.1; WOW64; rv:22.0)
+        # Gecko/20100101 Firefox/22.0
         r"""
         Mozilla/5.0
         \s
-        \(Windows\sNT\s\d.\d;\s(Win64;\sx64;\s)?rv:\d+.\d\)
+        \(
+          Windows\sNT\s\d.\d;
+          \s
+          (
+            (Win64;\sx64;|WOW64;)
+            \s
+          )?
+          rv:\d+.\d
+        \)
         \s
         Gecko/\d+\sFirefox/\d+.\d
         """,
