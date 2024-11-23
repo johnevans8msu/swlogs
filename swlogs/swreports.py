@@ -33,7 +33,13 @@ class SWReport(CommonObj):
     """
 
     def __init__(
-        self, overall=False, ip16=False, ip24=False, ip32=False, thedate=None
+        self,
+        ip16=False,
+        ip24=False,
+        ip32=False,
+        overall=False,
+        useragent=None,
+        thedate=None
     ):
         super().__init__()
 
@@ -45,6 +51,7 @@ class SWReport(CommonObj):
             self.date = date.today() - timedelta(days=1)
         else:
             self.date = thedate
+        self.useragent = useragent
 
     def run(self):
 
@@ -130,11 +137,22 @@ class SWReport(CommonObj):
 
     def run_bots(self):
 
-        sql = """
-            select * from bots
-            where date=?
-        """
-        params = (self.date.isoformat(),)
-        df = pd.read_sql(sql, self.conn, params=params, index_col='date')
+        if self.useragent is None:
+            sql = """
+                select * from bots
+                where date = ?
+            """
+            params = (self.date.isoformat(),)
+            df = pd.read_sql(sql, self.conn, params=params, index_col='date')
+        else:
+            sql = """
+                select * from bots
+                where
+                    ua = ?
+                    and date <= ?
+            """
+            params = (self.useragent, self.date.isoformat(),)
+            df = pd.read_sql(sql, self.conn, params=params, index_col='date')
+            df = df.drop(labels='ua', axis='columns')
 
         print(df)

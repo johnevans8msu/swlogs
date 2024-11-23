@@ -196,6 +196,34 @@ class TestSuite(unittest.TestCase):
 
         self.assertEqual(actual, expected)
 
+    def test_bots_user_agent(self):
+        """
+        Scenario:  report time series for a specific bot
+
+        Expected result:  report is verified
+        """
+
+        newconn = sqlite3.connect(self.dbfile)
+
+        with patch('swlogs.swreports.date') as mock_date:
+            mock_date.today.return_value = dt.date(2024, 11, 8)
+            with (
+                patch(
+                    'swlogs.swreports.sys.stdout',
+                    new=io.StringIO()
+                ) as fake_stdout,
+                SWReport(useragent='Chrome/Win10/Blink') as o,
+                patch.object(o, 'conn', new=newconn)
+            ):
+                o.run()
+
+                actual = fake_stdout.getvalue()
+
+        tfile = ir.files('tests.data.swreport').joinpath('chrome-w10-b.txt')
+        expected = tfile.read_text()
+
+        self.assertEqual(actual, expected)
+
     def test_overall_smoke(self):
         """
         Scenario:  report overall
@@ -205,19 +233,19 @@ class TestSuite(unittest.TestCase):
 
         newconn = sqlite3.connect(self.dbfile)
 
-        with SWReport(overall=True) as o:
-            with patch(
-                'swlogs.swreports.sys.stdout', new=io.StringIO()
-            ) as fake_stdout:
-                with patch.object(o, 'conn', new=newconn):
-                    o.run()
+        with (
+            patch(
+                'swlogs.swreports.sys.stdout',
+                new=io.StringIO()
+            ) as fake_stdout,
+            SWReport(overall=True) as o,
+            patch.object(o, 'conn', new=newconn),
+        ):
+            o.run()
 
-                actual = fake_stdout.getvalue()
+            actual = fake_stdout.getvalue()
 
-        expected = (
-            ir.files('tests.data.swreport')
-              .joinpath('daily-overall.txt')
-              .read_text()
-        )
+        expfile = ir.files('tests.data.swreport').joinpath('daily-overall.txt')
+        expected = expfile.read_text()
 
         self.assertEqual(actual, expected)
