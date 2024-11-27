@@ -14,17 +14,26 @@ from .common import CommonObj
 sns.set()
 
 
-class PlotBots(CommonObj):
+class Plot(CommonObj):
     """
     Plot hit history of top n bots
     """
 
-    def __init__(self):
+    def __init__(self, bots=False, overall=False, numbots=5):
         super().__init__()
 
-        self.n = 5
+        self.bots = bots
+        self.overall = overall
+        self.n = numbots
 
     def run(self):
+
+        if self.bots:
+            self.plot_bots()
+        else:
+            self.plot_overall()
+
+    def plot_bots(self):
 
         # Get the top n bots for yesterday.
         yesterday = date.today() - timedelta(days=1)
@@ -54,16 +63,7 @@ class PlotBots(CommonObj):
         fig.autofmt_xdate()
         plt.show()
 
-
-class PlotOverall(CommonObj):
-    """
-    Plot historical hits and byte throughput
-    """
-
-    def __init__(self):
-        super().__init__()
-
-    def run(self):
+    def plot_overall(self):
 
         fig, axes = plt.subplots(nrows=2)
 

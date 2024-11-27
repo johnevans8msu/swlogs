@@ -4,19 +4,34 @@ import datetime as dt
 
 # local imports
 from swlogs.loglogs import LogLogs
-from swlogs.plots import PlotOverall, PlotBots
+from swlogs.plots import Plot
 from swlogs.swreports import SWReport
 
 
-def plot_bots():
+def plot():
 
-    with PlotBots() as o:
-        o.run()
+    parser = argparse.ArgumentParser()
 
+    parser.add_argument(
+        '--overall',
+        help='Plot total hits, bytes',
+        action='store_true'
+    )
+    parser.add_argument(
+        '--bots',
+        help='Plot bots',
+        action='store_true'
+    )
+    parser.add_argument(
+        '--n',
+        help='Number of bots',
+        type=int,
+        default=5
+    )
 
-def plot_overall():
+    args = parser.parse_args()
 
-    with PlotOverall() as o:
+    with Plot(overall=args.overall, bots=args.bots, numbots=args.n) as o:
         o.run()
 
 

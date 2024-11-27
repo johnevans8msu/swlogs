@@ -15,9 +15,10 @@ class TestSuite(unittest.TestCase):
         Expected result:  no errors
         """
         with (
-            mock.patch('swlogs.plots.PlotBots.run', new=lambda x: None),
+            mock.patch('sys.argv', new=['', '--bots']),
+            mock.patch('swlogs.plots.Plot.run', new=lambda x: None),
         ):
-            commandline.plot_bots()
+            commandline.plot()
 
     def test_plot_overall(self):
         """
@@ -26,9 +27,10 @@ class TestSuite(unittest.TestCase):
         Expected result:  no errors
         """
         with (
-            mock.patch('swlogs.plots.PlotOverall.run', new=lambda x: None),
+            mock.patch('sys.argv', new=['', '--overall']),
+            mock.patch('swlogs.plots.Plot.run', new=lambda x: None),
         ):
-            commandline.plot_overall()
+            commandline.plot()
 
     def test_swreport(self):
         """
