@@ -59,13 +59,16 @@ class Plot(CommonObj):
 
         fig, ax = plt.subplots()
         sns.lineplot(data=df, x='date', y='hits', hue='ua', ax=ax)
+
         ax.xaxis.set_major_locator(mpl.ticker.MaxNLocator())
+        ax.set_xlabel('')
+
         fig.autofmt_xdate()
         plt.show()
 
     def plot_overall(self):
 
-        fig, axes = plt.subplots(nrows=2)
+        fig, axes = plt.subplots(nrows=2, sharex=True)
 
         sql = """
             select
@@ -84,6 +87,11 @@ class Plot(CommonObj):
         axes[0].set_ylabel('M Hits')
 
         df['bytes'].plot(ax=axes[1])
+
         axes[1].set_ylabel('GBytes')
+        axes[1].set_xticklabels(axes[1].get_xticklabels(), rotation=30)
+        axes[1].set_xlabel('')
+
+        fig.tight_layout()
 
         plt.show()
