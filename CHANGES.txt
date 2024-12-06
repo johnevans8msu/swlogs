@@ -1,0 +1,23 @@
+December 6, 2024 - v0.0.3
+    Fix plot xtick labels
+        Don't show "date", it's implied.  Make sure there is enough room for the
+        labels by rotating if necessary.
+    Add command line program swplot
+    Change bot harvest to take top 30
+    Add command line support for user agent
+    Add useragent option to test report
+    Add ip16, ip24, ip32 reports.
+    Update regexes
+        Switch all over to VERBOSE mode.
+
+November 15, 2024 - v0.0.2
+    Add support for plotting overall hits and bytes
+    Add support for bot report for specific date
+    Use date column as index in swreports
+    Add overall report
+    Add command line program swreport
+    Add bare bones daily report
+    Provide default arguments to loglogs
+    Add item percentage
+    Add date as optional argument to loglogs
+    Add ability to read gzipped log files
