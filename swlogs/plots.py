@@ -13,18 +13,26 @@ from .common import CommonObj
 
 sns.set()
 
-
-class PlotBots(CommonObj):
+class Plot(CommonObj):
     """
     Plot hit history of top n bots
     """
 
-    def __init__(self):
+    def __init__(self, bots=False, overall=False, numbots=5):
         super().__init__()
 
-        self.n = 5
+        self.bots = bots
+        self.overall = overall
+        self.n = numbots
 
     def run(self):
+
+        if self.bots:
+            self.plot_bots()
+        else:
+            self.plot_overall()
+
+    def plot_bots(self):
 
         # Get the top n bots for yesterday.
         yesterday = date.today() - timedelta(days=1)
@@ -50,22 +58,16 @@ class PlotBots(CommonObj):
 
         fig, ax = plt.subplots()
         sns.lineplot(data=df, x='date', y='hits', hue='ua', ax=ax)
+
         ax.xaxis.set_major_locator(mpl.ticker.MaxNLocator())
+        ax.set_xlabel('')
+
         fig.autofmt_xdate()
         plt.show()
 
+    def plot_overall(self):
 
-class PlotOverall(CommonObj):
-    """
-    Plot historical hits and byte throughput
-    """
-
-    def __init__(self):
-        super().__init__()
-
-    def run(self):
-
-        fig, axes = plt.subplots(nrows=2)
+        fig, axes = plt.subplots(nrows=2, sharex=True)
 
         sql = """
             select
@@ -84,6 +86,11 @@ class PlotOverall(CommonObj):
         axes[0].set_ylabel('M Hits')
 
         df['bytes'].plot(ax=axes[1])
+
         axes[1].set_ylabel('GBytes')
+        axes[1].set_xticklabels(axes[1].get_xticklabels(), rotation=30)
+        axes[1].set_xlabel('')
+
+        fig.tight_layout()
 
         plt.show()

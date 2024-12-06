@@ -12,7 +12,7 @@ from unittest.mock import patch
 import pandas as pd
 
 # local imports
-from swlogs.plots import PlotOverall, PlotBots
+from swlogs.plots import Plot
 
 
 class TestSuite(unittest.TestCase):
@@ -50,7 +50,7 @@ class TestSuite(unittest.TestCase):
         with patch('swlogs.plots.pd.Series.plot') as mock_plot:
             with patch('swlogs.plots.plt.subplots') as mock_subplots:
                 mock_subplots.return_value = (Mock(), (Mock(), Mock()))
-                with PlotOverall() as o:
+                with Plot() as o:
                     with patch.object(o, 'conn', new=newconn):
                         o.run()
 
@@ -75,7 +75,7 @@ class TestSuite(unittest.TestCase):
             with (
                 patch('swlogs.plots.mpl.ticker'),
                 patch('swlogs.plots.sns.lineplot') as mock_sns_plots,
-                PlotBots() as o,
+                Plot(bots=True) as o,
                 patch.object(o, 'conn', new=newconn),
             ):
                 o.run()

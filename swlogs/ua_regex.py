@@ -11,6 +11,31 @@ _ua_pairs = [
         'AcademicBotRTU',
     ),
     (
+        # Mozilla/5.0
+        # (Macintosh; Intel Mac OS X 10_10_1)
+        # AppleWebKit/600.2.5
+        # (KHTML, like Gecko)
+        # Version/8.0.2
+        # Safari/600.2.5
+        # (Amazonbot/0.1; +https://developer.amazon.com/support/amazonbot)
+        r"""
+        Mozilla/5.0
+        \s
+        \(Macintosh;\sIntel\sMac\sOS\sX\s\d{2}_\d{2}_\d\)
+        \s
+        AppleWebKit/\d+.\d+.\d+
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Version/\d+.\d+.\d+
+        \s
+        Safari/\d+.\d+.\d+
+        \s
+        \(Amazonbot/0.1;\s\+https://developer.amazon.com/support/amazonbot\)
+        """,
+        "Amazonbot",
+    ),
+    (
         # AppleCoreMedia/1.0.0.18J411
         # (Apple TV; U; CPU OS 14_0_2 like Mac OS X; en_us)
         r"""
@@ -89,7 +114,7 @@ _ua_pairs = [
         Safari/9537.53
         \s
         \(compatible;\sbingbot/2.0;\s\+http://www.bing.com/bingbot.htm\)""",
-        'bingbot-2.0/iOS/WebKit on iPhone',
+        'bingbot/iOS/WebKit/iPhone/2.0',
     ),
     (
         # Mozilla/5.0
@@ -101,7 +126,7 @@ _ua_pairs = [
         r"""
         Mozilla/5.0
         \s
-        AppleWebKit/537.36
+        AppleWebKit/\d+.\d+
         \s
         \(
             KHTML,
@@ -118,6 +143,31 @@ _ua_pairs = [
         Chrome/\d+.\d+.\d+.\d+
         \s
         Safari/537.36""",
+        'bingbot/2.0',
+    ),
+    (
+        # Mozilla/5.0
+        # (Linux; Android 6.0.1; Nexus 5X Build/MMB29P)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Chrome/112.0.0.0
+        # Mobile Safari/537.36
+        # (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)
+        r"""
+        Mozilla/5.0
+        \s
+        \(Linux;\sAndroid\s\d.\d.\d;\sNexus\s5X\sBuild/\w+\)
+        \s
+        AppleWebKit/\d+.\d+
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Chrome/\d+.\d+.\d+.\d+
+        \s
+        Mobile\sSafari/\d+.\d+
+        \s
+        \(compatible;\sbingbot/2.0;\s\+http://www.bing.com/bingbot.htm\)
+        """,
         'bingbot/2.0',
     ),
     (
@@ -211,9 +261,9 @@ _ua_pairs = [
         \s
         compatible;
         \s
-        ChatGPTBot/1.0;
+        ChatGPT-User/\d.\d;
         \s
-        \+https://openai.com/gptbot
+        \+https://openai.com/(gpt)?bot
         """,
         'ChatGPT-User/1.0',
     ),
@@ -368,7 +418,7 @@ _ua_pairs = [
         Mobile/15E148
         \s
         Safari/\d+.\d+""",
-        "Chrome/iOS/WebKit on iPhone",
+        "Chrome/iOS/WebKit/iPhone",
     ),
     (
         # Mozilla/5.0
@@ -458,12 +508,33 @@ _ua_pairs = [
         \s
         AppleWebKit/537.36
         \s
-        \(KHTML,\slike Gecko\)
+        \(KHTML,\slike\sGecko\)
         \s
         Chrome/\d+.\d+.\d+.\d+
         \s
         Safari/\d+.\d+""",
         "Chrome/Win7/Blink",
+    ),
+    (
+        # Mozilla/5.0
+        # (Windows NT 6.2; Win64; x64)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Chrome/59.0.3071.86
+        # Safari/537.36
+        r"""
+        Mozilla/5.0
+        \s
+        \(Windows\sNT\s6.2;\sWin64;\sx64\)
+        \s
+        AppleWebKit/537.36
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Chrome/\d+.\d+.\d+.\d+
+        \s
+        Safari/\d+.\d+""",
+        "Chrome/Win8/Blink",
     ),
     (
         # Mozilla/5.0
@@ -554,6 +625,19 @@ _ua_pairs = [
         "DataForSEOBot",
     ),
     (
+        # Mozilla/5.0 (Linux x64) node.js/20.16.0 v8/11.3.244.8-node.23
+        r"""
+            Mozilla\/5.0
+            \s
+            \(Linux\sx64\)
+            \s
+            node.js\/20.\d{2}.0
+            \s
+            v8\/11.3.244.8-node.23
+        """,
+        "dspace-internal",
+    ),
+    (
         # DuckDuckBot-Https/1.1; (+https://duckduckgo.com/duckduckbot)
         r"""
         DuckDuckBot-Https/1.1;
@@ -641,6 +725,39 @@ _ua_pairs = [
     ),
     (
         # Mozilla/5.0
+        # (Linux; Android 11; SM-A125F Build/RP1A.200720.012; wv)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Version/4.0
+        # Chrome/117.0.0.0
+        # Mobile Safari/537.36
+        # [FB_IAB/FB4A;FBAV/474.1.0.47.109;]
+        #
+        r"""
+        Mozilla/5.0
+        \s
+        \(Linux;\sAndroid\s\d+;\s[\w-]+\sBuild/\w{4}.\d{6}.\d{3};\swv\)
+        \s
+        AppleWebKit/\d+.\d+.\d+
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Version/\d+(.\d+)+
+        \s
+        Chrome/\d+(.\d+)+
+        \s
+        (Mobile\s)?
+        Safari/\d+.\d+
+        \s
+        \[
+            FB_IAB/FB4A;
+            FBAV/\d+(.\d+)+;
+        \]
+        """,
+        "Facebook/Android/Blink",
+    ),
+    (
+        # Mozilla/5.0
         # (iPhone; CPU iPhone OS 17_4_1 like Mac OS X)
         # AppleWebKit/605.1.15
         # (KHTML, like Gecko)
@@ -662,11 +779,11 @@ _ua_pairs = [
         r"""
         Mozilla/5.0
         \s
-        \(iPhone; CPU iPhone OS 17_4_1 like Mac OS X\)
+        \(iPhone;\sCPU\siPhone\sOS\s17_4_1\slike\sMac\sOS\sX\)
         \s
         AppleWebKit/605.1.15
         \s
-        \(KHTML, like Gecko\)
+        \(KHTML,\slike\sGecko\)
         \s
         Mobile/21E236
         \s
@@ -685,7 +802,7 @@ _ua_pairs = [
             FBRV/539748107
         \]
         """,
-        "Facebook/iOS/WebKit on iPhone",
+        "Facebook/iOS/WebKit/iPhone",
     ),
     (
         # Mozilla/5.0
@@ -708,7 +825,20 @@ _ua_pairs = [
         \s
         Safari/\d+(.\d+)+
         """,
-        "Firefox/iOS/WebKit on iPhone",
+        "Firefox/iOS/WebKit/iPhone",
+    ),
+    (
+        # Mozilla/5.0
+        # (X11; Linux x86_64; rv:132.0)
+        # Gecko/20100101 Firefox/132.0
+        r"""
+        Mozilla/5.0
+        \s
+        \(X11;\sLinux\sx86_64;\srv:\d+.\d\)
+        \s
+        Gecko/\d+\sFirefox/\d+.\d
+        """,
+        "Firefox/Linux/Gecko",
     ),
     (
         # Mozilla/5.0
@@ -747,9 +877,9 @@ _ua_pairs = [
         r"""
         Mozilla/5.0
         \s
-        \(X11;\sUbuntu;\sLinux\sx86_64;\srv:72.0\)
+        \(X11;\sUbuntu;\sLinux\sx86_64;\srv:\d+.\d\)
         \s
-        Gecko/20100101\sFirefox/72.0
+        Gecko/\d+\sFirefox/\d+.\d
         """,
         "Firefox/Ubuntu/Gecko",
     ),
@@ -779,6 +909,25 @@ _ua_pairs = [
         \)
         \s
         Gecko/\d+\sFirefox/\d+.\d
+        """,
+        "Firefox/Win7/Gecko",
+    ),
+    (
+        # Mozilla/5.0
+        # (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.5)
+        # Gecko/20091102
+        # Firefox/3.5.5
+        # (.NET CLR 3.5.30729)
+        r"""
+        Mozilla/5.0
+        \s
+        \(Windows;\sU;\sWindows\sNT\s6.1;\sen-US;\srv:\d.\d.\d.\d\)
+        \s
+        Gecko/\d+
+        \s
+        Firefox/\d+.\d+.\d+
+        \s
+        \(.NET\sCLR\s\d+.\d+.\d+\)
         """,
         "Firefox/Win7/Gecko",
     ),
@@ -834,9 +983,28 @@ _ua_pairs = [
         'Google/iOS/WebKit on iPad',
     ),
     (
+        # Googlebot/2.1 (+http://www.google.com/bot.html)
+        r"""
+        Googlebot/2.1
+        \s
+        \(\+http://www.google.com/bot.html\)
+        """,
+        "Googlebot/2.1",
+    ),
+    (
         # Mozilla/5.0
         # (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
-        r"""^Googlebot/2.1\s\(\+http://www.google.com/bot.html\)$""",
+        r"""
+        Mozilla/5.0
+        \s
+        \(
+            compatible;
+            \s
+            Googlebot/2.1;
+            \s
+            \+http://www.google.com/bot.html
+        \)
+        """,
         "Googlebot/2.1",
     ),
     (
@@ -980,6 +1148,15 @@ _ua_pairs = [
         'GPTBot/1.x',
     ),
     (
+        # Grammarly/1.0 (http://www.grammarly.com)
+        r"""
+        Grammarly/1.0
+        \s
+        \(http://www.grammarly.com\)
+        """,
+        "Grammarly",
+    ),
+    (
         # Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
         r"""
         Mozilla/5.0
@@ -999,6 +1176,15 @@ _ua_pairs = [
         "IE/Win7/Trident",
     ),
     (
+        # Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0)
+        r"""
+        Mozilla/\d.0
+        \s
+        \(compatible;\sMSIE\s8.0;\sWindows\sNT\s5.1;\sTrident/4.0\)
+        """,
+        "IE/WinXP/Trident",
+    ),
+    (
         # Mozilla/5.0 (compatible; ImagesiftBot; +imagesift.com)
         r"""
         Mozilla/\d.0
@@ -1008,10 +1194,33 @@ _ua_pairs = [
         "ImagesiftBot",
     ),
     (
+        # Mozilla/5.0 (compatible; U; Koha checkurl)
+        r"""
+        Mozilla/\d.0
+        \s
+        \(compatible;\sU;\sKoha\scheckurl\)
+        """,
+        "Koha checkurl",
+    ),
+    (
+        # netEstate NE Crawler (+http://www.website-datenbank.de/)
+        r"""
+        netEstate\sNE\sCrawler
+        \s
+        \(\+http://www.website-datenbank.de/\)
+        """,
+        "netEstate NE Crawler",
+    ),
+    (
         # david frank
         # node-fetch/1.0
         r"""node-fetch/1.0\s\(\+https://github.com/bitinn/node-fetch\)""",
         "node-fetch",
+    ),
+    (
+        # check_http/v2.4.12 (nagios-plugins 2.4.12)
+        r"""check_http/v\d.\d.\d+\s\(nagios-plugins\s\d.\d.\d+\)""",
+        "nagios/check_http",
     ),
     (
         r"""
@@ -1029,6 +1238,53 @@ _ua_pairs = [
         "OAI-SearchBot/1.0",
     ),
     (
+        # Opera/9.80
+        # (Windows NT 6.1; WOW64; MRA 6.0 (build 6080))
+        # Presto/2.12.388
+        # Version/12.14
+        r"""
+        Opera/\d+.\d+
+        \s
+        \(Windows\sNT\s6.1;\sWOW64;\sMRA\s\d.\d\s\(build\s\d+\)\)""",
+        "Opera/Win7/Presto",
+    ),
+    (
+        # Owler (ows.eu/owler)
+        r"""
+        Owler
+        \s
+        \(ows.eu/owler\)""",
+        "Owler",
+    ),
+    (
+        # Mozilla/5.0
+        # (Linux; Android 7.0;)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Mobile Safari/537.36
+        # (compatible;
+        #  PetalBot;+https://webmaster.petalsearch.com/site/petalbot)
+        r"""
+        Mozilla/5.0
+        \s
+        \(Linux;\sAndroid\s\d.\d;\)
+        \s
+        AppleWebKit/\d+.\d+.\d+
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Mobile\sSafari/\d+.\d+
+        \s
+        \(
+          compatible;
+          \s
+          PetalBot;
+          \+https://webmaster.petalsearch.com/site/petalbot
+        \)
+        """,
+        "PetalBot/Aspiegel/Android",
+    ),
+    (
         # Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X)
         # AppleWebKit/605.1.15
         # (KHTML, like Gecko) Mobile/15E148 [Pinterest/iOS]
@@ -1042,7 +1298,26 @@ _ua_pairs = [
             Mobile/15E148
             \s
             \[Pinterest/iOS\]""",
-        "Pinterest/iOS/WebKit on iPhone",
+        "Pinterest/iOS/WebKit/iPhone",
+    ),
+    (
+        # Mozilla/5.0
+        # (Macintosh; Intel Mac OS X 10_15_7)
+        # AppleWebKit/605.1.15
+        # (KHTML, like Gecko)
+        # Mobile/15E148
+        r"""
+        Mozilla/5.0
+        \s
+        \(Macintosh;\sIntel\sMac\sOS\sX\s10_15_7\)
+        \s
+        AppleWebKit/\d+.\d+.\d+
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Mobile/15E148
+        """,
+        "PulseMobileClient/MacOS",
     ),
     (
         # Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X)
@@ -1062,7 +1337,7 @@ _ua_pairs = [
             Mobile(\/15E148)?
             \s
             Safari/\d+.\d+""",
-        "Safari/iOS/WebKit on iPhone",
+        "Safari/iOS/WebKit/iPhone",
     ),
     (
         # Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6)
@@ -1070,17 +1345,15 @@ _ua_pairs = [
         "Safari/Mactel/Sierra/Webkit (bad)",
     ),
     (
-        # Mozilla/5.0 (Linux x64) node.js/20.16.0 v8/11.3.244.8-node.23
+        # Safari/20619.2.8.11.12 CFNetwork/1568.200.51 Darwin/24.1.0
         r"""
-            Mozilla\/5.0
-            \s
-            \(Linux\sx64\)
-            \s
-            node.js\/20.\d{2}.0
-            \s
-            v8\/11.3.244.8-node.23
+        Safari/\d+(.\d+)+
+        \s
+        CFNetwork/\d+(.\d+)+
+        \s
+        Darwin/\d+(.\d+)+
         """,
-        "dspace-internal",
+        "Safari/MacOS/Webkit",
     ),
     (
         r"""Mozilla/5.0
@@ -1118,7 +1391,7 @@ _ua_pairs = [
             Version/17.3.1\sMobile/15E148\sSnapchat/12.92.0.46
             \s
             \(like\sSafari/8617.2.4.10.8,\spanda\)""",
-        "Snapchat/iOS/Webkit on iPhone",
+        "Snapchat/iOS/Webkit/iPhone",
     ),
     (
         # Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36
@@ -1195,6 +1468,74 @@ _ua_pairs = [
         "Unpaywall",
     ),
     (
+        # Mozilla/5.0
+        # (Linux; Android 12; vivo 1920)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Version/4.0
+        # Chrome/87.0.4280.141
+        # Mobile Safari/537.36
+        # VivoBrowser/13.2.3.0
+        r"""
+        Mozilla/5.0
+        \s
+        \(Linux;\sAndroid\s\d+;\svivo\s\d+\)
+        \s
+        AppleWebKit/\d+(.\d+)+
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Version/\d+(.\d+)+
+        \s
+        Chrome/\d+.\d+.\d+.\d+
+        \s
+        Mobile\sSafari/\d+.\d+
+        \s
+        VivoBrowser/\d+.\d+.\d+.\d+
+        """,
+        "Vivo/Android/Blink",
+    ),
+    (
+        # Mozilla/5.0
+        # (Linux; U; Android 7.1; HUAWEI MT7-TL10 Build/HuaweiMT7-TL10; wv)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Version/4.0
+        # Chrome/95.0.4638.74
+        # Mobile Safari/537.36
+        # OPR/84.0.2254.73823
+        r"""
+        Mozilla/5.0
+        \s
+        \(
+            Linux;
+            \s
+            U;
+            \s
+            Android\s\d+(.\d+)?;
+            \s
+            HUAWEI\sMT7-TL10
+            \s
+            Build/HuaweiMT7-TL10;
+            \s
+            wv
+        \)
+        \s
+        AppleWebKit/\d+.\d+
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s
+        Version/\d.\d
+        \s
+        Chrome/\d+.\d+.\d+.\d+
+        \s
+        Mobile\sSafari/\d+.\d+
+        \d
+        OPR/\d+.\d+.\d+.\d+
+        """,
+        "Webview/Android/Blink",
+    ),
+    (
         # Mozilla/5.0 (Linux; Android 10; LIO-AN00 Build/HUAWEILIO-AN00; wv)
         # MicroMessenger Weixin QQ AppleWebKit/537.36 (KHTML, like Gecko)
         # Version/4.0 Chrome/78.0.3904.62 XWEB/2692 MMWEBSDK/200901
@@ -1254,7 +1595,16 @@ _ua_pairs = [
             \s
             \(compatible;\sYandexBot/3.0;\s\+http://yandex.com/bots\)
         """,
-        "YandexBox",
+        "YandexBot",
+    ),
+    (
+        # Mozilla/5.0 (compatible; YandexImages/3.0; +http://yandex.com/bots)
+        r"""
+        Mozilla/5.0
+        \s
+        \(compatible;\sYandexImages/\d.\d;\s\+http://yandex.com/bots\)
+        """,
+        "YandexImages",
     ),
 ]
 
