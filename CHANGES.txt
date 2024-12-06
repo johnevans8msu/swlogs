@@ -1,8 +1,10 @@
-December 6, 2024 - v0.0.3
+December 6, 2024 - v0.0.4
     Fix plot xtick labels
         Don't show "date", it's implied.  Make sure there is enough room for the
         labels by rotating if necessary.
     Add command line program swplot
+
+November 23, 2024 - v0.0.3
     Change bot harvest to take top 30
     Add command line support for user agent
     Add useragent option to test report
