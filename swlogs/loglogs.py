@@ -1,5 +1,8 @@
 # standard library imports
-import sqlite3
+import importlib.resources as ir
+import io
+import logging
+import time
 
 # 3rd party library imports
 import pandas as pd
@@ -18,53 +21,126 @@ class LogLogs(AccessLog):
         Location of sqlite database file.
     views : bool
         If True, compute views instead of hits.
-    conn : sqlite3.Connection
+    conn : database connection
     """
     def __init__(
         self,
         logfile='/var/log/nginx/access.log.1',
-        dbfile='/home/jevans/Documents/swlogs/access.db',
         views=False
     ):
         super().__init__(logfile)
 
-        self.dbfile = dbfile
-        self.conn = sqlite3.connect(dbfile)
-
     def log_ip16(self):
 
-        self.df_ip16['date'] = self.df['date'].mode().iloc[0]
-        self.df_ip16.to_sql('ip16', self.conn, if_exists='append')
+        logging.warning('Starting log_ip16')
+        t0 = time.time()
+
+        sql = ir.files('swlogs.data').joinpath('ip16.sql').read_text()
+
+        with self.conn.cursor() as cursor:
+            cursor.execute(sql)
+
+        self.conn.commit()
+
+        t1 = time.time()
+        logging.warning(f'Ending log_ip16, took {(t1 - t0):.1f} seconds')
 
     def log_ip24(self):
 
-        self.df_ip24['date'] = self.df['date'].mode().iloc[0]
-        self.df_ip24.to_sql('ip24', self.conn, if_exists='append')
+        logging.warning('Starting log_ip24')
+        t0 = time.time()
+
+        sql = ir.files('swlogs.data').joinpath('ip24.sql').read_text()
+
+        with self.conn.cursor() as cursor:
+            cursor.execute(sql)
+
+        self.conn.commit()
+
+        t1 = time.time()
+        logging.warning(f'Ending log_ip24, took {(t1 - t0):.1f} seconds')
 
     def log_ip32(self):
 
-        self.df_ip32['date'] = self.df['date'].mode().iloc[0]
-        self.df_ip32.to_sql('ip32', self.conn, if_exists='append')
+        logging.warning('Starting log_ip32')
+        t0 = time.time()
+
+        sql = ir.files('swlogs.data').joinpath('ip32.sql').read_text()
+
+        with self.conn.cursor() as cursor:
+            cursor.execute(sql)
+
+        self.conn.commit()
+
+        t1 = time.time()
+        logging.warning(f'Ending log_ip32, took {(t1 - t0):.1f} seconds')
 
     def log_bots(self):
+        """
+        Summarize the top bot information.
+        """
+        logging.warning('Starting log_bots')
+        t0 = time.time()
 
-        self.top_n['date'] = self.df['date'].mode().iloc[0]
-        self.top_n.to_sql('bots', self.conn, if_exists='append')
+        sql = ir.files('swlogs.data').joinpath('log-bots.sql').read_text()
+
+        with self.conn.cursor() as cursor:
+            cursor.execute(sql)
+
+        self.conn.commit()
+
+        t1 = time.time()
+        logging.warning(f'Ending log_bots, took {(t1 - t0):.1f} seconds')
 
     def log_overall(self):
         """
         Record the total bytes and number of hits for the day
         """
-        self.df['date'] = self.df['timestamp'].apply(pd.Timestamp.date)
+        with self.conn.cursor() as cursor:
 
-        df = (
-            self.df.groupby('date')
-                   .agg(bytes=('bytes', 'sum'), hits=('date', 'size'))
-        )
-        df.to_sql('overall', self.conn, if_exists='append')
+            sql = """
+            insert into overall
+            (date, bytes, hits)
+            select
+                timestamp::date as date,
+                sum(bytes) as bytes,
+                count(*) as hits
+            from staging
+            group by 1
+            """
+            cursor.execute(sql)
+
+        self.conn.commit()
+
+    def log_raw(self):
+        """
+        Record the raw log rows
+        """
+        logging.warning('Starting bulk insert of daily log items.')
+        t0 = time.time()
+        cols = ['ip', 'timestamp', 'status', 'ua', 'url', 'bytes']
+        with self.conn.cursor() as cursor:
+
+            cursor.execute('truncate swlogs.staging')
+
+            buffer = io.StringIO()
+            self.df[cols].to_csv(buffer, index=False)
+            buffer.seek(0)
+            with cursor.copy('copy swlogs.staging from stdin with (format csv, header)') as copy:  # noqa E501
+                while data := buffer.read(1048576):
+                    copy.write(data)
+
+        t1 = time.time()
+        msg = f'log_raw:  took {t1-t0} seconds to insert {self.df.shape[0]} rows.'
+        logging.warning(msg)
+
+        self.conn.commit()
 
     def run(self):
         super().run()
+
+        self.log_raw()
+
         self.log_overall()
         self.log_bots()
         self.log_ip32()

@@ -13,6 +13,7 @@ from .common import CommonObj
 
 sns.set()
 
+
 class Plot(CommonObj):
     """
     Plot hit history of top n bots
@@ -38,12 +39,12 @@ class Plot(CommonObj):
         yesterday = date.today() - timedelta(days=1)
         sql = f"""
             select ua from bots
-            where date = "{yesterday.isoformat()}"
-                and ua <> "dspace-internal"
+            where date = '{yesterday.isoformat()}'::date
+                and ua <> 'dspace-internal'
             order by hits desc
             limit {self.n}
             """
-        df = pd.read_sql(sql, self.conn)
+        df = pd.read_sql(sql, self.engine)
         ua = df['ua']
 
         # select history for those bots
@@ -53,7 +54,7 @@ class Plot(CommonObj):
             where ua in ('{'\', \''.join([x for x in ua.values])}')
             order by date asc
         """
-        df = pd.read_sql(sql, self.conn)
+        df = pd.read_sql(sql, self.engine)
         df['date'] = pd.to_datetime(df['date'])
 
         fig, ax = plt.subplots()
@@ -76,8 +77,9 @@ class Plot(CommonObj):
                 cast(sum(hits) as real) / 1e6 as hits
             from overall
             group by date
+            order by date asc
         """
-        df = pd.read_sql(sql, self.conn, index_col='date')
+        df = pd.read_sql(sql, self.engine, index_col='date')
 
         # get rid of the last day, it's usually just a few observations
         df = df[:-1]
@@ -88,6 +90,10 @@ class Plot(CommonObj):
         df['bytes'].plot(ax=axes[1])
 
         axes[1].set_ylabel('GBytes')
+
+        ticks_loc = axes[1].get_xticks().tolist()
+        axes[1].xaxis.set_major_locator(mpl.ticker.FixedLocator(ticks_loc))
+
         axes[1].set_xticklabels(axes[1].get_xticklabels(), rotation=30)
         axes[1].set_xlabel('')
 

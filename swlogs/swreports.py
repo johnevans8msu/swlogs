@@ -127,11 +127,12 @@ class SWReport(CommonObj):
             select
                 date,
                 cast(sum(bytes) as real)/1024/1024/1024 as GBytes,
-                cast(sum(hits) as real) / 1e6 as 'hits (million)'
+                cast(sum(hits) as real) / 1e6 as "hits (million)"
             from overall
             group by date
+            order by date asc
         """
-        df = pd.read_sql(sql, self.conn, index_col='date')
+        df = pd.read_sql(sql, self.engine, index_col='date')
 
         print(df)
 
@@ -140,10 +141,10 @@ class SWReport(CommonObj):
         if self.useragent is None:
             sql = """
                 select * from bots
-                where date = ?
+                where date = %(date)s
             """
-            params = (self.date.isoformat(),)
-            df = pd.read_sql(sql, self.conn, params=params, index_col='date')
+            params = {'date': self.date.isoformat()}
+            df = pd.read_sql(sql, self.engine, params=params, index_col='date')
         else:
             sql = """
                 select * from bots

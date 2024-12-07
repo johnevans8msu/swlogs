@@ -44,15 +44,10 @@ def loglogs():
         help='Access log',
         default='/var/log/nginx/access.log.1'
     )
-    parser.add_argument(
-        '--dbfile',
-        help='database file',
-        default='/home/jevans/Documents/swlogs/access.db'
-    )
 
     args = parser.parse_args()
 
-    with LogLogs(logfile=args.logfile, dbfile=args.dbfile) as o:
+    with LogLogs(logfile=args.logfile) as o:
         o.run()
 
 

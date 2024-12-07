@@ -1,7 +1,8 @@
 # standard library imports
-import sqlite3
 
 # 3rd party library imports
+import psycopg
+import sqlalchemy
 
 # local imports
 
@@ -14,9 +15,11 @@ class CommonObj(object):
         Database file
     """
 
-    def __init__(self, dbfile='/home/jevans/Documents/swlogs/access.db'):
-        self.dbfile = dbfile
-        self.conn = sqlite3.connect(self.dbfile)
+    def __init__(self):
+
+        self.connstr = 'postgresql://jevans@localhost/jevans'
+        self.conn = psycopg.connect(self.connstr)
+        self.engine = sqlalchemy.create_engine(self.connstr)
 
     def __enter__(self):
         return self

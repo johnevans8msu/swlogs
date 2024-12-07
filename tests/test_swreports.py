@@ -2,9 +2,6 @@
 import datetime as dt
 import importlib.resources as ir
 import io
-import pathlib
-import sqlite3
-import tempfile
 import unittest
 from unittest.mock import patch
 
@@ -17,39 +14,6 @@ from swlogs.swreports import SWReport
 
 class TestSuite(unittest.TestCase):
 
-    def setUp(self):
-        """
-        Before each test, setup a test SQLITE database.
-        """
-
-        self.tdir = tempfile.TemporaryDirectory()
-
-        self.dbfile = pathlib.Path(self.tdir.name) / 'test.db'
-        conn = sqlite3.connect(self.dbfile)
-
-        path = ir.files('tests.data.swreport').joinpath('bots.csv')
-        df = pd.read_csv(path)
-        df.to_sql('bots', conn, index=False)
-
-        path = ir.files('tests.data.swreport').joinpath('overall.csv')
-        df = pd.read_csv(path)
-        df.to_sql('overall', conn, index=False)
-
-        path = ir.files('tests.data.swreport').joinpath('ip32.csv')
-        df = pd.read_csv(path, index_col=False)
-        df.to_sql('ip32', conn, index=False)
-
-        path = ir.files('tests.data.swreport').joinpath('ip24.csv')
-        df = pd.read_csv(path, index_col=False)
-        df.to_sql('ip24', conn, index=False)
-
-        path = ir.files('tests.data.swreport').joinpath('ip16.csv')
-        df = pd.read_csv(path, index_col=False, dtype={'ip16': str})
-        df.to_sql('ip16', conn, index=False)
-
-    def tearDown(self):
-        self.tdir.cleanup()
-
     def test_ip16(self):
         """
         Scenario:  report daily IP address counts for 16 bit address range
@@ -57,20 +21,33 @@ class TestSuite(unittest.TestCase):
         Expected result:  report is verified
         """
 
-        newconn = sqlite3.connect(self.dbfile)
+        time = [
+            dt.date(2024, 11, 7),
+            dt.date(2024, 11, 7),
+            dt.date(2024, 11, 7)
+        ]
+        data = {
+            'ip16': ['153.90', '52.167', '24.57'],
+            'hits': [86, 12, 2],
+            'date': time
+        }
+        expected = pd.DataFrame(data=data).set_index('date')
 
-        with patch('swlogs.swreports.date') as mock_date:
+        with (
+            patch('swlogs.swreports.pd.read_sql') as mock_read_sql,
+            patch('swlogs.swreports.date') as mock_date,
+            patch(
+                'swlogs.swreports.sys.stdout', new=io.StringIO()
+            ) as fake_stdout,
+        ):
+            mock_read_sql.return_value = expected
             mock_date.today.return_value = dt.date(2024, 11, 8)
             mock_date.side_effect = lambda *args, **kw: dt.date(*args, **kw)
 
             with SWReport(ip16=True) as o:
-                with patch(
-                    'swlogs.swreports.sys.stdout', new=io.StringIO()
-                ) as fake_stdout:
-                    with patch.object(o, 'conn', new=newconn):
-                        o.run()
+                o.run()
 
-                    actual = fake_stdout.getvalue()
+            actual = fake_stdout.getvalue()
 
         expected = (
             ir.files('tests.data.swreport')
@@ -86,28 +63,33 @@ class TestSuite(unittest.TestCase):
 
         Expected result:  report is verified
         """
+        path = ir.files('tests.data.swreport').joinpath('ip24.csv')
+        df = pd.read_csv(path, parse_dates=['date'])
+        df = df.query('date == @dt.date(2024, 11, 7)').set_index('date')
+        df = df.sort_values(by='hits', ascending=False)
+        df = df.drop(labels='error_pct', axis='columns')
 
-        newconn = sqlite3.connect(self.dbfile)
-
-        with patch('swlogs.swreports.date') as mock_date:
+        with (
+            patch('swlogs.swreports.pd.read_sql') as mock_read_sql,
+            patch('swlogs.swreports.date') as mock_date,
+            patch(
+                'swlogs.swreports.sys.stdout', new=io.StringIO()
+            ) as fake_stdout,
+        ):
+            mock_read_sql.return_value = df
             mock_date.today.return_value = dt.date(2024, 11, 8)
             mock_date.side_effect = lambda *args, **kw: dt.date(*args, **kw)
 
             with SWReport(ip24=True) as o:
-                with patch(
-                    'swlogs.swreports.sys.stdout', new=io.StringIO()
-                ) as fake_stdout:
-                    with patch.object(o, 'conn', new=newconn):
-                        o.run()
+                o.run()
 
-                    actual = fake_stdout.getvalue()
+                actual = fake_stdout.getvalue()
 
         expected = (
             ir.files('tests.data.swreport')
               .joinpath('daily-ip24.txt')
               .read_text()
         )
-
         self.assertEqual(actual, expected)
 
     def test_ip32(self):
@@ -116,21 +98,27 @@ class TestSuite(unittest.TestCase):
 
         Expected result:  report is verified
         """
+        path = ir.files('tests.data.swreport').joinpath('ip32.csv')
+        df = pd.read_csv(path, parse_dates=['date'])
+        df = df.query('date == @dt.date(2024, 11, 7)').set_index('date')
+        df = df.sort_values(by='hits', ascending=False)
+        df = df.drop(labels='error_pct', axis='columns')
 
-        newconn = sqlite3.connect(self.dbfile)
-
-        with patch('swlogs.swreports.date') as mock_date:
+        with (
+            patch('swlogs.swreports.pd.read_sql') as mock_read_sql,
+            patch('swlogs.swreports.date') as mock_date,
+            patch(
+                'swlogs.swreports.sys.stdout', new=io.StringIO()
+            ) as fake_stdout,
+        ):
             mock_date.today.return_value = dt.date(2024, 11, 8)
             mock_date.side_effect = lambda *args, **kw: dt.date(*args, **kw)
+            mock_read_sql.return_value = df
 
             with SWReport(ip32=True) as o:
-                with patch(
-                    'swlogs.swreports.sys.stdout', new=io.StringIO()
-                ) as fake_stdout:
-                    with patch.object(o, 'conn', new=newconn):
-                        o.run()
+                o.run()
 
-                    actual = fake_stdout.getvalue()
+            actual = fake_stdout.getvalue()
 
         expected = (
             ir.files('tests.data.swreport')
@@ -146,28 +134,32 @@ class TestSuite(unittest.TestCase):
 
         Expected result:  report is verified
         """
+        path = ir.files('tests.data.swreport').joinpath('bots.csv')
+        df = pd.read_csv(path, parse_dates=['date'])
+        df = df.query('date == @dt.date(2024, 11, 13)').set_index('date')
 
-        newconn = sqlite3.connect(self.dbfile)
+        with (
+            patch('swlogs.swreports.pd.read_sql') as mock_read_sql,
+            patch('swlogs.swreports.date') as mock_date,
+            patch(
+                'swlogs.swreports.sys.stdout', new=io.StringIO()
+            ) as fake_stdout,
+        ):
+            mock_read_sql.return_value = df
 
-        with patch('swlogs.swreports.date') as mock_date:
             mock_date.today.return_value = dt.date(2024, 11, 14)
             mock_date.side_effect = lambda *args, **kw: dt.date(*args, **kw)
 
             with SWReport() as o:
-                with patch(
-                    'swlogs.swreports.sys.stdout', new=io.StringIO()
-                ) as fake_stdout:
-                    with patch.object(o, 'conn', new=newconn):
-                        o.run()
+                o.run()
 
-                    actual = fake_stdout.getvalue()
+            actual = fake_stdout.getvalue()
 
         expected = (
             ir.files('tests.data.swreport')
               .joinpath('daily-bots.txt')
               .read_text()
         )
-
         self.assertEqual(actual, expected)
 
     def test_bots_specific_date(self):
@@ -176,17 +168,22 @@ class TestSuite(unittest.TestCase):
 
         Expected result:  report is verified
         """
+        path = ir.files('tests.data.swreport').joinpath('bots.csv')
+        df = pd.read_csv(path, parse_dates=['date'])
+        df = df.query('date == @dt.date(2024, 11, 12)').set_index('date')
 
-        newconn = sqlite3.connect(self.dbfile)
-
-        with SWReport(thedate=dt.date(2024, 11, 12)) as o:
-            with patch(
+        with (
+            patch('swlogs.swreports.pd.read_sql') as mock_read_sql,
+            patch(
                 'swlogs.swreports.sys.stdout', new=io.StringIO()
-            ) as fake_stdout:
-                with patch.object(o, 'conn', new=newconn):
-                    o.run()
+            ) as fake_stdout,
+            SWReport(thedate=dt.date(2024, 11, 12)) as o,
+        ):
+            mock_read_sql.return_value = df
 
-                actual = fake_stdout.getvalue()
+            o.run()
+
+            actual = fake_stdout.getvalue()
 
         expected = (
             ir.files('tests.data.swreport')
@@ -202,22 +199,27 @@ class TestSuite(unittest.TestCase):
 
         Expected result:  report is verified
         """
+        path = ir.files('tests.data.swreport').joinpath('bots.csv')
+        df = pd.read_csv(path, parse_dates=['date'])
 
-        newconn = sqlite3.connect(self.dbfile)
+        date = dt.date(2024, 11, 7)  # noqa : F841
+        df = df.query('ua == "Chrome/Win10/Blink" and date <= @date')
+        df = df.set_index('date')
 
-        with patch('swlogs.swreports.date') as mock_date:
+        with (
+            patch('swlogs.swreports.pd.read_sql') as mock_read_sql,
+            patch('swlogs.swreports.date') as mock_date,
+            patch(
+                'swlogs.swreports.sys.stdout', new=io.StringIO()
+            ) as fake_stdout,
+        ):
             mock_date.today.return_value = dt.date(2024, 11, 8)
-            with (
-                patch(
-                    'swlogs.swreports.sys.stdout',
-                    new=io.StringIO()
-                ) as fake_stdout,
-                SWReport(useragent='Chrome/Win10/Blink') as o,
-                patch.object(o, 'conn', new=newconn)
-            ):
+            mock_read_sql.return_value = df
+
+            with SWReport(useragent='Chrome/Win10/Blink') as o:
                 o.run()
 
-                actual = fake_stdout.getvalue()
+            actual = fake_stdout.getvalue()
 
         tfile = ir.files('tests.data.swreport').joinpath('chrome-w10-b.txt')
         expected = tfile.read_text()
@@ -230,17 +232,23 @@ class TestSuite(unittest.TestCase):
 
         Expected result:  report is verified
         """
-
-        newconn = sqlite3.connect(self.dbfile)
+        path = ir.files('tests.data.swreport').joinpath('overall.csv')
+        df = pd.read_csv(path, parse_dates=['date'])
+        df = df.groupby('date').sum()
+        df['bytes'] = df['bytes'] / 1024 ** 3
+        df['hits'] = df['hits'] / 1e6
+        df.columns = ['GBytes', 'hits (million)']
 
         with (
+            patch('swlogs.swreports.pd.read_sql') as mock_read_sql,
             patch(
                 'swlogs.swreports.sys.stdout',
                 new=io.StringIO()
             ) as fake_stdout,
             SWReport(overall=True) as o,
-            patch.object(o, 'conn', new=newconn),
         ):
+            mock_read_sql.return_value = df
+
             o.run()
 
             actual = fake_stdout.getvalue()
