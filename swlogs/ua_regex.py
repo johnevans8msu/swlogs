@@ -36,6 +36,38 @@ _ua_pairs = [
         "Amazonbot",
     ),
     (
+        # Mozilla/5.0
+        # AppleWebKit/537.36
+        # (
+        #   KHTML, like Gecko;
+        #   compatible;
+        #   Amazonbot/0.1;
+        #   +https://developer.amazon.com/support/amazonbot
+        # )
+        # Chrome/119.0.6045.214
+        # Safari/537.36
+        r"""
+        Mozilla/5.0
+        \s
+        AppleWebKit/\d+.\d+.\d+
+        \s
+        \(
+            KHTML,\slike\sGecko;
+            \s
+            compatible;
+            \s
+            Amazonbot/0.1;
+            \s
+            \+https://developer.amazon.com/support/amazonbot
+        \)
+        \s
+        Chrome/\d+(.\d+)+
+        \s
+        Safari/\d+.\d+.\d+
+        """,
+        "Amazonbot",
+    ),
+    (
         # AppleCoreMedia/1.0.0.18J411
         # (Apple TV; U; CPU OS 14_0_2 like Mac OS X; en_us)
         r"""
@@ -85,6 +117,16 @@ _ua_pairs = [
     ),
     (
         # Mozilla/5.0
+        # (compatible; AwarioBot/1.0; +https://awario.com/bots.html)
+        r"""
+        Mozilla/5.0
+        \s
+        \(compatible;\sAwarioBot/1.0;\s\+https://awario.com/bots.html\)
+        """,
+        'AwarioBot',
+    ),
+    (
+        # Mozilla/5.0
         # (compatible; Barkrowler/0.9; +https://babbar.tech/crawler)
         r"""
         Mozilla/5.0
@@ -105,7 +147,7 @@ _ua_pairs = [
         \s
         \(iPhone;\sCPU\siPhone\sOS\s\d{1,2}_0\slike\sMac\sOS\sX\)
         \s
-        AppleWebKit/537.51.1
+        AppleWebKit/\d+.\d+.\d+
         \s
         \(KHTML,\slike\sGecko\)
         \s
@@ -383,9 +425,9 @@ _ua_pairs = [
         r"""
         Mozilla/5.0
         \s
-        \(iPad;\sCPU\sOS\s17_\d\slike\sMac\sOS\sX\)
+        \(iPad;\sCPU\sOS\s\d+(_\d)+\slike\sMac\sOS\sX\)
         \s
-        AppleWebKit/605.1.15
+        AppleWebKit/\d+(.\d+)+
         \s
         \(KHTML,\slike\sGecko\)
         \s
@@ -393,7 +435,7 @@ _ua_pairs = [
         \s
         Mobile/15E148
         \s
-        Safari/604.1""",
+        Safari/\d+.\d""",
         "Chrome/iOS/WebKit on iPad",
     ),
     (
@@ -803,6 +845,25 @@ _ua_pairs = [
         \]
         """,
         "Facebook/iOS/WebKit/iPhone",
+    ),
+    (
+        # Mozilla/5.0
+        # (Android 14; Mobile; rv:133.0)
+        # Gecko/133.0 Firefox/133.0
+        r"""
+        Mozilla/5.0
+        \s
+        \(
+            Android\s\d+;
+            \s
+            Mobile;
+            \s
+            rv:\d+.\d
+        \)
+        \s
+        Gecko/\d+.\d\sFirefox/\d+.\d
+        """,
+        "Firefox/Android/Gecko",
     ),
     (
         # Mozilla/5.0
@@ -1257,6 +1318,32 @@ _ua_pairs = [
         "Owler",
     ),
     (
+        # Seems to be an AI bot
+        #
+        # Mozilla/5.0
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko;
+        #  compatible;
+        #  PerplexityBot/1.0;
+        #  +https://docs.perplexity.ai/docs/perplexity-bot)
+        r"""
+        Mozilla/5.0
+        \s
+        AppleWebKit/\d+.\d+.\d+
+        \s
+        \(
+            KHTML,\slike\sGecko;
+            \s
+            compatible;
+            \s
+            PerplexityBot/1.0;
+            \s
+            \+https://docs.perplexity.ai/docs/perplexity-bot
+        \)
+        """,
+        "Perplexity",
+    ),
+    (
         # Mozilla/5.0
         # (Linux; Android 7.0;)
         # AppleWebKit/537.36
@@ -1320,23 +1407,34 @@ _ua_pairs = [
         "PulseMobileClient/MacOS",
     ),
     (
-        # Mozilla/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X)
-        # AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5
-        # Mobile/15E148 Safari/604.1
+        # Mozilla/5.0
+        # (iPhone; CPU iPhone OS 11_0 like Mac OS X)
+        # AppleWebKit/537.36
+        # (KHTML, like Gecko)
+        # Chrome/57.0.2534.1416
+        # Mobile
+        # Safari/537.36
+        #
+        # Mozilla/5.0
+        # (iPhone; CPU iPhone OS 17_5_1 like Mac OS X)
+        # AppleWebKit/605.1.15
+        # (KHTML, like Gecko)
+        # Version/17.5
+        # Mobile/15E148
+        # Safari/604.1
         r"""
-            Mozilla/5.0
-            \s
-            \(iPhone;\sCPU\siPhone\sOS\s\d+(_\d+)+\slike\sMac\sOS\sX\)
-            \s
-            AppleWebKit/\d+(.\d+)+
-            \s
-            \(KHTML,\slike\sGecko\)
-            \s
-            (Chrome\/\d+.\d.\d+.\d+|Version/\d+(.\d)+)
-            \s
-            Mobile(\/15E148)?
-            \s
-            Safari/\d+.\d+""",
+        Mozilla/5.0
+        \s
+        \(iPhone;\sCPU\siPhone\sOS\s\d+(_\d+)+\slike\sMac\sOS\sX\)
+        \s
+        AppleWebKit/\d+(.\d+)+
+        \s
+        \(KHTML,\slike\sGecko\)
+        \s+
+        ((Chrome|Version)/\d+(.\d+)+\s)?
+        Mobile(\/15E148)?
+        \s
+        Safari/\d+.\d+""",
         "Safari/iOS/WebKit/iPhone",
     ),
     (
