@@ -4,7 +4,7 @@
 --
 \c jevans
 
-drop schema swlogs cascade;
+drop schema if exists swlogs cascade;
 create schema if not exists swlogs authorization jevans;
 
 alter database jevans set search_path to swlogs, public;
