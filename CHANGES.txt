@@ -1,3 +1,7 @@
+December 12, 2024 - v0.0.5
+    Migrate backend database to postgresql
+    Add more useragent regexes
+
 December 6, 2024 - v0.0.4
     Fix plot xtick labels
         Don't show "date", it's implied.  Make sure there is enough room for the
