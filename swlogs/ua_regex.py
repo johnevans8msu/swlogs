@@ -1118,6 +1118,25 @@ _ua_pairs = [
     ),
     (
         # Mozilla/5.0
+        # (Windows NT 5.1; rv:11.0)
+        # Gecko
+        # Firefox/11.0
+        # (via ggpht.com GoogleImageProxy)
+        r"""
+        Mozilla/5.0
+        \s
+        \(Windows\sNT\s5.1;\srv:11.0\)
+        \s
+        Gecko
+        \s
+        Firefox/11.0
+        \s
+        \(via\sggpht.com\sGoogleImageProxy\)
+        """,
+        "GoogleImageProxy",
+    ),
+    (
+        # Mozilla/5.0
         # (Linux; Android 6.0.1; Nexus 5X Build/MMB29P)
         # AppleWebKit/537.36
         # (KHTML, like Gecko)
@@ -1316,6 +1335,15 @@ _ua_pairs = [
         \s
         \(ows.eu/owler\)""",
         "Owler",
+    ),
+    (
+        # PDF Drive Crawler 1.05 ( https://www.pdfdrive.com/ )
+        r"""
+        PDF\sDrive\sCrawler\s\d.\d+
+        \s
+        \(\shttps://www.pdfdrive.com/\s\)
+        """,
+        "PDF Drive Crawler",
     ),
     (
         # Seems to be an AI bot
