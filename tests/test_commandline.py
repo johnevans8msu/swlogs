@@ -1,7 +1,11 @@
+# standard library imports
 import importlib.resources as ir
 import unittest
 from unittest import mock
 
+# 3rd party library imports
+
+# local imports
 from swlogs import commandline
 
 

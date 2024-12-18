@@ -2,7 +2,7 @@ with hits_cte as (
     select
         network(set_masklen(ip, 16)) as ip,
         count(*) as hits
-    from staging
+    from swlogs.staging
     group by 1
     order by 2 desc
     limit 30
@@ -11,11 +11,11 @@ error_cte as (
     select
         network(set_masklen(ip, 16)) as ip,
         count(*) as errors
-    from staging
+    from swlogs.staging
     where status > 399
     group by 1
 )
-insert into ip16
+insert into swlogs.ip16
 (ip, hits, error_pct, date)
 select
     hits_cte.ip,

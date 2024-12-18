@@ -5,7 +5,6 @@ import logging
 import time
 
 # 3rd party library imports
-import pandas as pd
 
 # local imports
 from .access_logs import AccessLog
@@ -99,13 +98,13 @@ class LogLogs(AccessLog):
         with self.conn.cursor() as cursor:
 
             sql = """
-            insert into overall
+            insert into swlogs.overall
             (date, bytes, hits)
             select
                 timestamp::date as date,
                 sum(bytes) as bytes,
                 count(*) as hits
-            from staging
+            from swlogs.staging
             group by 1
             """
             cursor.execute(sql)
@@ -131,7 +130,10 @@ class LogLogs(AccessLog):
                     copy.write(data)
 
         t1 = time.time()
-        msg = f'log_raw:  took {t1-t0} seconds to insert {self.df.shape[0]} rows.'
+        msg = (
+            f'log_raw:  '
+            f'took {t1-t0} seconds to insert {self.df.shape[0]} rows.'
+        )
         logging.warning(msg)
 
         self.conn.commit()

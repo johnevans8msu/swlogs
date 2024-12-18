@@ -2,7 +2,7 @@ with hits_cte as (
     select
         ip,
         count(*) as hits
-    from staging
+    from swlogs.staging
     group by ip
     order by 2 desc
     limit 30
@@ -11,11 +11,11 @@ error_cte as (
     select
         ip,
         count(*) as errors
-    from staging
+    from swlogs.staging
     where status > 399
     group by ip
 )
-insert into ip32
+insert into swlogs.ip32
 (ip, hits, error_pct, date)
 select
     hits_cte.ip,
