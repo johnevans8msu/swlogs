@@ -1,3 +1,8 @@
+December 24, 2024 - v0.0.6
+    Update test suite for postgresql
+    Allow for a remote postgresql connection
+    Add more useragent regexes
+    
 December 12, 2024 - v0.0.5
     Migrate backend database to postgresql
     Add more useragent regexes
