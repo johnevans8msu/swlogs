@@ -12,14 +12,20 @@ import pandas as pd
 from swlogs.swreports import SWReport
 
 
+@patch('swlogs.common.sqlalchemy')
+@patch('swlogs.common.psycopg.connect')
+@patch('swlogs.common.yaml')
 class TestSuite(unittest.TestCase):
 
-    def test_ip16(self):
+    def test_ip16(self, mock_yaml, mock_psycopg, mock_sqlalchemy):
         """
         Scenario:  report daily IP address counts for 16 bit address range
 
         Expected result:  report is verified
         """
+        mock_yaml.safe_load.return_value = {'connection_string': None}
+        mock_psycopg.connect.return_value = None
+        mock_sqlalchemy.create_engine.return_value = None
 
         time = [
             dt.date(2024, 11, 7),
@@ -57,12 +63,16 @@ class TestSuite(unittest.TestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_ip24(self):
+    def test_ip24(self, mock_yaml, mock_psycopg, mock_sqlalchemy):
         """
         Scenario:  report daily IP address counts for 24 bit address range
 
         Expected result:  report is verified
         """
+        mock_yaml.safe_load.return_value = {'connection_string': None}
+        mock_psycopg.connect.return_value = None
+        mock_sqlalchemy.create_engine.return_value = None
+
         path = ir.files('tests.data.swreport').joinpath('ip24.csv')
         df = pd.read_csv(path, parse_dates=['date'])
         df = df.query('date == @dt.date(2024, 11, 7)').set_index('date')
@@ -92,12 +102,16 @@ class TestSuite(unittest.TestCase):
         )
         self.assertEqual(actual, expected)
 
-    def test_ip32(self):
+    def test_ip32(self, mock_yaml, mock_psycopg, mock_sqlalchemy):
         """
         Scenario:  report daily IP address counts
 
         Expected result:  report is verified
         """
+        mock_yaml.safe_load.return_value = {'connection_string': None}
+        mock_psycopg.connect.return_value = None
+        mock_sqlalchemy.create_engine.return_value = None
+
         path = ir.files('tests.data.swreport').joinpath('ip32.csv')
         df = pd.read_csv(path, parse_dates=['date'])
         df = df.query('date == @dt.date(2024, 11, 7)').set_index('date')
@@ -128,12 +142,16 @@ class TestSuite(unittest.TestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_bots_smoke(self):
+    def test_bots_smoke(self, mock_yaml, mock_psycopg, mock_sqlalchemy):
         """
         Scenario:  report daily bots
 
         Expected result:  report is verified
         """
+        mock_yaml.safe_load.return_value = {'connection_string': None}
+        mock_psycopg.connect.return_value = None
+        mock_sqlalchemy.create_engine.return_value = None
+
         path = ir.files('tests.data.swreport').joinpath('bots.csv')
         df = pd.read_csv(path, parse_dates=['date'])
         df = df.query('date == @dt.date(2024, 11, 13)').set_index('date')
@@ -162,12 +180,16 @@ class TestSuite(unittest.TestCase):
         )
         self.assertEqual(actual, expected)
 
-    def test_bots_specific_date(self):
+    def test_bots_specific_date(self, mock_yaml, mock_psycopg, mock_sqlalchemy):  # noqa : E501
         """
         Scenario:  report daily bots for a specific date
 
         Expected result:  report is verified
         """
+        mock_yaml.safe_load.return_value = {'connection_string': None}
+        mock_psycopg.connect.return_value = None
+        mock_sqlalchemy.create_engine.return_value = None
+
         path = ir.files('tests.data.swreport').joinpath('bots.csv')
         df = pd.read_csv(path, parse_dates=['date'])
         df = df.query('date == @dt.date(2024, 11, 12)').set_index('date')
@@ -193,12 +215,16 @@ class TestSuite(unittest.TestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_bots_user_agent(self):
+    def test_bots_user_agent(self, mock_yaml, mock_psycopg, mock_sqlalchemy):
         """
         Scenario:  report time series for a specific bot
 
         Expected result:  report is verified
         """
+        mock_yaml.safe_load.return_value = {'connection_string': None}
+        mock_psycopg.connect.return_value = None
+        mock_sqlalchemy.create_engine.return_value = None
+
         path = ir.files('tests.data.swreport').joinpath('bots.csv')
         df = pd.read_csv(path, parse_dates=['date'])
 
@@ -226,12 +252,16 @@ class TestSuite(unittest.TestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_overall_smoke(self):
+    def test_overall_smoke(self, mock_yaml, mock_psycopg, mock_sqlalchemy):
         """
         Scenario:  report overall
 
         Expected result:  report is verified
         """
+        mock_yaml.safe_load.return_value = {'connection_string': None}
+        mock_psycopg.connect.return_value = None
+        mock_sqlalchemy.create_engine.return_value = None
+
         path = ir.files('tests.data.swreport').joinpath('overall.csv')
         df = pd.read_csv(path, parse_dates=['date'])
         df = df.groupby('date').sum()

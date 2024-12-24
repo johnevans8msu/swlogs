@@ -11,19 +11,20 @@ from swlogs.loglogs import LogLogs
 from .common import CommonTestCase
 
 
+@mock.patch('swlogs.common.yaml')
 class TestSuite(CommonTestCase):
 
-    def test_bot_smoke(self):
+    def test_bot_smoke(self, mock_yaml):
         """
         Scenario:  read log file
 
         Expected result:  the contents of several tables is verified
         """
+        mock_yaml.safe_load.return_value = {'connection_string': self.connstr}
 
         logfile = ir.files('tests.data').joinpath('smoke.log')
         with LogLogs(logfile) as o:
-            with mock.patch.object(o, 'conn', new=self.conn):
-                o.run()
+            o.run()
 
         # Verify the bots table.
         actual = pd.read_sql(
@@ -127,16 +128,17 @@ class TestSuite(CommonTestCase):
             actual, expected, check_exact=False, rtol=0.1
         )
 
-    def test_item_percentage(self):
+    def test_item_percentage(self, mock_yaml):
         """
         Scenario:  compute the item views percentage
 
         Expected result:  no errors
         """
+        mock_yaml.safe_load.return_value = {'connection_string': self.connstr}
+
         logfile = ir.files('tests.data').joinpath('10-items.log')
         with LogLogs(logfile) as o:
-            with mock.patch.object(o, 'conn', new=self.conn):
-                o.run()
+            o.run()
 
         actual = pd.read_sql(
             'select * from swlogs.bots', self.engine, index_col='ua'
@@ -156,17 +158,18 @@ class TestSuite(CommonTestCase):
             actual, expected, check_exact=False, rtol=0.1
         )
 
-    def test_split_over_two_days(self):
+    def test_split_over_two_days(self, mock_yaml):
         """
         Scenario:  read log file that is split over two days.  99 hits are
         from today, 1 hit from previous day
 
         Expected result:  no errors
         """
+        mock_yaml.safe_load.return_value = {'connection_string': self.connstr}
+
         logfile = ir.files('tests.data').joinpath('two-days.log')
         with LogLogs(logfile) as o:
-            with mock.patch.object(o, 'conn', new=self.conn):
-                o.run()
+            o.run()
 
         actual = pd.read_sql(
             'select * from swlogs.overall', self.engine, index_col='date'
@@ -185,16 +188,17 @@ class TestSuite(CommonTestCase):
 
         pd.testing.assert_frame_equal(actual, expected)
 
-    def test_gzipped(self):
+    def test_gzipped(self, mock_yaml):
         """
         Scenario:  read gzipped log file
 
         Expected result:  no errors
         """
+        mock_yaml.safe_load.return_value = {'connection_string': self.connstr}
+
         logfile = ir.files('tests.data').joinpath('gzipped.log.gz')
         with LogLogs(logfile) as o:
-            with mock.patch.object(o, 'conn', new=self.conn):
-                o.run()
+            o.run()
 
         actual = pd.read_sql(
             'select * from swlogs.bots', self.engine, index_col='ua'

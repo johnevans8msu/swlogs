@@ -12,14 +12,21 @@ import pandas as pd
 from swlogs.plots import Plot
 
 
+@patch('swlogs.common.sqlalchemy')
+@patch('swlogs.common.psycopg.connect')
+@patch('swlogs.common.yaml')
 class TestSuite(unittest.TestCase):
 
-    def test_smoke_overall(self):
+    def test_smoke_overall(self, mock_yaml, mock_psycopg, mock_sqlalchemy):
         """
         Scenario:  overall plot
 
         Expected result:  no errors, there were two matplotlib plot calls
         """
+        mock_yaml.safe_load.return_value = {'connection_string': None}
+        mock_psycopg.connect.return_value = None
+        mock_sqlalchemy.create_engine.return_value = None
+
         path = ir.files('tests.data.swreport').joinpath('overall.csv')
         df = pd.read_csv(path, parse_dates=['date'])
 
@@ -37,12 +44,16 @@ class TestSuite(unittest.TestCase):
 
             self.assertEqual(len(mock_plot.mock_calls), 2)
 
-    def test_smoke_bots(self):
+    def test_smoke_bots(self, mock_yaml, mock_psycopg, mock_sqlalchemy):
         """
         Scenario:  bots plot
 
         Expected result:  no errors, there was one seaborn plot call
         """
+        mock_yaml.safe_load.return_value = {'connection_string': None}
+        mock_psycopg.connect.return_value = None
+        mock_sqlalchemy.create_engine.return_value = None
+
         path = ir.files('tests.data.swreport').joinpath('bots.csv')
         df = pd.read_csv(path, parse_dates=['date'])
 

@@ -23,7 +23,8 @@ class CommonTestCase(unittest.TestCase):
 
         # create a connection engine
         cls.engine = sqlalchemy.create_engine(cls.postgresql.url())
-        cls.conn = psycopg.connect(cls.postgresql.url(), autocommit=True)
+        cls.connstr = cls.postgresql.url()
+        cls.conn = psycopg.connect(cls.connstr, autocommit=True)
 
         with cls.conn.cursor() as cursor:
             for p in sorted(ir.files('swlogs.migrations').glob('*.sql')):
