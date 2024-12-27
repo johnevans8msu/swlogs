@@ -140,19 +140,41 @@ class SWReport(CommonObj):
 
         if self.useragent is None:
             sql = """
-                select * from bots
+                select
+                    date,
+                    ua,
+                    hits,
+                    error_pct,
+                    c429,
+                    robots,
+                    xmlui,
+                    sitemaps,
+                    item_pct
+                from bots
                 where date = %(date)s
             """
             params = {'date': self.date.isoformat()}
             df = pd.read_sql(sql, self.engine, params=params, index_col='date')
         else:
             sql = """
-                select * from bots
+                select
+                    date,
+                    ua,
+                    hits,
+                    error_pct,
+                    c429,
+                    robots,
+                    xmlui,
+                    sitemaps,
+                    item_pct
                 where
-                    ua = ?
-                    and date <= ?
+                    ua = %(useragent)s
+                    and date <= %(date)s
             """
-            params = (self.useragent, self.date.isoformat(),)
+            params = {
+                'useragent': self.useragent,
+                'date': self.date.isoformat()
+            }
             df = pd.read_sql(sql, self.conn, params=params, index_col='date')
             df = df.drop(labels='ua', axis='columns')
 
