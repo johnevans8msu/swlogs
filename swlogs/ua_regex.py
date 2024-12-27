@@ -145,15 +145,17 @@ _ua_pairs = [
         r"""
         Mozilla/5.0
         \s
-        \(iPhone;\sCPU\siPhone\sOS\s\d{1,2}_0\slike\sMac\sOS\sX\)
+        \(iPhone;\sCPU\siPhone\sOS\s\d{1,2}(_\d)+\slike\sMac\sOS\sX\)
         \s
         AppleWebKit/\d+.\d+.\d+
         \s
         \(KHTML,\slike\sGecko\)
         \s
-        Version/7.0\sMobile/11A465
+        Version/\d{1,2}.\d
         \s
-        Safari/9537.53
+        Mobile/\w{6}
+        \s
+        Safari/\d+.\d+
         \s
         \(compatible;\sbingbot/2.0;\s\+http://www.bing.com/bingbot.htm\)""",
         'bingbot/iOS/WebKit/iPhone/2.0',
@@ -1450,6 +1452,15 @@ _ua_pairs = [
         # Version/17.5
         # Mobile/15E148
         # Safari/604.1
+        #
+        # Mozilla/5.0
+        # (iPhone; CPU iPhone OS 18_1_1 like Mac OS X)
+        # AppleWebKit/605.1.15
+        # (KHTML, like Gecko)
+        # EdgiOS/131.0.2903.92
+        # Version/18.0
+        # Mobile/15E148
+        # Safari/604.1
         r"""
         Mozilla/5.0
         \s
@@ -1459,7 +1470,14 @@ _ua_pairs = [
         \s
         \(KHTML,\slike\sGecko\)
         \s+
-        ((Chrome|Version)/\d+(.\d+)+\s)?
+        (
+            (Chrome|EdgiOS)/\d+(.\d+)+
+            \s
+        )?
+        (
+            Version/\d+(.\d+)+
+            \s
+        )?
         Mobile(\/15E148)?
         \s
         Safari/\d+.\d+""",
