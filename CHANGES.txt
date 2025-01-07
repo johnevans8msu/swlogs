@@ -1,3 +1,8 @@
+January 07, 2025 - v0.0.7
+    Fix ip24 and ip16 reports
+    Remove id column from reports
+    Update setup.cfg for pyyaml requirement
+
 December 24, 2024 - v0.0.6
     Update test suite for postgresql
     Allow for a remote postgresql connection
