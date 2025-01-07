@@ -80,7 +80,7 @@ class SWReport(CommonObj):
             where date = '{self.date.isoformat()}'
             order by hits desc
         """
-        df = pd.read_sql(sql, self.conn, index_col='date')
+        df = pd.read_sql(sql, self.engine, index_col='date')
         df['ip'] = df['ip'].astype(str)
 
         print(df)
@@ -99,7 +99,7 @@ class SWReport(CommonObj):
             where date = '{self.date.isoformat()}'
             order by hits desc
         """
-        df = pd.read_sql(sql, self.conn, index_col='date')
+        df = pd.read_sql(sql, self.engine, index_col='date')
 
         print(df)
 
@@ -117,7 +117,7 @@ class SWReport(CommonObj):
             where date = '{self.date.isoformat()}'
             order by hits desc
         """
-        df = pd.read_sql(sql, self.conn, index_col='date')
+        df = pd.read_sql(sql, self.engine, index_col='date')
 
         print(df)
 
