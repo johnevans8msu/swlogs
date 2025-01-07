@@ -74,7 +74,7 @@ class SWReport(CommonObj):
         sql = f"""
             select
                 date,
-                ip16,
+                ip,
                 hits
             from ip16
             where date = '{self.date.isoformat()}'
@@ -93,7 +93,7 @@ class SWReport(CommonObj):
         sql = f"""
             select
                 date,
-                ip24,
+                ip,
                 hits
             from ip24
             where date = '{self.date.isoformat()}'
