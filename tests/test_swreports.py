@@ -33,7 +33,7 @@ class TestSuite(unittest.TestCase):
             dt.date(2024, 11, 7)
         ]
         data = {
-            'ip16': ['153.90', '52.167', '24.57'],
+            'ip': ['153.90', '52.167', '24.57'],
             'hits': [86, 12, 2],
             'date': time
         }

@@ -81,7 +81,7 @@ class SWReport(CommonObj):
             order by hits desc
         """
         df = pd.read_sql(sql, self.conn, index_col='date')
-        df['ip16'] = df['ip16'].astype(str)
+        df['ip'] = df['ip'].astype(str)
 
         print(df)
 
