@@ -138,44 +138,42 @@ class SWReport(CommonObj):
 
     def run_bots(self):
 
+        # right now there's always a where clause
+        params = {}
+        lst = []
         if self.useragent is None:
-            sql = """
-                select
-                    date,
-                    ua,
-                    hits,
-                    error_pct,
-                    c429,
-                    robots,
-                    xmlui,
-                    sitemaps,
-                    item_pct
-                from bots
-                where date = %(date)s
-            """
-            params = {'date': self.date.isoformat()}
-            df = pd.read_sql(sql, self.engine, params=params, index_col='date')
+            # report ALL useragents on the current day
+            lst.append('date = %(date)s')
+            params['date'] = self.date.isoformat()
         else:
-            sql = """
-                select
-                    date,
-                    ua,
-                    hits,
-                    error_pct,
-                    c429,
-                    robots,
-                    xmlui,
-                    sitemaps,
-                    item_pct
-                where
-                    ua = %(useragent)s
-                    and date <= %(date)s
-            """
-            params = {
-                'useragent': self.useragent,
-                'date': self.date.isoformat()
-            }
-            df = pd.read_sql(sql, self.conn, params=params, index_col='date')
+            # report a single useragent for all days
+            lst.append('date <= %(date)s')
+            lst.append('ua = %(useragent)s')
+            params['date'] = self.date.isoformat()
+            params['useragent'] = self.useragent
+
+        where_condition = ' AND '.join(lst)
+
+        sql = f"""
+            select
+                date,
+                ua,
+                hits,
+                error_pct,
+                c429,
+                robots,
+                xmlui,
+                sitemaps,
+                item_pct
+            from bots
+            where {where_condition}
+        """
+
+        df = pd.read_sql(sql, self.engine, params=params, index_col='date')
+
+        if self.useragent is not None:
+            # get rid of the useragent column in this case, it takes up too
+            # much real estate
             df = df.drop(labels='ua', axis='columns')
 
         print(df)
