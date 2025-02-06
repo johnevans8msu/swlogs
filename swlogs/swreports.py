@@ -56,19 +56,21 @@ class SWReport(CommonObj):
     def run(self):
 
         if self.overall:
-            self.run_overall()
+            df = self.run_overall()
         elif self.ip16:
-            self.run_ip16_report()
+            df = self.run_ip16_report()
         elif self.ip24:
-            self.run_ip24_report()
+            df = self.run_ip24_report()
         elif self.ip32:
-            self.run_ip32_report()
+            df = self.run_ip32_report()
         else:
-            self.run_bots()
+            df = self.run_bots_report()
+
+        print(df)
 
     def run_ip16_report(self):
         """
-        Print report for top ip addresses
+        Get report for top ip addresses
         """
 
         sql = f"""
@@ -83,11 +85,11 @@ class SWReport(CommonObj):
         df = pd.read_sql(sql, self.engine, index_col='date')
         df['ip'] = df['ip'].astype(str)
 
-        print(df)
+        return df
 
     def run_ip24_report(self):
         """
-        Print report for top ip addresses
+        Get report for top ip addresses
         """
 
         sql = f"""
@@ -101,11 +103,11 @@ class SWReport(CommonObj):
         """
         df = pd.read_sql(sql, self.engine, index_col='date')
 
-        print(df)
+        return df
 
     def run_ip32_report(self):
         """
-        Print report for top ip addresses
+        Get report for top ip addresses
         """
 
         sql = f"""
@@ -119,7 +121,7 @@ class SWReport(CommonObj):
         """
         df = pd.read_sql(sql, self.engine, index_col='date')
 
-        print(df)
+        return df
 
     def run_overall(self):
 
@@ -134,9 +136,9 @@ class SWReport(CommonObj):
         """
         df = pd.read_sql(sql, self.engine, index_col='date')
 
-        print(df)
+        return df
 
-    def run_bots(self):
+    def run_bots_report(self):
 
         # right now there's always a where clause
         params = {}
@@ -176,4 +178,4 @@ class SWReport(CommonObj):
             # much real estate
             df = df.drop(labels='ua', axis='columns')
 
-        print(df)
+        return df
