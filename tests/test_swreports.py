@@ -252,6 +252,37 @@ class TestSuite(unittest.TestCase):
 
         self.assertEqual(actual, expected)
 
+    def test_bots_user_agent_robots(self, mock_yaml, mock_psycopg, mock_sqlalchemy):
+        """
+        Scenario:  report time series for a specific bot.  require that 
+        robots.txt was queried.
+
+        Expected result:  the report has 42 rows
+        """
+        mock_yaml.safe_load.return_value = {'connection_string': None}
+        mock_psycopg.connect.return_value = None
+        mock_sqlalchemy.create_engine.return_value = None
+
+        path = ir.files('tests.data.swreport').joinpath('bots.csv')
+        df = pd.read_csv(path, parse_dates=['date'])
+
+        date = dt.date(2024, 11, 7)  # noqa : F841
+        df = df.query('ua == "bingbot/2.0"')
+        df = df.query('robots == 1')
+        df = df.set_index('date')
+
+        with (
+            patch('swlogs.swreports.pd.read_sql') as mock_read_sql,
+            patch('swlogs.swreports.date') as mock_date,
+        ):
+            mock_date.today.return_value = dt.date(2024, 11, 8)
+            mock_read_sql.return_value = df
+
+            with SWReport(useragent='bingbot/2.0', robots=True) as o:
+                df = o.run_bots_report()
+
+        self.assertEqual(len(df), 42)
+
     def test_overall_smoke(self, mock_yaml, mock_psycopg, mock_sqlalchemy):
         """
         Scenario:  report overall

@@ -39,7 +39,8 @@ class SWReport(CommonObj):
         ip32=False,
         overall=False,
         useragent=None,
-        thedate=None
+        thedate=None,
+        robots=None
     ):
         super().__init__()
 
@@ -52,6 +53,7 @@ class SWReport(CommonObj):
         else:
             self.date = thedate
         self.useragent = useragent
+        self.robots = robots
 
     def run(self):
 
@@ -140,9 +142,10 @@ class SWReport(CommonObj):
 
     def run_bots_report(self):
 
-        # right now there's always a where clause
         params = {}
         lst = []
+
+        # was useragent specified?
         if self.useragent is None:
             # report ALL useragents on the current day
             lst.append('date = %(date)s')
@@ -153,6 +156,10 @@ class SWReport(CommonObj):
             lst.append('ua = %(useragent)s')
             params['date'] = self.date.isoformat()
             params['useragent'] = self.useragent
+
+        # was robots specified?
+        if self.robots is not None and self.robots:
+            lst.append('robots')
 
         where_condition = ' AND '.join(lst)
 
