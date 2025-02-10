@@ -61,6 +61,12 @@ def swreport():
     parser.add_argument('--ip32', action='store_true')
     parser.add_argument('--useragent', help='Restrict to specific user agent')
 
+    parser.add_argument(
+        '--robots',
+        action='store_true',
+        help='Restrict to log entries where robots.txt was consulted.'
+    )
+
     help = (
         'Restrict to this date (bot report only).  '
         'The default is yesterday.'
@@ -80,6 +86,7 @@ def swreport():
         ip24=args.ip24,
         ip32=args.ip32,
         thedate=args.date,
-        useragent=args.useragent
+        useragent=args.useragent,
+        robots=args.robots,
     ) as o:
         o.run()

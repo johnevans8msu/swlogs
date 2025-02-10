@@ -669,6 +669,22 @@ _ua_pairs = [
         "DataForSEOBot",
     ),
     (
+        # Mozilla/5.0 (Unknown; Linux x86_64)
+        # AppleWebKit/538.1 (KHTML, like Gecko) Safari/538.1 Daum/4.1
+        r"""
+        Mozilla/5.0
+        \s
+        (Unknown;\sLinux\sx86_64)
+        \s
+        AppleWebKit/538.1\s
+        (KHTML,\slike\sGecko)
+        \s
+        Safari/538.1
+        \s
+        Daum/4.1""",
+        "DaumBot",
+    ),
+    (
         # Mozilla/5.0 (Linux x64) node.js/20.16.0 v8/11.3.244.8-node.23
         r"""
             Mozilla\/5.0

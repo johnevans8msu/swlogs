@@ -127,6 +127,26 @@ class TestSuite(unittest.TestCase):
         ):
             commandline.swreport()
 
+    def test_swreport_with_user_agent_and_robots_restriction(
+        self, mock_yaml, mock_psycopg, mock_sqlalchemy
+    ):
+        """
+        Scenario:  run command line program for bot report and a specific user
+        agent and robots restriction.
+
+        Expected result:  no errors
+        """
+        mock_yaml.safe_load.return_value = {'connection_string': None}
+        mock_psycopg.connect.return_value = None
+        mock_sqlalchemy.create_engine.return_value = None
+
+        new = ['', '--useragent', 'something', '--robots']
+        with (
+            mock.patch('sys.argv', new=new),
+            mock.patch('swlogs.swreports.SWReport.run', new=lambda x: None),
+        ):
+            commandline.swreport()
+
     def test_swreport_with_specific_date(self, mock_yaml, mock_psycopg, mock_sqlalchemy):  # noqa : E501
         """
         Scenario:  run command line program for bot report and a specific date
