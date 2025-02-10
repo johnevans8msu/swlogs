@@ -1,3 +1,11 @@
+February 10, 2025 - v0.0.8
+    Update regexes for Daum Bot.
+    Add command line robots restriction.
+    Refactor swreports run method.
+    Refactor bot report sql statement construction.
+    Fix sqlalchemy warning messages.
+    Fix ip16 swreport error.
+
 January 07, 2025 - v0.0.7
     Fix ip24 and ip16 reports
     Remove id column from reports
