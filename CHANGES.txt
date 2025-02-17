@@ -1,3 +1,6 @@
+February 17, 2025 - v0.0.9post1
+    Add regex for dspace 8.1 useragent
+
 February 11, 2025 - v0.0.9
     Fix setup.cfg for SQL data files
 
