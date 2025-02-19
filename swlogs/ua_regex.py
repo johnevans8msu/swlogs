@@ -1541,6 +1541,10 @@ _ua_pairs = [
         "Serpstatbot",
     ),
     (
+        r"""Scrapy/2.11.2\s\(\+https://scrapy.org\)""",
+        "Scrapy",
+    ),
+    (
         r"""Mozilla/5.0
             \s
             \(iPhone;\sCPU\siPhone\sOS\s17_3_1\slike\sMac\sOS\sX\)
