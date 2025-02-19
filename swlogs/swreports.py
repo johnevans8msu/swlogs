@@ -176,6 +176,7 @@ class SWReport(CommonObj):
                 item_pct
             from bots
             where {where_condition}
+            order by hits desc
         """
 
         df = pd.read_sql(sql, self.engine, params=params, index_col='date')
